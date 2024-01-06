@@ -13,9 +13,9 @@
 
 # Members 😎
 
-| <img width="200px" src="https://avatars.githubusercontent.com/u/87214089?v=4"/> | <img width="200px" src="https://avatars.githubusercontent.com/u/122276414?v=4"/> |
-| ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
-| [모아/조희수](https://github.com/ranunclulus)                                      |  [유은/오유은](https://github.com/yueunfive)}                                      |
+| <img width="200px" src="https://avatars.githubusercontent.com/u/87214089?v=4"/> | <img width="200px" src="https://avatars.githubusercontent.com/u/122276414?v=4"/> | <img width="200px" src="https://avatars.githubusercontent.com/u/58453038?v=4"/>|
+| ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |  ------------------------------------------------------------------------------- | 
+| [모아/조희수](https://github.com/ranunclulus)                                      | [유은/오유은](https://github.com/yueunfive)                                      | [렉스/변성호](https://github.com/Byun-Sung-Ho)                                      |
 
 # Commit Conventions
 
