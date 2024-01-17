@@ -23,4 +23,6 @@ public class MemberSpace {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "space_id")
     private Space space;
+
+    private boolean favorite;
 }
