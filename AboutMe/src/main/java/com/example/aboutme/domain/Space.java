@@ -35,4 +35,7 @@ public class Space extends BaseEntity {
 
     @OneToMany(mappedBy = "space", cascade = CascadeType.ALL)
     private List<SpaceImage> spaceImageList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "space", cascade = CascadeType.ALL)
+    private List<Plan> planList = new ArrayList<>();
 }
