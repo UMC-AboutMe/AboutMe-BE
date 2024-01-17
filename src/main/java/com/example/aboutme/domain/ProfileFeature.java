@@ -19,9 +19,9 @@ public class ProfileFeature extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Side side;
 
-    private String key;
+    private String profileKey;
 
-    private String value;
+    private String profileValue;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "profile_id")
