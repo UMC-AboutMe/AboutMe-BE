@@ -20,7 +20,7 @@ public class Space extends BaseEntity {
 
     private String nickname;
 
-    private Integer character;
+    private Integer characterType;
 
     @Enumerated(EnumType.STRING)
     private Mood mood;
