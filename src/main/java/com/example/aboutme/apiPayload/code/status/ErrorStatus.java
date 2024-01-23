@@ -16,7 +16,8 @@ public enum ErrorStatus implements BaseErrorCode {
     _FORBIDDEN(HttpStatus.FORBIDDEN, "COMMON403", "금지된 요청입니다."),
 
     // 마이스페이스 에러
-    _UNVALID_CHARACTER_TYPE(HttpStatus.BAD_REQUEST, "SPACE400", "캐릭터 타입은 1부터 9까지의 숫자만 가능합니다.");
+    _UNVALID_CHARACTER_TYPE(HttpStatus.BAD_REQUEST, "SPACE400", "캐릭터 타입은 1부터 9까지의 숫자만 가능합니다."),
+    _UNVALID_ROOM_TYPE(HttpStatus.BAD_REQUEST, "SPACE401", "방 타입은 1부터 4까지의 숫자만 가능합니다.");
 
     private final HttpStatus httpStatus;
     private final String code;

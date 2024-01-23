@@ -14,5 +14,6 @@ public class SpaceResponse {
     public static class JoinResultDTO {
         private String nickname;
         private Integer characterType;
+        private Integer roomType;
     }
 }

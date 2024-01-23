@@ -12,6 +12,7 @@ public class SpaceConverter {
         return SpaceResponse.JoinResultDTO.builder()
                 .nickname(space.getNickname())
                 .characterType(space.getCharacterType())
+                .roomType(space.getRoomType())
                 .build();
     }
 
@@ -19,6 +20,7 @@ public class SpaceConverter {
         return Space.builder()
                 .nickname(request.getNickname())
                 .characterType(request.getCharacterType())
+                .roomType(request.getRoomType())
                 .spaceImageList(new ArrayList<>())
                 .planList(new ArrayList<>())
                 .build();
