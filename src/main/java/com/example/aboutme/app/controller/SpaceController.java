@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/myspaces")
@@ -21,8 +23,7 @@ public class SpaceController {
     private final SpaceCommandService spaceCommandService;
 
     @PostMapping(value = "/", produces = "application/json;charset=UTF-8")
-    public ApiResponse<SpaceResponse.JoinResultDTO> join (@RequestBody SpaceRequest.JoinDTO request) {
-        log.info("myspace post");
+    public ApiResponse<SpaceResponse.JoinResultDTO> join (@RequestBody @Valid SpaceRequest.JoinDTO request) {
         Space newSpace = spaceCommandService.JoinSpace(request);
         return ApiResponse.onSuccess(SpaceConverter.toJoinResultDTO(newSpace));
     }
