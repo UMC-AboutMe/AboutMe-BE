@@ -22,6 +22,8 @@ public class Space extends BaseEntity {
 
     private Integer characterType;
 
+    private Integer roomType; //이거 추가
+
     @Enumerated(EnumType.STRING)
     private Mood mood;
 

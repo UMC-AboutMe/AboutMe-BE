@@ -25,4 +25,9 @@ public class MemberSpace {
     private Space space;
 
     private boolean favorite;
+
+    // 즐겨찾기 토글 메서드
+    public void toggleFavorite() {
+        this.favorite = !this.favorite;
+    }
 }
