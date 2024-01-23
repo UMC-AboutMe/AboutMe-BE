@@ -1,9 +1,19 @@
 package com.example.aboutme.service.SpaceService;
 
+import com.example.aboutme.app.dto.SpaceRequest;
+import com.example.aboutme.converter.SpaceConverter;
+import com.example.aboutme.domain.Space;
+import com.example.aboutme.repository.SpaceRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
 public class SpaceCommandServiceImpl implements SpaceCommandService{
+    private final SpaceRepository spaceRepository;
+    @Override
+    public Space JoinSpace(SpaceRequest.JoinDTO request) {
+        Space newSpace = SpaceConverter.toSpace(request);
+        return spaceRepository.save(newSpace);
+    }
 }
