@@ -33,6 +33,8 @@ public class ProfileController {
 
         List<Profile> profileList = profileService.getMyProfiles(memberId);
 
+        log.info("마이프로필 조회: member={}", memberId);
+
         return ApiResponse.onSuccess(ProfileConverter.toGetProfileListDTO(profileList));
     }
 

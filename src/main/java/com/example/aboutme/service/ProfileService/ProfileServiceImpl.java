@@ -33,7 +33,7 @@ public class ProfileServiceImpl implements ProfileService{
     public List<Profile> getMyProfiles(Long memberId){
         Member member = memberService.findMember(memberId);
 
-        return profileRepository.findAllByMember(member);
+        return profileRepository.findAllByMemberOrderByIsDefaultDesc(member);
     }
 
     /**

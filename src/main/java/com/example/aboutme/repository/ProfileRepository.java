@@ -14,5 +14,5 @@ public interface ProfileRepository extends JpaRepository<Profile, Long> {
 
     int countByMember(Member member);
 
-    List<Profile> findAllByMember(Member member);
+    List<Profile> findAllByMemberOrderByIsDefaultDesc(Member member);
 }
