@@ -7,7 +7,10 @@ import com.example.aboutme.domain.Profile;
 import com.example.aboutme.service.ProfileService.ProfileService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,7 +28,7 @@ public class ProfileController {
      * @return
      */
     @PostMapping()
-    public ApiResponse createMyProfile(@RequestHeader("member_id") Long memberId, @RequestBody ProfileRequest.CreateProfileDTO request){
+    public ApiResponse createMyProfile(@RequestHeader("member_id") Long memberId, @RequestBody @Valid ProfileRequest.CreateProfileDTO request){
 
         Profile newProfile = profileService.createMyProfile(memberId, request);
 
