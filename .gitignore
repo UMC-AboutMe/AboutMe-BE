@@ -37,3 +37,8 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### local database setting ###
+src/main/resources/application-local.yml
+.aws/credentials
+.aws/config
