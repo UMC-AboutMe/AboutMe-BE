@@ -22,6 +22,12 @@ public class ProfileController {
 
     private final ProfileService profileService;
 
+    /**
+     * [GET] /myprofiles
+     * 내 마이프로필 조회
+     * @param memberId 멤버 식별자
+     * @return
+     */
     @GetMapping()
     public ApiResponse<ProfileResponse.GetProfileListDTO> getMyProfiles(@RequestHeader("member_id") Long memberId){
 

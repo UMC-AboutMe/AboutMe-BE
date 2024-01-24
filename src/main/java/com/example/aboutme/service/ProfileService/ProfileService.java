@@ -7,6 +7,11 @@ import java.util.List;
 
 public interface ProfileService {
 
+    /**
+     * 내 마이프로필 조회
+     * @param memberId 멤버 식별자
+     * @return
+     */
     List<Profile> getMyProfiles(Long memberId);
 
     /**
