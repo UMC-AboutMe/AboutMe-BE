@@ -45,7 +45,7 @@ public class ProfileServiceImpl implements ProfileService{
 
         newProfile.setMember(member);
         int DEFAULT_FRONT_FEATURE_SIZE = 2;
-        int DEFAULT_BACK_FEATURE_SIZE = 2;
+        int DEFAULT_BACK_FEATURE_SIZE = 5;
         newProfile.setProfileFeatureList(
             ProfileFeatureConverter.toDefaultProfileFeatureList(DEFAULT_FRONT_FEATURE_SIZE, DEFAULT_BACK_FEATURE_SIZE, request.getName())
         );
