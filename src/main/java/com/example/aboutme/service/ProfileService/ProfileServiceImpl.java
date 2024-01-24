@@ -44,11 +44,13 @@ public class ProfileServiceImpl implements ProfileService{
         Profile newProfile = ProfileConverter.toProfile(generateSerialNumber());
 
         newProfile.setMember(member);
+
         int DEFAULT_FRONT_FEATURE_SIZE = 2;
         int DEFAULT_BACK_FEATURE_SIZE = 5;
-        newProfile.setProfileFeatureList(
-            ProfileFeatureConverter.toDefaultProfileFeatureList(DEFAULT_FRONT_FEATURE_SIZE, DEFAULT_BACK_FEATURE_SIZE, request.getName())
-        );
+        List<ProfileFeature> defaultProfileFeatureList = ProfileFeatureConverter.toDefaultProfileFeatureList(DEFAULT_FRONT_FEATURE_SIZE, DEFAULT_BACK_FEATURE_SIZE, request.getName());
+        for(ProfileFeature profileFeature : defaultProfileFeatureList){
+            profileFeature.setProfile(newProfile);
+        }
 
         profileRepository.save(newProfile);
 
