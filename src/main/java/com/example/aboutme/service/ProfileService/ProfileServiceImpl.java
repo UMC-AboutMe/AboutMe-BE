@@ -25,6 +25,12 @@ public class ProfileServiceImpl implements ProfileService{
     private final MemberService memberService;
     private final ProfileRepository profileRepository;
 
+    public List<Profile> getMyProfiles(Long memberId){
+        Member member = memberService.findMember(memberId);
+
+        return profileRepository.findAllByMember(member);
+    }
+
     /**
      * 마이프로필 생성
      * @param memberId 멤버 식별자
@@ -45,7 +51,7 @@ public class ProfileServiceImpl implements ProfileService{
 
         newProfile.setMember(member);
         int DEFAULT_FRONT_FEATURE_SIZE = 2;
-        int DEFAULT_BACK_FEATURE_SIZE = 2;
+        int DEFAULT_BACK_FEATURE_SIZE = 5;
         newProfile.setProfileFeatureList(
             ProfileFeatureConverter.toDefaultProfileFeatureList(DEFAULT_FRONT_FEATURE_SIZE, DEFAULT_BACK_FEATURE_SIZE, request.getName())
         );

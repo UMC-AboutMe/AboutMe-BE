@@ -2,6 +2,7 @@ package com.example.aboutme.app.controller;
 
 import com.example.aboutme.apiPayload.ApiResponse;
 import com.example.aboutme.app.dto.ProfileRequest;
+import com.example.aboutme.app.dto.ProfileResponse;
 import com.example.aboutme.converter.ProfileConverter;
 import com.example.aboutme.domain.Profile;
 import com.example.aboutme.service.ProfileService.ProfileService;
@@ -11,6 +12,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -19,6 +21,14 @@ import javax.validation.Valid;
 public class ProfileController {
 
     private final ProfileService profileService;
+
+    @GetMapping()
+    public ApiResponse<ProfileResponse.GetProfileListDTO> getMyProfiles(@RequestHeader("member_id") Long memberId){
+
+        List<Profile> profileList = profileService.getMyProfiles(memberId);
+
+        return ApiResponse.onSuccess(ProfileConverter.toGetProfileListDTO(profileList));
+    }
 
     /**
      * [POST] /myprofiles
