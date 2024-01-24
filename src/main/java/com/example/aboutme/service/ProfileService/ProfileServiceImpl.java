@@ -25,11 +25,17 @@ public class ProfileServiceImpl implements ProfileService{
     private final MemberService memberService;
     private final ProfileRepository profileRepository;
 
-
+    /**
+     * 마이프로필 생성
+     * @param memberId 멤버 식별자
+     * @param request
+     * @return
+     */
     @Transactional
     public Profile createMyProfile(Long memberId, ProfileRequest.CreateProfileDTO request){
         Member member = memberService.findMember(memberId);
 
+        // 최대 생성 개수 초과하는지 확인
         int MAX_PROFILE_SIZE = 3;
         if(profileRepository.countByMember(member) > MAX_PROFILE_SIZE){
             throw new GeneralException(ErrorStatus.PROFILE_SIZE_OVERFLOW);
@@ -49,12 +55,17 @@ public class ProfileServiceImpl implements ProfileService{
         return newProfile;
     }
 
+    /**
+     * 시리얼 넘버 생성
+     * @return 중복되지 않는 시리얼 넘버
+     */
     private int generateSerialNumber(){
         java.util.Random generator = new java.util.Random();
         generator.setSeed(System.currentTimeMillis());
 
         int serialNumber = generator.nextInt(1000000) % 1000000;
 
+        // 중복 확인
         while(profileRepository.findBySerialNumber(serialNumber).isPresent()){
             serialNumber = generator.nextInt(1000000) % 1000000;
         }
