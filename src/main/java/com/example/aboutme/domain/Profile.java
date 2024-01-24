@@ -31,12 +31,4 @@ public class Profile extends BaseEntity {
         this.member = member;
         member.getProfileList().add(this);
     }
-
-    public void setProfileFeatureList(List<ProfileFeature> profileFeatureList){
-        this.profileFeatureList = profileFeatureList;
-
-        profileFeatureList.forEach(profileFeature -> {
-            profileFeature.setProfile(this);
-        });
-    }
 }

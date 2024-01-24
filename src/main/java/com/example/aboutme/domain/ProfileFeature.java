@@ -23,8 +23,12 @@ public class ProfileFeature extends BaseEntity {
 
     private String profileValue;
 
-    @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "profile_id")
     private Profile profile;
+
+    public void setProfile(Profile profile){
+        this.profile = profile;
+        profile.getProfileFeatureList().add(this);
+    }
 }
