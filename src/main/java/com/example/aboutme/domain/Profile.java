@@ -17,7 +17,6 @@ public class Profile extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String imageUrl;
     private Integer serialNumber;
     private Boolean isDefault;
 
@@ -27,4 +26,9 @@ public class Profile extends BaseEntity {
 
     @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL)
     private List<ProfileFeature> profileFeatureList = new ArrayList<>();
+
+    public void setMember(Member member){
+        this.member = member;
+        member.getProfileList().add(this);
+    }
 }
