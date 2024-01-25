@@ -1,5 +1,9 @@
 package com.example.aboutme.Login.kakao;
 
+import com.example.aboutme.Login.oauth.OAuthAPIClient;
+import com.example.aboutme.Login.oauth.OAuthInfoResponse;
+import com.example.aboutme.Login.oauth.OAuthLoginParams;
+import com.example.aboutme.domain.constant.Social;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -23,8 +27,8 @@ public class KakaoApiClient implements OAuthAPIClient {
     private final RestTemplate restTemplate;
 
     @Override
-    public OauthProvider OauthProvider() {
-        return OauthProvider.KAKAO;
+    public Social OauthProvider() {
+        return Social.KAKAO;
     }
 
     @Override

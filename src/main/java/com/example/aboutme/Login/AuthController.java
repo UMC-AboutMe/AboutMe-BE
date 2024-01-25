@@ -1,5 +1,7 @@
 package com.example.aboutme.Login;
 
+import com.example.aboutme.Login.kakao.KakaoLoginParams;
+import com.example.aboutme.service.auth.OAuthLoginService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,10 +17,6 @@ public class AuthController {
 
     @PostMapping("/kakao")
     public ResponseEntity<AuthTokens> loginKakao(@RequestBody KakaoLoginParams params){
-        return ResponseEntity.ok(oAuthLoginService.login(params));
-    }
-    @PostMapping("/naver")
-    public ResponseEntity<AuthTokens> loginNaver(@RequestBody NaverLoginParams params){
         return ResponseEntity.ok(oAuthLoginService.login(params));
     }
 }

@@ -1,5 +1,8 @@
 package com.example.aboutme.service.auth;
 
+import com.example.aboutme.Login.oauth.OAuthAPIClient;
+import com.example.aboutme.Login.oauth.OAuthInfoResponse;
+import com.example.aboutme.Login.oauth.OAuthLoginParams;
 import com.example.aboutme.domain.constant.Social;
 import org.springframework.stereotype.Component;
 

@@ -1,5 +1,8 @@
 package com.example.aboutme.service.auth;
 
+import com.example.aboutme.Login.AuthTokens;
+import com.example.aboutme.Login.oauth.OAuthInfoResponse;
+import com.example.aboutme.Login.oauth.OAuthLoginParams;
 import com.example.aboutme.domain.Member;
 import com.example.aboutme.domain.constant.Social;
 import com.example.aboutme.repository.MemberRepository;
@@ -27,7 +30,7 @@ public class OAuthLoginService {
 
     private Long newMember(OAuthInfoResponse oAuthInfoResponse) {
         Member member = Member.builder().email(oAuthInfoResponse.getEmail())
-                .Social(oAuthInfoResponse.getOAuthProvider()).build();
+                .social(oAuthInfoResponse.getOAuthProvider()).build();
 
         return memberRepository.save(member).getId();
     }
