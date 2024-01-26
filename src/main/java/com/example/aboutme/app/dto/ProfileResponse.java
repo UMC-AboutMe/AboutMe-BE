@@ -43,4 +43,40 @@ public class ProfileResponse {
         private String key;
         private String value;
     }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class GetProfileListDTO{
+        @JsonProperty("myprofiles")
+        private List<ProfileDTO> profileDTOList;
+
+        @JsonProperty("total_myprofile")
+        private int totalProfile;
+    }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class ProfileDTO{
+        @JsonProperty("profile_id")
+        private Long id;
+
+        @JsonProperty("serial_number")
+        private int serialNumber;
+
+        @JsonProperty("is_default")
+        private Boolean isDefault;
+
+        @JsonProperty("profile_img_url")
+        private String profileImageUrl;
+
+        @JsonProperty("front_features")
+        private List<ProfileFeatureDTO> frontFeatureList;
+
+        @JsonProperty("back_features")
+        private List<ProfileFeatureDTO> backFeatureList;
+    }
 }

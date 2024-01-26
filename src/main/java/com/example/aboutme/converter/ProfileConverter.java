@@ -41,4 +41,32 @@ public class ProfileConverter {
                 .value(profileFeature.getProfileValue())
                 .build();
     }
+
+    public static ProfileResponse.GetProfileListDTO toGetProfileListDTO(List<Profile> profileList){
+        List<ProfileResponse.ProfileDTO> profileDTOList = profileList.stream()
+                .map(ProfileConverter::toProfileDTO)
+                .toList();
+
+        return ProfileResponse.GetProfileListDTO.builder()
+                .profileDTOList(profileDTOList)
+                .totalProfile(profileList.size())
+                .build();
+    }
+
+    private static ProfileResponse.ProfileDTO toProfileDTO(Profile profile){
+        return ProfileResponse.ProfileDTO.builder()
+                .id(profile.getId())
+                .serialNumber(profile.getSerialNumber())
+                .isDefault(profile.getIsDefault())
+                .profileImageUrl(null) // 아직 미설정
+                .frontFeatureList(profile.getProfileFeatureList().stream()
+                        .filter(profileFeature -> profileFeature.getSide()== Side.FRONT)
+                        .map(ProfileConverter::toProfileFeatureDTO)
+                        .toList())
+                .backFeatureList(profile.getProfileFeatureList().stream()
+                        .filter(profileFeature -> profileFeature.getSide()== Side.BACK)
+                        .map(ProfileConverter::toProfileFeatureDTO)
+                        .toList())
+                .build();
+    }
 }

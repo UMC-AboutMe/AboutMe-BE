@@ -26,6 +26,17 @@ public class ProfileServiceImpl implements ProfileService{
     private final ProfileRepository profileRepository;
 
     /**
+     * 내 마이프로필 조회
+     * @param memberId 멤버 식별자
+     * @return
+     */
+    public List<Profile> getMyProfiles(Long memberId){
+        Member member = memberService.findMember(memberId);
+
+        return profileRepository.findAllByMemberOrderByIsDefaultDesc(member);
+    }
+
+    /**
      * 마이프로필 생성
      * @param memberId 멤버 식별자
      * @param request
