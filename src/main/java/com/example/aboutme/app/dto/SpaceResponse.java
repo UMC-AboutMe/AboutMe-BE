@@ -34,7 +34,6 @@ public class SpaceResponse {
         private Mood mood;
         private String musicUrl;
         private String statusMessage;
-        private Member member;
         private List<SpaceImage> spaceImageList;
         private List<Plan> planList;
     }
