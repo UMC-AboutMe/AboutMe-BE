@@ -92,7 +92,7 @@ public class KakaoService {
         HttpEntity<MultiValueMap<String, String>> httpEntity = new HttpEntity<>(headers);
         ResponseEntity<String> response = rt.exchange(
                 KAKAO_API_URI + "/v2/user/me",
-                HttpMethod.POST,
+                HttpMethod.GET,
                 httpEntity,
                 String.class
         );
@@ -104,6 +104,7 @@ public class KakaoService {
         JSONObject profile = (JSONObject) account.get("profile");
 
         long id = (long) jsonObj.get("id");
+        System.out.println(id);
         String email = String.valueOf(account.get("email"));
         String nickname = String.valueOf(profile.get("nickname"));
 

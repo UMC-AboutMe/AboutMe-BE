@@ -23,6 +23,10 @@ spring:
             authorization-grant-type: authorization_code
             scope: account_email
             client-name: kakao
+          google:
+            client-id: 194009379165-fk2ggap181l0kg9o9hcn8v2b49s4rhio.apps.googleusercontent.com
+            client-secret: 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
+            redirect-uri: http://localhost:8080/google/callback
         provider:
           kakao:
             authorization_uri: https://kauth.kakao.com/oauth/authorize
