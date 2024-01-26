@@ -70,6 +70,11 @@ public class ProfileServiceImpl implements ProfileService{
         return newProfile;
     }
 
+    /**
+     * 내 마이프로필 삭제
+     * @param memberId 멤버 식별자
+     * @param profileId 마이프로필 식별자
+     */
     @Transactional
     public void deleteMyProfile(Long memberId, Long profileId){
         Member member = memberService.findMember(memberId);

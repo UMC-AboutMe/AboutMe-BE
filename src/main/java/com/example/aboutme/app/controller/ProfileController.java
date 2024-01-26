@@ -55,6 +55,13 @@ public class ProfileController {
         return ApiResponse.onSuccess(ProfileConverter.toCreateProfileDTO(newProfile));
     }
 
+    /**
+     * [DELETE] /myprofiles/{profile-id}
+     * 내 마이프로필 삭제
+     * @param memberId 멤버 식별자
+     * @param profileId 마이프로필 식별자
+     * @return
+     */
     @DeleteMapping("/{profile-id}")
     public ApiResponse deleteMyProfile(@RequestHeader("member_id") Long memberId, @PathVariable("profile-id") Long profileId){
 
