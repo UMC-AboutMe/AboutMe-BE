@@ -25,4 +25,17 @@ public class SpaceConverter {
                 .planList(new ArrayList<>())
                 .build();
     }
+
+    public static SpaceResponse.ReadResultDTO toReadResultDTO(Space space) {
+        return SpaceResponse.ReadResultDTO.builder()
+                .nickname(space.getNickname())
+                .characterType(space.getCharacterType())
+                .roomType(space.getRoomType())
+                .mood(space.getMood())
+                .musicUrl(space.getMusicUrl())
+                .statusMessage(space.getStatusMessage())
+                .spaceImageList(space.getSpaceImageList())
+                .planList(space.getPlanList())
+                .build();
+    }
 }
