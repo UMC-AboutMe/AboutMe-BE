@@ -11,6 +11,7 @@ import com.example.aboutme.domain.ProfileFeature;
 import com.example.aboutme.repository.ProfileRepository;
 import com.example.aboutme.service.MemberService.MemberService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +21,7 @@ import java.util.List;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
+@Slf4j
 public class ProfileServiceImpl implements ProfileService{
 
     private final MemberService memberService;
@@ -66,6 +68,24 @@ public class ProfileServiceImpl implements ProfileService{
         profileRepository.save(newProfile);
 
         return newProfile;
+    }
+
+    @Transactional
+    public void deleteMyProfile(Long memberId, Long profileId){
+        Member member = memberService.findMember(memberId);
+        Profile profile = findProfile(profileId);
+
+        if(profile.getMember() != member){
+            throw new GeneralException(ErrorStatus.PROFILE_NOT_MATCH_MEMBER);
+        }
+
+        profileRepository.delete(profile);
+    }
+
+    public Profile findProfile(Long profileId){
+        return profileRepository.findById(profileId).orElseThrow(
+                () -> new GeneralException(ErrorStatus.PROFILE_NOT_FOUND)
+        );
     }
 
     /**

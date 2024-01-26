@@ -54,4 +54,14 @@ public class ProfileController {
 
         return ApiResponse.onSuccess(ProfileConverter.toCreateProfileDTO(newProfile));
     }
+
+    @DeleteMapping("/{profile-id}")
+    public ApiResponse deleteMyProfile(@RequestHeader("member_id") Long memberId, @PathVariable("profile-id") Long profileId){
+
+        profileService.deleteMyProfile(memberId, profileId);
+
+        log.info("마이프로필 삭제: {}", profileId);
+
+        return ApiResponse.onSuccess(null);
+    }
 }

@@ -22,4 +22,5 @@ public interface ProfileService {
      */
     Profile createMyProfile(Long memberId, ProfileRequest.CreateProfileDTO request);
 
+    void deleteMyProfile(Long memberId, Long profileId);
 }
