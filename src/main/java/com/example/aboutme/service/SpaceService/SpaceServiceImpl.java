@@ -12,7 +12,7 @@ import javax.transaction.Transactional;
 @Service
 @Transactional
 @AllArgsConstructor
-public class SpaceCommandServiceImpl implements SpaceCommandService{
+public class SpaceServiceImpl implements SpaceService {
     private final SpaceRepository spaceRepository;
     @Override
     public Space JoinSpace(SpaceRequest.JoinDTO request) {
