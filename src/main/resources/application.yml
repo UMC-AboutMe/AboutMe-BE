@@ -1,0 +1,12 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+    generate-ddl: true
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://aboutmedb.cpk6suecg1c5.ap-northeast-2.rds.amazonaws.com/aboutme
+    username: root
+    password: rootroot123

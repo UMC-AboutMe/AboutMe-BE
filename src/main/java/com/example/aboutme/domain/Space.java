@@ -5,6 +5,7 @@ import com.example.aboutme.domain.constant.Mood;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +23,7 @@ public class Space extends BaseEntity {
 
     private Integer characterType;
 
-    private Integer roomType; //이거 추가
+    private Integer roomType;
 
     @Enumerated(EnumType.STRING)
     private Mood mood;
