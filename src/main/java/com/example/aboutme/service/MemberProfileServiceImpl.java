@@ -25,4 +25,13 @@ public class MemberProfileServiceImpl implements MemberProfileService{
 
         return memberProfileRepository.findAllByMember(member);
     }
+
+    @Transactional
+    public MemberProfile deleteMemberProfile(Long memberId, Long profileId){
+        Member member = memberService.findMember(memberId);
+
+        MemberProfile memberProfile = memberProfileRepository.findByMemberAndId(member, profileId);
+        memberProfileRepository.delete(memberProfile);
+        return memberProfile;
+    }
 }

@@ -20,7 +20,7 @@ public class MemberProfileConverter {
                 .build();
     }
 
-    private static MemberProfileResponse.MemberProfileDTO toMemberProfileDTO(MemberProfile memberProfile){
+    public static MemberProfileResponse.MemberProfileDTO toMemberProfileDTO(MemberProfile memberProfile){
         return MemberProfileResponse.MemberProfileDTO.builder()
                 .id(memberProfile.getId())
                 .favorite(memberProfile.getFavorite())
