@@ -48,7 +48,7 @@ public class ProfileServiceImpl implements ProfileService{
 
         // 최대 생성 개수 초과하는지 확인
         int MAX_PROFILE_SIZE = 3;
-        if(profileRepository.countByMember(member) > MAX_PROFILE_SIZE){
+        if(profileRepository.countByMember(member) >= MAX_PROFILE_SIZE){
             throw new GeneralException(ErrorStatus.PROFILE_SIZE_OVERFLOW);
         }
 
