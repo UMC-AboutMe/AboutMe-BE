@@ -1,12 +1,12 @@
 spring:
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     show-sql: true
     generate-ddl: true
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://aboutmedb.cpk6suecg1c5.ap-northeast-2.rds.amazonaws.com/aboutme
+    url: jdbc:mysql://127.0.0.1:3306/aboutme?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul
     username: root
-    password: rootroot123
+    password: jhoh5526

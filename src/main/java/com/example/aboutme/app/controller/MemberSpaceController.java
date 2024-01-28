@@ -1,13 +1,18 @@
 package com.example.aboutme.app.controller;
 
+import com.example.aboutme.apiPayload.ApiResponse;
 import com.example.aboutme.app.dto.MemberSpaceResponse;
-import com.example.aboutme.service.MemberSpaceService;
+import com.example.aboutme.converter.MemberSpaceConverter;
+import com.example.aboutme.domain.mapping.MemberSpace;
+import com.example.aboutme.service.MemberSpaceService.MemberSpaceService;
+import com.example.aboutme.service.MemberSpaceService.MemberSpaceServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -19,34 +24,33 @@ public class MemberSpaceController {
 
     // 아지트 내 스페이스 목록 조회
     @GetMapping
-    public ResponseEntity<MemberSpaceResponse> getList(@RequestParam(defaultValue = "") String keyword) {
-
-        MemberSpaceResponse response = memberSpaceService.filterWithKeyword(keyword);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+    public ApiResponse<MemberSpaceResponse.GetListDto> getList(@RequestHeader("member_id") Long memberId,
+                                                               @RequestParam(defaultValue = "") String keyword) {
+        List<MemberSpace> memberSpaceList = memberSpaceService.filterWithKeyword(memberId, keyword);
+        return ApiResponse.onSuccess(MemberSpaceConverter.toGetMemberSpaceListDTO(memberSpaceList));
     }
 
     // 아지트 내 스페이스 즐겨찾기
     @PatchMapping("/{spaceId}/favorite")
-    public ResponseEntity<Map<String, Object>> toggleFavorite(@PathVariable Long spaceId) {
-        Boolean favoriteStatus = memberSpaceService.toggleFavorite(spaceId);
-
-        Map<String, Object> responseBody = new HashMap<>();
-        responseBody.put("favorite", favoriteStatus);
-
-        return ResponseEntity.status(HttpStatus.OK).body(responseBody);
+    public ApiResponse<MemberSpaceResponse.favoriteDto> toggleFavorite(@RequestHeader("member_id") Long memberId,
+                                                                       @PathVariable Long spaceId) {
+        Boolean favoriteStatus = memberSpaceService.toggleFavorite(memberId, spaceId);
+        return ApiResponse.onSuccess(MemberSpaceConverter.toToggleFavorite(favoriteStatus));
     }
 
     // 아지트 내 스페이스 추가
     @PostMapping("/{spaceId}")
-    public ResponseEntity<Long> add(@PathVariable Long spaceId) {
-        memberSpaceService.addMemberSpace(spaceId);
-        return ResponseEntity.status(HttpStatus.CREATED).body(spaceId);
+    public ApiResponse<MemberSpaceResponse.addDto> add(@RequestHeader("member_id") Long memberId,
+                                                       @PathVariable Long spaceId) {
+        MemberSpace newMemberSpace = memberSpaceService.addMemberSpace(memberId, spaceId);
+        return ApiResponse.onSuccess(MemberSpaceConverter.toAddMemberSpaceDTO(newMemberSpace));
     }
 
     // 아지트 내 스페이스 삭제
     @DeleteMapping("/{spaceId}")
-    public ResponseEntity<Long> delete(@PathVariable Long spaceId) {
-        memberSpaceService.deleteMemberSpace(spaceId);
-        return ResponseEntity.status(HttpStatus.OK).body(spaceId);
+    public ApiResponse<Void> delete(@RequestHeader("member_id") Long memberId,
+                                    @PathVariable Long spaceId) {
+        memberSpaceService.deleteMemberSpace(memberId, spaceId);
+        return ApiResponse.onSuccess(null);
     }
 }

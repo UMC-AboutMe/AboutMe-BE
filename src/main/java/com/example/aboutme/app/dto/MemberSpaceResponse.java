@@ -1,25 +1,26 @@
 package com.example.aboutme.app.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.example.aboutme.domain.Member;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.*;
 
 import java.util.List;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
 public class MemberSpaceResponse {
 
-    private List<ListDto> data;
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class GetListDto{
+        private List<MemberSpaceResponse.getDto> MemberSpaceList;
+    }
 
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
     @Builder
-    public static class ListDto {
+    public static class getDto {
         private Long spaceId;
         private String nickname;
         private Integer characterType;
@@ -27,4 +28,19 @@ public class MemberSpaceResponse {
         private Boolean favorite;
     }
 
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Builder
+    public static class favoriteDto {
+        private Boolean favorite;
+    }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Builder
+    public static class addDto {
+        private Long spaceId;
+    }
 }

@@ -9,9 +9,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface MemberSpaceRepository extends JpaRepository<MemberSpace, Long> {
-    MemberSpace findByMemberAndSpaceId(Member member, Long spaceId);
+    MemberSpace findByMemberAndSpace(Member member, Space space);
 
-    List<MemberSpace> findByMember(Member member);
+    List<MemberSpace> findByMemberAndSpace_NicknameContaining(Member member, String keyword);
 
-    List<MemberSpace> findBySpaceIn(List<Space> spaces);
 }
