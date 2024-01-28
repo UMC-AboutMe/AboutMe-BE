@@ -6,14 +6,18 @@ import com.example.aboutme.app.dto.ProfileResponse;
 import com.example.aboutme.converter.ProfileConverter;
 import com.example.aboutme.domain.Profile;
 import com.example.aboutme.service.ProfileService.ProfileService;
+import com.example.aboutme.validation.annotation.ExistMyProfile;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Size;
 import java.util.List;
 
+@Validated
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/myprofiles")
@@ -63,8 +67,7 @@ public class ProfileController {
      * @return
      */
     @DeleteMapping("/{profile-id}")
-    public ApiResponse deleteMyProfile(@RequestHeader("member_id") Long memberId, @PathVariable("profile-id") Long profileId){
-
+    public ApiResponse deleteMyProfile(@RequestHeader("member_id") Long memberId, @PathVariable("profile-id") @ExistMyProfile Long profileId){
         profileService.deleteMyProfile(memberId, profileId);
 
         log.info("마이프로필 삭제: {}", profileId);

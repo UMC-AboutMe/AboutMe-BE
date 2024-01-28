@@ -78,19 +78,13 @@ public class ProfileServiceImpl implements ProfileService{
     @Transactional
     public void deleteMyProfile(Long memberId, Long profileId){
         Member member = memberService.findMember(memberId);
-        Profile profile = findProfile(profileId);
+        Profile profile = profileRepository.findById(profileId).get();
 
         if(profile.getMember() != member){
             throw new GeneralException(ErrorStatus.PROFILE_NOT_MATCH_MEMBER);
         }
 
         profileRepository.delete(profile);
-    }
-
-    public Profile findProfile(Long profileId){
-        return profileRepository.findById(profileId).orElseThrow(
-                () -> new GeneralException(ErrorStatus.PROFILE_NOT_FOUND)
-        );
     }
 
     /**
