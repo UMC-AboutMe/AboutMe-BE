@@ -22,4 +22,6 @@ public interface ProfileService {
      */
     Profile createMyProfile(Long memberId, ProfileRequest.CreateProfileDTO request);
 
+    Profile updateIsDefault(List<Profile> profileList, Integer profile_id);
+
 }

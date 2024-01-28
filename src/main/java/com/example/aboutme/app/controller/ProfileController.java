@@ -25,11 +25,12 @@ public class ProfileController {
     /**
      * [GET] /myprofiles
      * 내 마이프로필 조회
+     *
      * @param memberId 멤버 식별자
      * @return
      */
     @GetMapping()
-    public ApiResponse<ProfileResponse.GetProfileListDTO> getMyProfiles(@RequestHeader("member_id") Long memberId){
+    public ApiResponse<ProfileResponse.GetProfileListDTO> getMyProfiles(@RequestHeader("member_id") Long memberId) {
 
         List<Profile> profileList = profileService.getMyProfiles(memberId);
 
@@ -41,12 +42,13 @@ public class ProfileController {
     /**
      * [POST] /myprofiles
      * 마이프로필 생성
+     *
      * @param memberId 멤버 식별자
      * @param request
      * @return
      */
     @PostMapping()
-    public ApiResponse createMyProfile(@RequestHeader("member_id") Long memberId, @RequestBody @Valid ProfileRequest.CreateProfileDTO request){
+    public ApiResponse createMyProfile(@RequestHeader("member_id") Long memberId, @RequestBody @Valid ProfileRequest.CreateProfileDTO request) {
 
         Profile newProfile = profileService.createMyProfile(memberId, request);
 
@@ -54,4 +56,13 @@ public class ProfileController {
 
         return ApiResponse.onSuccess(ProfileConverter.toCreateProfileDTO(newProfile));
     }
+
+    @PatchMapping("/default/{profile_id}")
+    public ApiResponse patchDefaultMyProfile(@RequestHeader("member_id") Long memberId, @PathVariable Integer profile_id) {
+        List<Profile> profileList = profileService.getMyProfiles(memberId);
+        Profile updatedProfile = profileService.updateIsDefault(profileList, profile_id);
+
+        return ApiResponse.onSuccess(ProfileConverter.toProfile(updatedProfile.getSerialNumber()));
+    }
+
 }

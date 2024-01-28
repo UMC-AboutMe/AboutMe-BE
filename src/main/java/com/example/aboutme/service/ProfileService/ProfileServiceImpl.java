@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 @Transactional(readOnly = true)
@@ -84,5 +85,22 @@ public class ProfileServiceImpl implements ProfileService{
         }
 
         return serialNumber;
+    }
+
+    @Transactional
+    public Profile updateIsDefault(List<Profile> profileList, Integer profile_id) {
+        profileList.stream().forEach(
+                profile -> {
+                    if (profile.getSerialNumber() == 1) {
+                        profile.setIsDefault(false);
+                    }
+                }
+        );
+        Profile profile = profileRepository.findBySerialNumber(profile_id).orElseThrow(
+                ()-> new NoSuchElementException("Can not found profile")
+        );
+
+        profile.setIsDefault(true);
+        return profile;
     }
 }
