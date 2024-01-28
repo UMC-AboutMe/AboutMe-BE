@@ -79,8 +79,11 @@ public class ProfileServiceImpl implements ProfileService{
         int serialNumber = generator.nextInt(1000000) % 1000000;
 
         // 중복 확인
-        while(profileRepository.findBySerialNumber(serialNumber).isPresent()){
+        boolean isDuplicated = profileRepository.findBySerialNumber(serialNumber).isPresent();
+        while(isDuplicated){
             serialNumber = generator.nextInt(1000000) % 1000000;
+
+            isDuplicated = profileRepository.findBySerialNumber(serialNumber).isPresent();
         }
 
         return serialNumber;
