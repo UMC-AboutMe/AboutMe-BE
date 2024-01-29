@@ -33,7 +33,7 @@ public class ProfileController {
      * @return
      */
     @GetMapping()
-    public ApiResponse<ProfileResponse.GetProfileListDTO> getMyProfiles(@RequestHeader("member_id") Long memberId){
+    public ApiResponse<ProfileResponse.GetProfileListDTO> getMyProfiles(@RequestHeader("member-id") Long memberId){
 
         List<Profile> profileList = profileService.getMyProfiles(memberId);
 
@@ -50,7 +50,7 @@ public class ProfileController {
      * @return
      */
     @PostMapping()
-    public ApiResponse createMyProfile(@RequestHeader("member_id") Long memberId, @RequestBody @Valid ProfileRequest.CreateProfileDTO request){
+    public ApiResponse createMyProfile(@RequestHeader("member-id") Long memberId, @RequestBody @Valid ProfileRequest.CreateProfileDTO request){
 
         Profile newProfile = profileService.createMyProfile(memberId, request);
 
@@ -67,7 +67,7 @@ public class ProfileController {
      * @return
      */
     @DeleteMapping("/{profile-id}")
-    public ApiResponse deleteMyProfile(@RequestHeader("member_id") Long memberId, @PathVariable("profile-id") @ExistMyProfile Long profileId){
+    public ApiResponse deleteMyProfile(@RequestHeader("member-id") Long memberId, @PathVariable("profile-id") @ExistMyProfile Long profileId){
         profileService.deleteMyProfile(memberId, profileId);
 
         log.info("마이프로필 삭제: {}", profileId);
