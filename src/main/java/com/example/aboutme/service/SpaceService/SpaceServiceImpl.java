@@ -11,17 +11,17 @@ import com.example.aboutme.service.MemberService.MemberService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
-@Transactional
+@Transactional(readOnly = true)
 @AllArgsConstructor
 public class SpaceServiceImpl implements SpaceService {
     private final SpaceRepository spaceRepository;
     private final MemberService memberService;
     @Override
+    @Transactional
     public Space JoinSpace(SpaceRequest.JoinDTO request) {
         Space newSpace = SpaceConverter.toSpace(request);
         //TODO 멤버가 스페이스 가지고 있는지 중복 검사 필요
@@ -29,25 +29,21 @@ public class SpaceServiceImpl implements SpaceService {
     }
 
     @Override
+    @Transactional
     public Space readSpace(Long memberId) {
         Member member = memberService.findMember(memberId);
         // 존재하는지 검사
-        if (!spaceRepository.findByMember_Id(memberId).isPresent()) {
+        if (!spaceRepository.existsByMember_Id(memberId)) {
             throw new GeneralException(ErrorStatus.SPACE_NOT_FOUND);
         }
-        return spaceRepository.findByMember_Id(memberId).get();
+        return spaceRepository.findByMember_Id(memberId);
     }
 
     @Override
-    public Space deleteSpace(Long memberId) {
+    @Transactional
+    public void deleteSpace(Long memberId) {
         Member member = memberService.findMember(memberId);
-        // 존재하는지 검사
-        if (!spaceRepository.findByMember_Id(memberId).isPresent()) {
-            throw new GeneralException(ErrorStatus.SPACE_NOT_FOUND);
-        }
-        Space targetSpace = spaceRepository.findByMember_Id(memberId).get();
+        Space targetSpace = readSpace(memberId);
         spaceRepository.delete(targetSpace);
-        log.info("여기까지 성공");
-        return targetSpace;
     }
 }

@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface SpaceRepository extends JpaRepository<Space, Long> {
-    Optional<Space> findByMember_Id(Long memberId);
+    Space findByMember_Id(Long memberId);
+    boolean existsByMember_Id(Long memberId);
     List<Space> findByNicknameIn(List<String> nicknames);
 }
