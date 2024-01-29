@@ -24,6 +24,7 @@ public class SpaceServiceImpl implements SpaceService {
     @Override
     public Space JoinSpace(SpaceRequest.JoinDTO request) {
         Space newSpace = SpaceConverter.toSpace(request);
+        //TODO 멤버가 스페이스 가지고 있는지 중복 검사 필요
         return spaceRepository.save(newSpace);
     }
 
