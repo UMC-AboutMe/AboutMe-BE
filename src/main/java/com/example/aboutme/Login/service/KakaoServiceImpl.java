@@ -1,7 +1,7 @@
 package com.example.aboutme.Login.service;
 
 import com.example.aboutme.Login.MemberConverter;
-import com.example.aboutme.Login.dto.KakaoDTO;
+import com.example.aboutme.Login.dto.SocialInfoDTO;
 import com.example.aboutme.domain.Member;
 import com.example.aboutme.domain.constant.Social;
 import com.example.aboutme.repository.MemberRepository;
@@ -20,7 +20,7 @@ import org.springframework.web.client.RestTemplate;
 
 @Service
 @RequiredArgsConstructor
-public class KakaoServiceImpl implements KakaoService{
+public class KakaoServiceImpl implements KakaoService {
     private final MemberRepository memberRepository;
 
     @Value("${spring.security.oauth2.client.registration.kakao.client-id}")
@@ -42,7 +42,7 @@ public class KakaoServiceImpl implements KakaoService{
                 + "&response_type=code";
     }
 
-    public KakaoDTO getKakaoInfo(String code) throws Exception {
+    public SocialInfoDTO.KakaoDTO getKakaoInfo(String code) throws Exception {
         if (code == null) throw new Exception("Failed get authorization code");
 
         String accessToken = "";
@@ -81,7 +81,7 @@ public class KakaoServiceImpl implements KakaoService{
         return getUserInfoWithToken(accessToken);
     }
 
-    public KakaoDTO getUserInfoWithToken(String accessToken) throws Exception {
+    public SocialInfoDTO.KakaoDTO getUserInfoWithToken(String accessToken) throws Exception {
         //HttpHeader 생성
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "Bearer " + accessToken);
@@ -108,13 +108,13 @@ public class KakaoServiceImpl implements KakaoService{
         String email = String.valueOf(account.get("email"));
         String nickname = String.valueOf(profile.get("nickname"));
 
-        return KakaoDTO.builder()
+        return SocialInfoDTO.KakaoDTO.builder()
                 .id(id)
                 .email(email)
                 .nickname(nickname).build();
     }
 
-    public void saveKakaoMember(KakaoDTO kakaoDTO){
+    public void saveKakaoMember(SocialInfoDTO.KakaoDTO kakaoDTO){
         Member newMember = MemberConverter.toMember(kakaoDTO, Social.KAKAO);
         memberRepository.save(newMember);
     }

@@ -1,7 +1,8 @@
 package com.example.aboutme.Login.service;
 
 import com.example.aboutme.Login.MemberConverter;
-import com.example.aboutme.Login.dto.GoogleDTO;
+import com.example.aboutme.Login.dto.SocialInfoDTO;
+import com.example.aboutme.Login.jwt.TokenProvider;
 import com.example.aboutme.domain.Member;
 import com.example.aboutme.domain.constant.Social;
 import com.example.aboutme.repository.MemberRepository;
@@ -41,7 +42,7 @@ public class GoogleServiceImpl implements GoogleService{
                 + "&redirect_uri=" + GOOGLE_REDIRECT_URL
                 + "&response_type=code" + "&scope=email";
     }
-    public GoogleDTO getGoogleInfo(String code) throws Exception {
+    public SocialInfoDTO.GoogleDTO getGoogleInfo(String code) throws Exception {
         if (code == null) throw new Exception("Failed get authorization code");
 
         String accessToken = "";
@@ -82,7 +83,7 @@ public class GoogleServiceImpl implements GoogleService{
         return getUserInfoWithToken(accessToken);
     }
 
-    public GoogleDTO getUserInfoWithToken(String accessToken) throws Exception {
+    public SocialInfoDTO.GoogleDTO getUserInfoWithToken(String accessToken) throws Exception {
         //HttpHeader 생성
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(accessToken);
@@ -104,13 +105,13 @@ public class GoogleServiceImpl implements GoogleService{
         System.out.println(email);
 
 
-        return GoogleDTO.builder()
+        return SocialInfoDTO.GoogleDTO.builder()
                 .email(email)
                 .build();
     }
 
 
-    public void saveGoogleMember(GoogleDTO googleDTO){
+    public void saveGoogleMember(SocialInfoDTO.GoogleDTO googleDTO){
         Member newMember = MemberConverter.toMember(googleDTO, Social.GOOGLE);
         memberRepository.save(newMember);
     }

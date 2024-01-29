@@ -1,10 +1,10 @@
 package com.example.aboutme.Login.service;
 
-import com.example.aboutme.Login.dto.GoogleDTO;
+import com.example.aboutme.Login.dto.SocialInfoDTO;
 
 public interface GoogleService {
     String getGoogleLogin();
-    GoogleDTO getGoogleInfo(String code) throws Exception;
-    GoogleDTO getUserInfoWithToken(String accessToken) throws Exception;
-    void saveGoogleMember(GoogleDTO googleDTO);
+    SocialInfoDTO.GoogleDTO getGoogleInfo(String code) throws Exception;
+    SocialInfoDTO.GoogleDTO getUserInfoWithToken(String accessToken) throws Exception;
+    void saveGoogleMember(SocialInfoDTO.GoogleDTO googleDTO);
 }
