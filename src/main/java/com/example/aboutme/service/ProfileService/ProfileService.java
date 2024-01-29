@@ -22,4 +22,10 @@ public interface ProfileService {
      */
     Profile createMyProfile(Long memberId, ProfileRequest.CreateProfileDTO request);
 
+    /**
+     * 내 마이프로필 삭제
+     * @param memberId 멤버 식별자
+     * @param profileId 마이프로필 식별자
+     */
+    void deleteMyProfile(Long memberId, Long profileId);
 }
