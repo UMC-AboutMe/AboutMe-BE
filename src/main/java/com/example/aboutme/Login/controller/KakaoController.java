@@ -2,7 +2,7 @@ package com.example.aboutme.Login.controller;
 
 import com.example.aboutme.Login.common.MsgEntity;
 import com.example.aboutme.Login.dto.KakaoDTO;
-import com.example.aboutme.Login.service.KakaoService;
+import com.example.aboutme.Login.service.KakaoServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("kakao")
 public class KakaoController {
 
-    private final KakaoService kakaoService;
+    private final KakaoServiceImpl kakaoService;
 
     @GetMapping("/callback")
     public ResponseEntity<MsgEntity> callback(HttpServletRequest request) throws Exception {
