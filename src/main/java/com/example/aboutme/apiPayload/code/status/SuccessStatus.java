@@ -10,7 +10,8 @@ import org.springframework.http.HttpStatus;
 @AllArgsConstructor
 public enum SuccessStatus implements BaseCode {
 
-    _OK(HttpStatus.OK, "COMMON200", "성공입니다.");
+    _OK(HttpStatus.OK, "COMMON200", "성공입니다."),
+    _MYSPACE_DELETE(HttpStatus.OK, "SPACE200", "요청하신 마이스페이스가 삭제되었습니다");
 
     private final HttpStatus httpStatus;
     private final String code;

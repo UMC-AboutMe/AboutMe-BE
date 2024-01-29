@@ -28,4 +28,12 @@ public class SpaceServiceImpl implements SpaceService {
         Member member = memberService.findMember(memberId);
         return spaceRepository.findByMember_Id(memberId);
     }
+
+    @Override
+    public Space deleteSpace(Long memberId) {
+        Member member = memberService.findMember(memberId);
+        Space targetSpace = spaceRepository.findByMember_Id(memberId);
+        spaceRepository.delete(targetSpace);
+        return targetSpace;
+    }
 }

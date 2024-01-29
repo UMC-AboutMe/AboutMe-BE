@@ -38,4 +38,12 @@ public class SpaceConverter {
                 .planList(space.getPlanList())
                 .build();
     }
+
+    public static SpaceResponse.DeleteResultDTO toDeleteResultDTO(Space space) {
+        return SpaceResponse.DeleteResultDTO.builder()
+                .nickname(space.getNickname())
+                .characterType(space.getCharacterType())
+                .roomType(space.getRoomType())
+                .build();
+    }
 }
