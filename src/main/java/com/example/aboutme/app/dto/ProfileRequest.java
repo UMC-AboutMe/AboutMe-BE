@@ -1,6 +1,7 @@
 package com.example.aboutme.app.dto;
 
 import com.example.aboutme.validation.annotation.ExistProfileFeature;
+import com.example.aboutme.validation.annotation.ExistProfilesBySerialNum;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 
@@ -31,6 +32,7 @@ public class ProfileRequest {
     @Getter
     public static class ShareProfileDTO{
         @JsonProperty("profile_serial_numbers")
+        @ExistProfilesBySerialNum
         private List<Integer> profileSerialNumberList;
     }
 }

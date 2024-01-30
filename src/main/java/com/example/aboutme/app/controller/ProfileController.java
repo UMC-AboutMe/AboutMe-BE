@@ -107,7 +107,7 @@ public class ProfileController {
      */
     @PostMapping("/share")
     public ApiResponse<Void> shareProfile(@RequestHeader("member-id") Long memberId,
-                                          @RequestBody ProfileRequest.ShareProfileDTO request){
+                                          @RequestBody @Valid ProfileRequest.ShareProfileDTO request){
 
         memberProfileService.addOthersProfilesAtMyStorage(memberId, request);
 
