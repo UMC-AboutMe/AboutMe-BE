@@ -25,7 +25,13 @@ public enum ErrorStatus implements BaseErrorCode {
     // 마이프로필 에러
     PROFILE_SIZE_OVERFLOW(HttpStatus.BAD_REQUEST, "PROFILE400", "이 이상 마이프로필을 생성할 수 없습니다"),
     PROFILE_NOT_FOUND(HttpStatus.NOT_FOUND, "PROFILE401", "해당하는 프로필이 존재하지 않습니다"),
+    PROFILE_NOT_MATCH_MEMBER(HttpStatus.BAD_REQUEST, "PROFILE402", "해당 프로필을 삭제할 수 없습니다"),
     MEMBER_PROFILE_NOT_FOUND(HttpStatus.NOT_FOUND, "PROFILE402", "해당 사용자의 마이프로필이 아닙니다."),
+
+    // 마이프로필 Feature 에러
+    PROFILE_FEATURE_NOT_FOUND(HttpStatus.NOT_FOUND, "FEATURE400", "해당하는 프로필 특징이 존재하지 않습니다"),
+    PROFILE_FEATURE_NOT_MATCH_PROFILE(HttpStatus.BAD_REQUEST, "FEATURE401", "해당 프로필 특징을 수정할 수 없습니다"),
+    PROFILE_FEATURE_NAME_CANNOT_EMPTY(HttpStatus.BAD_REQUEST, "FEATURE401", "프로필의 이름은 필수입니다"),
 
     // 멤버 에러
     MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "MEMBER400", "해당하는 사용자가 존재하지 않습니다");
