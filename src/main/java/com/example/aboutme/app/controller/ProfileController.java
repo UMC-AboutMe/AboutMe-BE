@@ -44,6 +44,13 @@ public class ProfileController {
         return ApiResponse.onSuccess(ProfileConverter.toGetProfileListDTO(profileList));
     }
 
+    /**
+     * [GET] /myprofiles/{profile-id}
+     * 내 마이프로필 단건 조회
+     * @param memberId 멤버 식별자
+     * @param profileId 마이프로필 식별자
+     * @return
+     */
     @GetMapping("/{profile-id}")
     public ApiResponse<ProfileResponse.GetMyProfileDTO> getMyProfile(@RequestHeader("member-id") Long memberId,
                                                                      @PathVariable("profile-id") @ExistMyProfile Long profileId){

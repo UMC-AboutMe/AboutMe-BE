@@ -15,6 +15,12 @@ public interface ProfileService {
      */
     List<Profile> getMyProfiles(Long memberId);
 
+    /**
+     * 내 마이프로필 단건 조회
+     * @param memberId 멤버 식별자
+     * @param profileId 프로필 식별자
+     * @return 마이프로필
+     */
     Profile getMyProfile(Long memberId, Long profileId);
 
     /**
