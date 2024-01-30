@@ -26,4 +26,9 @@ public class MemberProfile extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "profile_id")
     private Profile profile;
+
+    // 즐겨찾기 토글 메서드
+    public void toggleFavorite() {
+        this.favorite = !this.favorite;
+    }
 }
