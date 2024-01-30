@@ -6,6 +6,7 @@ import com.example.aboutme.app.dto.ProfileResponse;
 import com.example.aboutme.converter.ProfileConverter;
 import com.example.aboutme.domain.Profile;
 import com.example.aboutme.domain.ProfileFeature;
+import com.example.aboutme.service.MemberProfileService.MemberProfileService;
 import com.example.aboutme.service.ProfileService.ProfileService;
 import com.example.aboutme.validation.annotation.ExistMyProfile;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,7 @@ import java.util.List;
 public class ProfileController {
 
     private final ProfileService profileService;
+    private final MemberProfileService memberProfileService;
 
     /**
      * [GET] /myprofiles
@@ -93,6 +95,17 @@ public class ProfileController {
         profileService.deleteMyProfile(memberId, profileId);
 
         log.info("마이프로필 삭제: {}", profileId);
+
+        return ApiResponse.onSuccess(null);
+    }
+
+    @PostMapping("/share")
+    public ApiResponse<Void> shareProfile(@RequestHeader("member-id") Long memberId,
+                                          @RequestBody ProfileRequest.ShareProfileDTO request){
+
+        memberProfileService.AddOthersProfilesAtMyStorage(memberId, request);
+
+        log.info("상대방 마이프로필 내 보관함에 추가하기: member={}, other's profile={}", memberId, request.getProfileSerialNumberList());
 
         return ApiResponse.onSuccess(null);
     }

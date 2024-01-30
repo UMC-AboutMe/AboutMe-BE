@@ -14,6 +14,7 @@ public enum ErrorStatus implements BaseErrorCode {
     _BAD_REQUEST(HttpStatus.BAD_REQUEST,"COMMON400","잘못된 요청입니다."),
     _UNAUTHORIZED(HttpStatus.UNAUTHORIZED,"COMMON401","인증이 필요합니다."),
     _FORBIDDEN(HttpStatus.FORBIDDEN, "COMMON403", "금지된 요청입니다."),
+
     // 마이스페이스 에러
     _UNVALID_CHARACTER_TYPE(HttpStatus.BAD_REQUEST, "SPACE400", "캐릭터 타입은 1부터 9까지의 숫자만 가능합니다."),
     _UNVALID_ROOM_TYPE(HttpStatus.BAD_REQUEST, "SPACE401", "방 타입은 1부터 4까지의 숫자만 가능합니다."),
@@ -26,7 +27,9 @@ public enum ErrorStatus implements BaseErrorCode {
     PROFILE_SIZE_OVERFLOW(HttpStatus.BAD_REQUEST, "PROFILE400", "이 이상 마이프로필을 생성할 수 없습니다"),
     PROFILE_NOT_FOUND(HttpStatus.NOT_FOUND, "PROFILE401", "해당하는 프로필이 존재하지 않습니다"),
     PROFILE_NOT_MATCH_MEMBER(HttpStatus.BAD_REQUEST, "PROFILE402", "해당 프로필을 삭제할 수 없습니다"),
-    MEMBER_PROFILE_NOT_FOUND(HttpStatus.NOT_FOUND, "PROFILE402", "해당 사용자의 마이프로필이 아닙니다."),
+    MEMBER_PROFILE_NOT_FOUND(HttpStatus.NOT_FOUND, "PROFILE403", "해당 사용자의 마이프로필이 아닙니다."),
+    MEMBER_PROFILE_ALREADY_EXIST(HttpStatus.BAD_REQUEST, "PROFILE404", "해당 프로필은 이미 보관함에 존재합니다"),
+    CANNOT_SHARE_OWN_PROFILE(HttpStatus.BAD_REQUEST, "PROFILE405", "본인 프로필은 보관함에 추가할 수 없습니다."),
 
     // 마이프로필 Feature 에러
     PROFILE_FEATURE_NOT_FOUND(HttpStatus.NOT_FOUND, "FEATURE400", "해당하는 프로필 특징이 존재하지 않습니다"),
