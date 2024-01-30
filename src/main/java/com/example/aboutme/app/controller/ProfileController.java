@@ -60,6 +60,13 @@ public class ProfileController {
         return ApiResponse.onSuccess(ProfileConverter.toCreateProfileDTO(newProfile));
     }
 
+    /**
+     * 내 마이프로필 수정
+     * @param memberId 멤버 식별자
+     * @param profileId 마이프로필 식별자
+     * @param request
+     * @return 
+     */
     @PatchMapping("/{profile-id}")
     public ApiResponse<ProfileResponse.UpdateProfileDTO> updateMyProfile(@RequestHeader("member-id") Long memberId,
                                                                          @PathVariable("profile-id") Long profileId,

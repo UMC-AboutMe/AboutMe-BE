@@ -72,6 +72,13 @@ public class ProfileServiceImpl implements ProfileService{
         return newProfile;
     }
 
+    /**
+     * 내 마이프로필 수정
+     * @param memberId 멤버 식별자
+     * @param profileId 마이프로필 식별자
+     * @param request
+     * @return 수정된 마이프로필의 특징
+     */
     @Transactional
     public ProfileFeature updateMyProfile(Long memberId, Long profileId, ProfileRequest.UpdateProfileDTO request){
         Member member = memberService.findMember(memberId);
@@ -86,7 +93,7 @@ public class ProfileServiceImpl implements ProfileService{
             throw new GeneralException(ErrorStatus.PROFILE_FEATURE_NOT_MATCH_PROFILE);
         }
 
-
+        // 이름은 필수
         if(profileFeature.getProfileKey().equals("name")){
             boolean isNameEmpty = request.getFeatureKey() == null || !request.getFeatureKey().equals("name") || request.getFeatureValue() == null || request.getFeatureValue().isEmpty();
             if(isNameEmpty){
