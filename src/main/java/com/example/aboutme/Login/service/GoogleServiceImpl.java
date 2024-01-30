@@ -113,6 +113,9 @@ public class GoogleServiceImpl implements GoogleService{
 
     public void saveGoogleMember(SocialInfoDTO.GoogleDTO googleDTO){
         Member newMember = MemberConverter.toMember(googleDTO, Social.GOOGLE);
-        memberRepository.save(newMember);
+        Boolean principal = memberRepository.existsByEmail(newMember.getEmail());
+        if (principal == false){
+            memberRepository.save(newMember);
+        }
     }
 }

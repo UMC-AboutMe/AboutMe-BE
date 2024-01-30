@@ -36,6 +36,9 @@ public enum ErrorStatus implements BaseErrorCode {
     // 멤버 에러
     MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "MEMBER400", "해당하는 사용자가 존재하지 않습니다");
 
+    // 토큰 에러
+
+
     private final HttpStatus httpStatus;
     private final String code;
     private final String message;
