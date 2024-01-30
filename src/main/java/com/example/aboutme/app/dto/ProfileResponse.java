@@ -79,4 +79,19 @@ public class ProfileResponse {
         @JsonProperty("back_features")
         private List<ProfileFeatureDTO> backFeatureList;
     }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class UpdateProfileDTO{
+        @JsonProperty("feature_id")
+        private Long featureId;
+
+        @JsonProperty("feature_key")
+        private String featureKey;
+
+        @JsonProperty("feature_value")
+        private String featureValue;
+    }
 }

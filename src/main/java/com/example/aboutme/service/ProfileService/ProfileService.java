@@ -2,6 +2,7 @@ package com.example.aboutme.service.ProfileService;
 
 import com.example.aboutme.app.dto.ProfileRequest;
 import com.example.aboutme.domain.Profile;
+import com.example.aboutme.domain.ProfileFeature;
 
 import java.util.List;
 
@@ -21,6 +22,8 @@ public interface ProfileService {
      * @return
      */
     Profile createMyProfile(Long memberId, ProfileRequest.CreateProfileDTO request);
+
+    ProfileFeature updateMyProfile(Long memberId, Long profileId, ProfileRequest.UpdateProfileDTO request);
 
     /**
      * 내 마이프로필 삭제

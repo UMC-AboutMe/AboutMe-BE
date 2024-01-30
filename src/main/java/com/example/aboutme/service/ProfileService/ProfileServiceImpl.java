@@ -8,6 +8,7 @@ import com.example.aboutme.converter.ProfileFeatureConverter;
 import com.example.aboutme.domain.Member;
 import com.example.aboutme.domain.Profile;
 import com.example.aboutme.domain.ProfileFeature;
+import com.example.aboutme.repository.ProfileFeatureRepository;
 import com.example.aboutme.repository.ProfileRepository;
 import com.example.aboutme.service.MemberService.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,7 @@ public class ProfileServiceImpl implements ProfileService{
 
     private final MemberService memberService;
     private final ProfileRepository profileRepository;
+    private final ProfileFeatureRepository profileFeatureRepository;
 
     /**
      * 내 마이프로필 조회
@@ -68,6 +70,33 @@ public class ProfileServiceImpl implements ProfileService{
         profileRepository.save(newProfile);
 
         return newProfile;
+    }
+
+    @Transactional
+    public ProfileFeature updateMyProfile(Long memberId, Long profileId, ProfileRequest.UpdateProfileDTO request){
+        Member member = memberService.findMember(memberId);
+        Profile profile = profileRepository.findById(profileId).get();
+        ProfileFeature profileFeature = profileFeatureRepository.findById(request.getFeatureId()).get();
+
+        if(profile.getMember() != member){
+            throw new GeneralException(ErrorStatus.PROFILE_NOT_MATCH_MEMBER);
+        }
+
+        if(profileFeature.getProfile() != profile){
+            throw new GeneralException(ErrorStatus.PROFILE_FEATURE_NOT_MATCH_PROFILE);
+        }
+
+
+        if(profileFeature.getProfileKey().equals("name")){
+            boolean isNameEmpty = request.getFeatureKey() == null || !request.getFeatureKey().equals("name") || request.getFeatureValue() == null || request.getFeatureValue().isEmpty();
+            if(isNameEmpty){
+                throw new GeneralException(ErrorStatus.PROFILE_FEATURE_NAME_CANNOT_EMPTY);
+            }
+        }
+
+        profileFeature.update(request.getFeatureKey(), request.getFeatureValue());
+
+        return profileFeature;
     }
 
     /**
