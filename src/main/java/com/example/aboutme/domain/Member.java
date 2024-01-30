@@ -21,7 +21,7 @@ public class Member extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Social social;
 
-    private String Email;
+    private String email;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<Profile> profileList = new ArrayList<>();

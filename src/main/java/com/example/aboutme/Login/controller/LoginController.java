@@ -2,7 +2,7 @@ package com.example.aboutme.Login.controller;
 
 import com.example.aboutme.Login.dto.MsgDTO;
 import com.example.aboutme.Login.dto.SocialInfoDTO;
-import com.example.aboutme.Login.jwt.JwtAuthenticationFilter;
+//import com.example.aboutme.Login.jwt.JwtAuthenticationFilter;
 import com.example.aboutme.Login.jwt.TokenDTO;
 import com.example.aboutme.Login.jwt.TokenProvider;
 import com.example.aboutme.Login.service.GoogleService;
@@ -10,13 +10,15 @@ import com.example.aboutme.Login.service.KakaoService;
 import com.example.aboutme.domain.constant.Social;
 import com.example.aboutme.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+//import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+//import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+//import org.springframework.security.core.Authentication;
+//import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,7 +36,6 @@ public class LoginController {
     private final KakaoService kakaoService;
     private final GoogleService googleService;
     private final TokenProvider tokenProvider;
-    private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final MemberRepository memberRepository;
 
     @GetMapping("members/{socialType}/login")
@@ -88,9 +89,15 @@ public class LoginController {
     }
 
     @GetMapping("/members/valid")
-    public Boolean isValidToken(@RequestBody String token) {
-        return tokenProvider.validateToken(token);
+    public ResponseEntity<MsgDTO.validMsg> isValidToken(@RequestBody String token) throws Exception {
+        JSONParser jsonParser = new JSONParser();
+        JSONObject jsonObj = (JSONObject) jsonParser.parse(token);
+        boolean res = tokenProvider.validateToken((String) jsonObj.get("token"));
+        return ResponseEntity.ok().body(new MsgDTO.validMsg("Success"));
     }
+
+
+
 //--------------------------------------
 //    @PostMapping("/api/auth/login")
 //    public ResponseEntity<TokenDTO> authorize(@Valid @RequestBody String email, @RequestBody String social) {

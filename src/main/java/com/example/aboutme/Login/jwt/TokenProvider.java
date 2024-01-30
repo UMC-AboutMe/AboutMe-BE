@@ -5,6 +5,8 @@ import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -45,9 +47,11 @@ public class TokenProvider implements InitializingBean {
         return  newToken;
     }
 
-    public boolean validateToken(String userToken) {
+    public boolean validateToken(String userToken){
         try {
-            Jwts.parser().setSigningKey(secret).parseClaimsJws(userToken);
+            System.out.println(userToken);
+            Jwts.parser().setSigningKey(key).parseClaimsJws(userToken);
+            System.out.println("Success valid");
             return true;
         } catch (SecurityException| MalformedJwtException e) {
             return false;

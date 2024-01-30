@@ -6,11 +6,11 @@ import com.example.aboutme.domain.constant.Social;
 
 public class MemberConverter {
     public static Member toMember(SocialInfoDTO.KakaoDTO kakaoDTO, Social social){
-        return Member.builder().Email(kakaoDTO.getEmail())
+        return Member.builder().email(kakaoDTO.getEmail())
                 .social(social).build();
     }
     public static Member toMember(SocialInfoDTO.GoogleDTO googleDTO, Social social){
-        return Member.builder().Email(googleDTO.getEmail())
+        return Member.builder().email(googleDTO.getEmail())
                 .social(social).build();
     }
 
