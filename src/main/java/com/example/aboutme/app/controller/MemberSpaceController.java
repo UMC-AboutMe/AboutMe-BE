@@ -24,7 +24,7 @@ public class MemberSpaceController {
 
     // 아지트 내 스페이스 목록 조회
     @GetMapping
-    public ApiResponse<MemberSpaceResponse.GetListDto> getList(@RequestHeader("member_id") Long memberId,
+    public ApiResponse<MemberSpaceResponse.GetListDto> getList(@RequestHeader("member-id") Long memberId,
                                                                @RequestParam(defaultValue = "") String keyword) {
         List<MemberSpace> memberSpaceList = memberSpaceService.filterWithKeyword(memberId, keyword);
         return ApiResponse.onSuccess(MemberSpaceConverter.toGetMemberSpaceListDTO(memberSpaceList));
@@ -32,7 +32,7 @@ public class MemberSpaceController {
 
     // 아지트 내 스페이스 즐겨찾기
     @PatchMapping("/{spaceId}/favorite")
-    public ApiResponse<MemberSpaceResponse.favoriteDto> toggleFavorite(@RequestHeader("member_id") Long memberId,
+    public ApiResponse<MemberSpaceResponse.favoriteDto> toggleFavorite(@RequestHeader("member-id") Long memberId,
                                                                        @PathVariable Long spaceId) {
         Boolean favoriteStatus = memberSpaceService.toggleFavorite(memberId, spaceId);
         return ApiResponse.onSuccess(MemberSpaceConverter.toToggleFavorite(favoriteStatus));
@@ -40,7 +40,7 @@ public class MemberSpaceController {
 
     // 아지트 내 스페이스 추가
     @PostMapping("/{spaceId}")
-    public ApiResponse<MemberSpaceResponse.addDto> add(@RequestHeader("member_id") Long memberId,
+    public ApiResponse<MemberSpaceResponse.addDto> add(@RequestHeader("member-id") Long memberId,
                                                        @PathVariable Long spaceId) {
         MemberSpace newMemberSpace = memberSpaceService.addMemberSpace(memberId, spaceId);
         return ApiResponse.onSuccess(MemberSpaceConverter.toAddMemberSpaceDTO(newMemberSpace));
@@ -48,7 +48,7 @@ public class MemberSpaceController {
 
     // 아지트 내 스페이스 삭제
     @DeleteMapping("/{spaceId}")
-    public ApiResponse<Void> delete(@RequestHeader("member_id") Long memberId,
+    public ApiResponse<Void> delete(@RequestHeader("member-id") Long memberId,
                                     @PathVariable Long spaceId) {
         memberSpaceService.deleteMemberSpace(memberId, spaceId);
         return ApiResponse.onSuccess(null);
