@@ -15,8 +15,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Size;
 import java.util.List;
 
 @Validated
@@ -63,6 +61,7 @@ public class ProfileController {
     }
 
     /**
+     * [PATCH] /myprofiles/{profile-id}
      * 내 마이프로필 수정
      * @param memberId 멤버 식별자
      * @param profileId 마이프로필 식별자
@@ -99,11 +98,18 @@ public class ProfileController {
         return ApiResponse.onSuccess(null);
     }
 
+    /**
+     * [POST] /myprofiles/share
+     * 상대방 마이프로필 내 보관함에 추가하기
+     * @param memberId 멤버 식별자
+     * @param request
+     * @return
+     */
     @PostMapping("/share")
     public ApiResponse<Void> shareProfile(@RequestHeader("member-id") Long memberId,
                                           @RequestBody ProfileRequest.ShareProfileDTO request){
 
-        memberProfileService.AddOthersProfilesAtMyStorage(memberId, request);
+        memberProfileService.addOthersProfilesAtMyStorage(memberId, request);
 
         log.info("상대방 마이프로필 내 보관함에 추가하기: member={}, other's profile={}", memberId, request.getProfileSerialNumberList());
 

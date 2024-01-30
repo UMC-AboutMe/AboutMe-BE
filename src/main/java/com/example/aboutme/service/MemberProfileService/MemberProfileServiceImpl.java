@@ -47,20 +47,27 @@ public class MemberProfileServiceImpl implements MemberProfileService {
         return memberProfile.getFavorite();
     }
 
+    /**
+     * 상대방 마이프로필 내 보관함에 추가하기
+     * @param memberId 멤버 식별자
+     * @param request
+     */
     @Transactional
-    public void AddOthersProfilesAtMyStorage(Long memberId, ProfileRequest.ShareProfileDTO request){
+    public void addOthersProfilesAtMyStorage(Long memberId, ProfileRequest.ShareProfileDTO request){
 
         Member member = memberService.findMember(memberId);
 
-        // 추가하려는 마이프로필 목록 불러오기
+        // 추가하려는 마이프로필 목록 조회
         List<Profile> otherProfileList = request.getProfileSerialNumberList().stream()
                 .map(serialNum -> profileRepository.findBySerialNumber(serialNum).get())
                 .toList();
 
         for(Profile otherProfile : otherProfileList){
+            // 이미 공유된 프로필일 경우
             if(memberProfileRepository.existsByMemberAndProfile(member, otherProfile)){
                 throw new GeneralException(ErrorStatus.MEMBER_PROFILE_ALREADY_EXIST);
             }
+            // 본인의 프로필을 추가하려는 경우
             if(otherProfile.getMember() == member){
                 throw new GeneralException(ErrorStatus.CANNOT_SHARE_OWN_PROFILE);
             }
@@ -69,8 +76,6 @@ public class MemberProfileServiceImpl implements MemberProfileService {
         List<MemberProfile> memberProfileList = otherProfileList.stream()
                 .map(otherProfile -> MemberProfileConverter.toMemberProfile(member, otherProfile))
                 .toList();
-
-
 
         memberProfileList.forEach(memberProfile -> {
             memberProfileRepository.save(memberProfile);
