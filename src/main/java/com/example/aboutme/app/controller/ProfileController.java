@@ -5,6 +5,7 @@ import com.example.aboutme.app.dto.ProfileRequest;
 import com.example.aboutme.app.dto.ProfileResponse;
 import com.example.aboutme.converter.ProfileConverter;
 import com.example.aboutme.domain.Profile;
+import com.example.aboutme.domain.ProfileFeature;
 import com.example.aboutme.service.ProfileService.ProfileService;
 import com.example.aboutme.validation.annotation.ExistMyProfile;
 import lombok.RequiredArgsConstructor;
@@ -57,6 +58,27 @@ public class ProfileController {
         log.info("마이프로필 생성: {}", request.getName());
 
         return ApiResponse.onSuccess(ProfileConverter.toCreateProfileDTO(newProfile));
+    }
+
+    /**
+     * 내 마이프로필 수정
+     * @param memberId 멤버 식별자
+     * @param profileId 마이프로필 식별자
+     * @param request
+     * @return
+     */
+    @PatchMapping("/{profile-id}")
+    public ApiResponse<ProfileResponse.UpdateProfileDTO> updateMyProfile(@RequestHeader("member-id") Long memberId,
+                                                                         @PathVariable("profile-id") @ExistMyProfile Long profileId,
+                                                                         @RequestBody @Valid ProfileRequest.UpdateProfileDTO request){
+
+        ProfileFeature profileFeature = profileService.updateMyProfile(memberId, profileId, request);
+
+        log.info("프로필 값: request={}, response={}", request.getFeatureValue(), profileFeature.getProfileValue());
+
+        log.info("마이프로필 수정: {}", request.getFeatureId());
+
+        return ApiResponse.onSuccess(ProfileConverter.toUpdateProfileDTO(profileFeature));
     }
 
     /**
