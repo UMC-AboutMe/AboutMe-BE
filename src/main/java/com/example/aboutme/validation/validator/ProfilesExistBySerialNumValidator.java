@@ -31,6 +31,6 @@ public class ProfilesExistBySerialNumValidator implements ConstraintValidator<Ex
             context.buildConstraintViolationWithTemplate(ErrorStatus.PROFILE_NOT_FOUND.toString()).addConstraintViolation();
         }
 
-        return false;
+        return isValid;
     }
 }
