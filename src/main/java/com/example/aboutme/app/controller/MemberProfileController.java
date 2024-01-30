@@ -23,7 +23,7 @@ public class MemberProfileController {
 
     // 프로필 보관함 즐겨찾기
     @PatchMapping("/{profileId}/favorite")
-    public ApiResponse<MemberProfileResponse.favoriteDto> toggleFavorite(@RequestHeader("member_id") Long memberId,
+    public ApiResponse<MemberProfileResponse.favoriteDto> toggleFavorite(@RequestHeader("member-id") Long memberId,
                                                                          @PathVariable Long profileId) {
         Boolean favoriteStatus = memberProfileService.toggleFavorite(memberId, profileId);
 
