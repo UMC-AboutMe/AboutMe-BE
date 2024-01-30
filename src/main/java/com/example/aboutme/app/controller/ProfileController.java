@@ -65,12 +65,12 @@ public class ProfileController {
      * @param memberId 멤버 식별자
      * @param profileId 마이프로필 식별자
      * @param request
-     * @return 
+     * @return
      */
     @PatchMapping("/{profile-id}")
     public ApiResponse<ProfileResponse.UpdateProfileDTO> updateMyProfile(@RequestHeader("member-id") Long memberId,
-                                                                         @PathVariable("profile-id") Long profileId,
-                                                                         @RequestBody ProfileRequest.UpdateProfileDTO request){
+                                                                         @PathVariable("profile-id") @ExistMyProfile Long profileId,
+                                                                         @RequestBody @Valid ProfileRequest.UpdateProfileDTO request){
 
         ProfileFeature profileFeature = profileService.updateMyProfile(memberId, profileId, request);
 
