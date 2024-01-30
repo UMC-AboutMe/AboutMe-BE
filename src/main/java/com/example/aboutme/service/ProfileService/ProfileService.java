@@ -15,6 +15,8 @@ public interface ProfileService {
      */
     List<Profile> getMyProfiles(Long memberId);
 
+    Profile getMyProfile(Long memberId, Long profileId);
+
     /**
      * 마이프로필 생성
      * @param memberId 멤버 식별자

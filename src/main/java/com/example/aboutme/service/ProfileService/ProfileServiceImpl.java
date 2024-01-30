@@ -16,7 +16,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -38,6 +37,17 @@ public class ProfileServiceImpl implements ProfileService{
         Member member = memberService.findMember(memberId);
 
         return profileRepository.findAllByMemberOrderByIsDefaultDesc(member);
+    }
+
+    public Profile getMyProfile(Long memberId, Long profileId){
+        Member member = memberService.findMember(memberId);
+        Profile profile = profileRepository.findById(profileId).get();
+
+        if(profile.getMember() != member){
+            throw new GeneralException(ErrorStatus.PROFILE_NOT_MATCH_MEMBER_AT_GET);
+        }
+
+        return profile;
     }
 
     /**
@@ -86,7 +96,7 @@ public class ProfileServiceImpl implements ProfileService{
         ProfileFeature profileFeature = profileFeatureRepository.findById(request.getFeatureId()).get();
 
         if(profile.getMember() != member){
-            throw new GeneralException(ErrorStatus.PROFILE_NOT_MATCH_MEMBER);
+            throw new GeneralException(ErrorStatus.PROFILE_NOT_MATCH_MEMBER_AT_UPDATE);
         }
 
         if(profileFeature.getProfile() != profile){
@@ -117,7 +127,7 @@ public class ProfileServiceImpl implements ProfileService{
         Profile profile = profileRepository.findById(profileId).get();
 
         if(profile.getMember() != member){
-            throw new GeneralException(ErrorStatus.PROFILE_NOT_MATCH_MEMBER);
+            throw new GeneralException(ErrorStatus.PROFILE_NOT_MATCH_MEMBER_AT_DELETE);
         }
 
         profileRepository.delete(profile);

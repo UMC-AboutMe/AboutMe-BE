@@ -8,6 +8,7 @@ import com.example.aboutme.domain.Profile;
 import com.example.aboutme.domain.ProfileFeature;
 import com.example.aboutme.service.ProfileService.ProfileService;
 import com.example.aboutme.validation.annotation.ExistMyProfile;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
@@ -41,6 +42,17 @@ public class ProfileController {
         log.info("마이프로필 조회: member={}", memberId);
 
         return ApiResponse.onSuccess(ProfileConverter.toGetProfileListDTO(profileList));
+    }
+
+    @GetMapping("/{profile-id}")
+    public ApiResponse<ProfileResponse.GetMyProfileDTO> getMyProfile(@RequestHeader("member-id") Long memberId,
+                                                                     @PathVariable("profile-id") @ExistMyProfile Long profileId){
+
+        Profile profile = profileService.getMyProfile(memberId, profileId);
+
+        log.info("마이프로필 조회(단건): profileID={}", profileId);
+
+        return ApiResponse.onSuccess(ProfileConverter.toGetMyProfileDTO(profile));
     }
 
     /**

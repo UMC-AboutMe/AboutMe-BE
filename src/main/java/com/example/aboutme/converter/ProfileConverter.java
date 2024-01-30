@@ -77,4 +77,21 @@ public class ProfileConverter {
                 .featureValue(profileFeature.getProfileValue())
                 .build();
     }
+
+    public static ProfileResponse.GetMyProfileDTO toGetMyProfileDTO(Profile profile){
+        return ProfileResponse.GetMyProfileDTO.builder()
+                .profileId(profile.getId())
+                .serialNumber(profile.getSerialNumber())
+                .isDefault(profile.getIsDefault())
+                .profileImageUrl(null)
+                .frontFeatureList(profile.getProfileFeatureList().stream()
+                        .filter(profileFeature -> profileFeature.getSide()== Side.FRONT)
+                        .map(ProfileConverter::toProfileFeatureDTO)
+                        .toList())
+                .backFeatureList(profile.getProfileFeatureList().stream()
+                        .filter(profileFeature -> profileFeature.getSide()== Side.BACK)
+                        .map(ProfileConverter::toProfileFeatureDTO)
+                        .toList())
+                .build();
+    }
 }
