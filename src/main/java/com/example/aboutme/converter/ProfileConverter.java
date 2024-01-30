@@ -69,4 +69,12 @@ public class ProfileConverter {
                         .toList())
                 .build();
     }
+
+    public static ProfileResponse.UpdateProfileDTO toUpdateProfileDTO(ProfileFeature profileFeature){
+        return ProfileResponse.UpdateProfileDTO.builder()
+                .featureId(profileFeature.getId())
+                .featureKey(profileFeature.getProfileKey())
+                .featureValue(profileFeature.getProfileValue())
+                .build();
+    }
 }

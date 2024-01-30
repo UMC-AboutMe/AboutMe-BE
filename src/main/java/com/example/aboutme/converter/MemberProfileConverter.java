@@ -20,12 +20,17 @@ public class MemberProfileConverter {
                 .build();
     }
 
-    public static MemberProfileResponse.MemberProfileDTO toMemberProfileDTO(MemberProfile memberProfile){
+    public static MemberProfileResponse.MemberProfileDTO toMemberProfileDTO(MemberProfile memberProfile) {
         return MemberProfileResponse.MemberProfileDTO.builder()
                 .id(memberProfile.getId())
                 .favorite(memberProfile.getFavorite())
                 .member(memberProfile.getMember())
                 .profile(memberProfile.getProfile())
+                .build();
+    }
+    public static MemberProfileResponse.favoriteDto toToggleFavorite(Boolean favorite) {
+        return MemberProfileResponse.favoriteDto.builder()
+                .favorite(favorite)
                 .build();
     }
 }

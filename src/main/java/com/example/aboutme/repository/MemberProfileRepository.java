@@ -11,4 +11,6 @@ public interface MemberProfileRepository extends JpaRepository<MemberProfile, Lo
     List<MemberProfile> findAllByMember(Member member);
 
     MemberProfile findByMemberAndId(Member member, Long memberProfileId);
+
+    MemberProfile findByMemberAndProfile(Member member, Profile profile);
 }

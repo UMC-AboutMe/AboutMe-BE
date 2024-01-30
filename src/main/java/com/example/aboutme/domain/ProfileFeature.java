@@ -31,4 +31,9 @@ public class ProfileFeature extends BaseEntity {
         this.profile = profile;
         profile.getProfileFeatureList().add(this);
     }
+
+    public void update(String profileKey, String profileValue){
+        this.profileKey = profileKey;
+        this.profileValue = profileValue;
+    }
 }
