@@ -3,10 +3,7 @@ package com.example.aboutme.app.dto;
 import com.example.aboutme.domain.Member;
 import com.example.aboutme.domain.Profile;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
@@ -26,7 +23,7 @@ public class MemberProfileResponse {
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class MemberProfileDTO{
+    public static class MemberProfileDTO {
         @JsonProperty("member_profile_id")
         private Long id;
 
@@ -39,4 +36,12 @@ public class MemberProfileResponse {
         @JsonProperty("profile")
         private Profile profile;
     }
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Builder
+    public static class favoriteDto {
+        private Boolean favorite;
+    }
+
 }

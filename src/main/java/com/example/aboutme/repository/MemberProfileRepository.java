@@ -9,4 +9,5 @@ import java.util.List;
 
 public interface MemberProfileRepository extends JpaRepository<MemberProfile, Long> {
     List<MemberProfile> findAllByMember(Member member);
+    MemberProfile findByMemberAndProfile(Member member, Profile profile);
 }

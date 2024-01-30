@@ -2,6 +2,7 @@ package com.example.aboutme.service.ProfileService;
 
 import com.example.aboutme.app.dto.ProfileRequest;
 import com.example.aboutme.domain.Profile;
+import com.example.aboutme.domain.ProfileFeature;
 
 import java.util.List;
 
@@ -22,4 +23,19 @@ public interface ProfileService {
      */
     Profile createMyProfile(Long memberId, ProfileRequest.CreateProfileDTO request);
 
+    /**
+     * 내 마이프로필 수정
+     * @param memberId 멤버 식별자
+     * @param profileId 마이프로필 식별자
+     * @param request
+     * @return 수정된 마이프로필의 특징
+     */
+    ProfileFeature updateMyProfile(Long memberId, Long profileId, ProfileRequest.UpdateProfileDTO request);
+
+    /**
+     * 내 마이프로필 삭제
+     * @param memberId 멤버 식별자
+     * @param profileId 마이프로필 식별자
+     */
+    void deleteMyProfile(Long memberId, Long profileId);
 }

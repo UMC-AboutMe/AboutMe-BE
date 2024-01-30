@@ -8,9 +8,11 @@ import com.example.aboutme.converter.ProfileFeatureConverter;
 import com.example.aboutme.domain.Member;
 import com.example.aboutme.domain.Profile;
 import com.example.aboutme.domain.ProfileFeature;
+import com.example.aboutme.repository.ProfileFeatureRepository;
 import com.example.aboutme.repository.ProfileRepository;
 import com.example.aboutme.service.MemberService.MemberService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,10 +22,12 @@ import java.util.List;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
+@Slf4j
 public class ProfileServiceImpl implements ProfileService{
 
     private final MemberService memberService;
     private final ProfileRepository profileRepository;
+    private final ProfileFeatureRepository profileFeatureRepository;
 
     /**
      * 내 마이프로필 조회
@@ -48,7 +52,7 @@ public class ProfileServiceImpl implements ProfileService{
 
         // 최대 생성 개수 초과하는지 확인
         int MAX_PROFILE_SIZE = 3;
-        if(profileRepository.countByMember(member) > MAX_PROFILE_SIZE){
+        if(profileRepository.countByMember(member) >= MAX_PROFILE_SIZE){
             throw new GeneralException(ErrorStatus.PROFILE_SIZE_OVERFLOW);
         }
 
@@ -69,6 +73,57 @@ public class ProfileServiceImpl implements ProfileService{
     }
 
     /**
+     * 내 마이프로필 수정
+     * @param memberId 멤버 식별자
+     * @param profileId 마이프로필 식별자
+     * @param request
+     * @return 수정된 마이프로필의 특징
+     */
+    @Transactional
+    public ProfileFeature updateMyProfile(Long memberId, Long profileId, ProfileRequest.UpdateProfileDTO request){
+        Member member = memberService.findMember(memberId);
+        Profile profile = profileRepository.findById(profileId).get();
+        ProfileFeature profileFeature = profileFeatureRepository.findById(request.getFeatureId()).get();
+
+        if(profile.getMember() != member){
+            throw new GeneralException(ErrorStatus.PROFILE_NOT_MATCH_MEMBER);
+        }
+
+        if(profileFeature.getProfile() != profile){
+            throw new GeneralException(ErrorStatus.PROFILE_FEATURE_NOT_MATCH_PROFILE);
+        }
+
+        // 이름은 필수
+        if(profileFeature.getProfileKey().equals("name")){
+            boolean isNameEmpty = request.getFeatureKey() == null || !request.getFeatureKey().equals("name") || request.getFeatureValue() == null || request.getFeatureValue().isEmpty();
+            if(isNameEmpty){
+                throw new GeneralException(ErrorStatus.PROFILE_FEATURE_NAME_CANNOT_EMPTY);
+            }
+        }
+
+        profileFeature.update(request.getFeatureKey(), request.getFeatureValue());
+
+        return profileFeature;
+    }
+
+    /**
+     * 내 마이프로필 삭제
+     * @param memberId 멤버 식별자
+     * @param profileId 마이프로필 식별자
+     */
+    @Transactional
+    public void deleteMyProfile(Long memberId, Long profileId){
+        Member member = memberService.findMember(memberId);
+        Profile profile = profileRepository.findById(profileId).get();
+
+        if(profile.getMember() != member){
+            throw new GeneralException(ErrorStatus.PROFILE_NOT_MATCH_MEMBER);
+        }
+
+        profileRepository.delete(profile);
+    }
+
+    /**
      * 시리얼 넘버 생성
      * @return 중복되지 않는 시리얼 넘버
      */
@@ -79,8 +134,11 @@ public class ProfileServiceImpl implements ProfileService{
         int serialNumber = generator.nextInt(1000000) % 1000000;
 
         // 중복 확인
-        while(profileRepository.findBySerialNumber(serialNumber).isPresent()){
+        boolean isDuplicated = profileRepository.findBySerialNumber(serialNumber).isPresent();
+        while(isDuplicated){
             serialNumber = generator.nextInt(1000000) % 1000000;
+
+            isDuplicated = profileRepository.findBySerialNumber(serialNumber).isPresent();
         }
 
         return serialNumber;
