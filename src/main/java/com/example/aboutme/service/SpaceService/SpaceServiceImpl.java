@@ -62,6 +62,13 @@ public class SpaceServiceImpl implements SpaceService {
 
         Space targetSpace = optionalSpace.get();
 
+        if (request.getNickname() != null) targetSpace.updateNickname(request.getNickname());
+        if (request.getCharacterType() != null) targetSpace.updateCharacterType(request.getCharacterType());
+        if (request.getRoomType() != null) targetSpace.updateRoomType(request.getRoomType());
+        if (request.getMood() != null) targetSpace.updateMood(request.getMood());
+        if (request.getMusicUrl() != null) targetSpace.updateMusirUrl(request.getMusicUrl());
+        if (request.getStatusMessage() != null) targetSpace.updateStatusMessage(request.getStatusMessage());
+
         return targetSpace;
     }
 }
