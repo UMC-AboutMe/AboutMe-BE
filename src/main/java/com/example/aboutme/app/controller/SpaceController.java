@@ -32,8 +32,8 @@ public class SpaceController {
     }
 
     @DeleteMapping(value = "/", produces = "application/json;charset=UTF-8")
-    public ApiResponse<SpaceResponse.DeleteDTO> delete(@RequestHeader("member-id") Long memberId) {
-        Space deleteSpace = spaceCommandService.deleteSpace(memberId);
-        return ApiResponse.onSuccess(SpaceConverter.toDeleteDTO(deleteSpace));
+    public ApiResponse delete(@RequestHeader("member-id") Long memberId) {
+        spaceCommandService.deleteSpace(memberId);
+        return ApiResponse.onSuccess(null);
     }
 }

@@ -10,4 +10,5 @@ import java.util.List;
 public interface SpaceRepository extends JpaRepository<Space, Long> {
     Space findByMember_Id(Long memberId);
     List<Space> findByNicknameIn(List<String> nicknames);
+    boolean existsByMember_Id(Long memberId);
 }

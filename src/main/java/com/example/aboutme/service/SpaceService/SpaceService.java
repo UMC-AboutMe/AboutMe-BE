@@ -8,5 +8,5 @@ public interface SpaceService {
 
     Space readSpace(Long memberId);
 
-    Space deleteSpace(Long memberId);
+    void deleteSpace(Long memberId);
 }

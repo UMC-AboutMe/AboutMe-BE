@@ -37,14 +37,4 @@ public class SpaceResponse {
         private List<SpaceImage> spaceImageList;
         private List<Plan> planList;
     }
-
-    @Builder
-    @Getter
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public class DeleteDTO {
-        private String nickname;
-        private Integer characterType;
-        private Integer roomType;
-    }
 }
