@@ -7,4 +7,6 @@ public interface SpaceService {
     Space JoinSpace(SpaceRequest.JoinDTO request);
 
     Space readSpace(Long memberId);
+
+    Space deleteSpace(Long memberId);
 }

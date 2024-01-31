@@ -33,6 +33,6 @@ public class SpaceController {
 
     @DeleteMapping(value = "/", produces = "application/json;charset=UTF-8")
     public ApiResponse<SpaceResponse.DeleteDTO> delete(@RequestHeader("member-id") Long memberId) {
-
+        Space deleteSpace = spaceCommandService.deleteSpace(memberId);
     }
 }
