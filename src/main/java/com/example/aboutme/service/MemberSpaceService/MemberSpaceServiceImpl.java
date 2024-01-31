@@ -26,7 +26,6 @@ public class MemberSpaceServiceImpl implements MemberSpaceService {
     private final MemberRepository memberRepository;
 
     // 아지트 내 스페이스 목록 조회
-    @Transactional
     public List<MemberSpace> filterWithKeyword(Long memberId, String keyword) {
 
         Member member = memberRepository.findById(memberId)
@@ -42,8 +41,7 @@ public class MemberSpaceServiceImpl implements MemberSpaceService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new GeneralException(ErrorStatus.MEMBER_NOT_FOUND));
 
-        Space space = spaceRepository.findById(spaceId)
-                .orElseThrow(() -> new GeneralException(ErrorStatus.SPACE_NOT_FOUND));
+        Space space = spaceRepository.findById(spaceId).get();
 
         MemberSpace memberSpace = memberSpaceRepository.findByMemberAndSpace(member, space);
         if (memberSpace == null) {
@@ -62,8 +60,7 @@ public class MemberSpaceServiceImpl implements MemberSpaceService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new GeneralException(ErrorStatus.MEMBER_NOT_FOUND));
 
-        Space space = spaceRepository.findById(spaceId)
-                .orElseThrow(() -> new GeneralException(ErrorStatus.SPACE_NOT_FOUND));
+        Space space = spaceRepository.findById(spaceId).get();
 
         if (space.getMember().equals(member)) {
             throw new GeneralException(ErrorStatus.CANNOT_SHARE_OWN_SPACE);
@@ -92,8 +89,7 @@ public class MemberSpaceServiceImpl implements MemberSpaceService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new GeneralException(ErrorStatus.MEMBER_NOT_FOUND));
 
-        Space space = spaceRepository.findById(spaceId)
-                .orElseThrow(() -> new GeneralException(ErrorStatus.SPACE_NOT_FOUND));
+        Space space = spaceRepository.findById(spaceId).get();
 
         MemberSpace memberSpaceToDelete = memberSpaceRepository.findByMemberAndSpace(member, space);
         if (memberSpaceToDelete == null) {

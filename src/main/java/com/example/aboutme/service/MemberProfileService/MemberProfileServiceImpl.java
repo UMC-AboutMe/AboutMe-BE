@@ -34,8 +34,7 @@ public class MemberProfileServiceImpl implements MemberProfileService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new GeneralException(ErrorStatus.MEMBER_NOT_FOUND));
 
-        Profile profile = profileRepository.findById(profileId)
-                .orElseThrow(() -> new GeneralException(ErrorStatus.PROFILE_NOT_FOUND));
+        Profile profile = profileRepository.findById(profileId).get();
 
         MemberProfile memberProfile = memberProfileRepository.findByMemberAndProfile(member, profile);
         if (memberProfile == null) {

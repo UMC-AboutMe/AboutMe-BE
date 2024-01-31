@@ -1,7 +1,7 @@
 spring:
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     show-sql: true
     generate-ddl: true
 
@@ -10,3 +10,22 @@ spring:
     url: jdbc:mysql://aboutmedb.cpk6suecg1c5.ap-northeast-2.rds.amazonaws.com/aboutme
     username: root
     password: rootroot123
+
+cloud:
+  aws:
+    s3:
+      bucket: aboutme-bucket
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
+    credentials:
+      accessKey: ${AWS_ACCESS_KEY_ID}
+      secretKey: ${AWS_SECRET_ACCESS_KEY}
+
+logging:
+  level:
+    com:
+      amazonaws:
+        util:
+          EC2MetadataUtils: error

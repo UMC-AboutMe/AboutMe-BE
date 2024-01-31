@@ -9,6 +9,7 @@ import com.example.aboutme.domain.ProfileFeature;
 import com.example.aboutme.service.MemberProfileService.MemberProfileService;
 import com.example.aboutme.service.ProfileService.ProfileService;
 import com.example.aboutme.validation.annotation.ExistMyProfile;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
@@ -29,7 +30,7 @@ public class ProfileController {
 
     /**
      * [GET] /myprofiles
-     * 내 마이프로필 조회
+     * 내 마이프로필 목록 
      * @param memberId 멤버 식별자
      * @return
      */
@@ -41,6 +42,24 @@ public class ProfileController {
         log.info("마이프로필 조회: member={}", memberId);
 
         return ApiResponse.onSuccess(ProfileConverter.toGetProfileListDTO(profileList));
+    }
+
+    /**
+     * [GET] /myprofiles/{profile-id}
+     * 내 마이프로필 단건 조회
+     * @param memberId 멤버 식별자
+     * @param profileId 마이프로필 식별자
+     * @return
+     */
+    @GetMapping("/{profile-id}")
+    public ApiResponse<ProfileResponse.GetMyProfileDTO> getMyProfile(@RequestHeader("member-id") Long memberId,
+                                                                     @PathVariable("profile-id") @ExistMyProfile Long profileId){
+
+        Profile profile = profileService.getMyProfile(memberId, profileId);
+
+        log.info("마이프로필 조회(단건): profileID={}", profileId);
+
+        return ApiResponse.onSuccess(ProfileConverter.toGetMyProfileDTO(profile));
     }
 
     /**
