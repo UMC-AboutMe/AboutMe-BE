@@ -1,13 +1,11 @@
 package com.example.aboutme.app.dto;
 
-import com.example.aboutme.domain.ProfileFeature;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
 
 public class ProfileResponse {
@@ -90,5 +88,29 @@ public class ProfileResponse {
 
         @JsonProperty("feature_value")
         private String featureValue;
+    }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class GetMyProfileDTO{
+        @JsonProperty("profile_id")
+        private Long profileId;
+
+        @JsonProperty("serial_number")
+        private int serialNumber;
+
+        @JsonProperty("is_default")
+        private Boolean isDefault;
+
+        @JsonProperty("profile_img_url")
+        private String profileImageUrl;
+
+        @JsonProperty("front_features")
+        private List<ProfileFeatureDTO> frontFeatureList;
+
+        @JsonProperty("back_features")
+        private List<ProfileFeatureDTO> backFeatureList;
     }
 }
