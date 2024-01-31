@@ -61,10 +61,10 @@ public class ProfileConverter {
                 .profileImageUrl(null) // 아직 미설정
                 .frontFeatureList(profile.getProfileFeatureList().stream()
                         .filter(profileFeature -> profileFeature.getSide()== Side.FRONT)
-                        .map(ProfileConverter::toProfileFeatureDTO)
-                        .toList())
-                .backFeatureList(profile.getProfileFeatureList().stream()
-                        .filter(profileFeature -> profileFeature.getSide()== Side.BACK)
+                        .filter(profileFeature -> {
+                            boolean isEmpty = (profileFeature.getProfileKey() == null && profileFeature.getProfileValue() == null);
+                            return !isEmpty;
+                        })
                         .map(ProfileConverter::toProfileFeatureDTO)
                         .toList())
                 .build();

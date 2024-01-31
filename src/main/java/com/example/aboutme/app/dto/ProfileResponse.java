@@ -73,9 +73,6 @@ public class ProfileResponse {
 
         @JsonProperty("front_features")
         private List<ProfileFeatureDTO> frontFeatureList;
-
-        @JsonProperty("back_features")
-        private List<ProfileFeatureDTO> backFeatureList;
     }
 
     @Builder

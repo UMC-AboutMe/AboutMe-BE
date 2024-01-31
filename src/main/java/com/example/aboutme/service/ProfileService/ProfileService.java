@@ -9,9 +9,9 @@ import java.util.List;
 public interface ProfileService {
 
     /**
-     * 내 마이프로필 조회
+     * 내 마이프로필 목록 조회
      * @param memberId 멤버 식별자
-     * @return
+     * @return 마이프로필 목록
      */
     List<Profile> getMyProfiles(Long memberId);
 
