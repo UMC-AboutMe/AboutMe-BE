@@ -20,8 +20,8 @@ cloud:
     stack:
       auto: false
     credentials:
-      accessKey: ${AWS_ACCESS_KEY_ID}
-      secretKey: ${AWS_SECRET_ACCESS_KEY}
+      accessKey: AKIA2UC26N6X2PHDW3LN
+      secretKey: 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
 
 logging:
   level:

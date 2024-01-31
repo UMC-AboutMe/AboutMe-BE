@@ -26,8 +26,13 @@ public class SpaceController {
     }
 
     @GetMapping(value = "/", produces = "application/json;charset=UTF-8")
-    public ApiResponse<SpaceResponse.ReadResultDTO> read(@RequestHeader("member_id") Long memberId) {
+    public ApiResponse<SpaceResponse.ReadResultDTO> read(@RequestHeader("member-id") Long memberId) {
         Space newSpace = spaceCommandService.readSpace(memberId);
         return ApiResponse.onSuccess(SpaceConverter.toReadResultDTO(newSpace));
+    }
+
+    @DeleteMapping(value = "/", produces = "application/json;charset=UTF-8")
+    public ApiResponse<SpaceResponse.DeleteDTO> delete(@RequestHeader("member-id") Long memberId) {
+
     }
 }
