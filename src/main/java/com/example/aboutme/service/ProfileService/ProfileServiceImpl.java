@@ -94,7 +94,8 @@ public class ProfileServiceImpl implements ProfileService{
         }
 
         // 이름은 필수
-        if(profileFeature.getProfileKey().equals("name")){
+        boolean isName = profileFeature.getProfileKey() != null && profileFeature.getProfileKey().equals("name");
+        if(isName){
             boolean isNameEmpty = request.getFeatureKey() == null || !request.getFeatureKey().equals("name") || request.getFeatureValue() == null || request.getFeatureValue().isEmpty();
             if(isNameEmpty){
                 throw new GeneralException(ErrorStatus.PROFILE_FEATURE_NAME_CANNOT_EMPTY);
