@@ -12,6 +12,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @Transactional(readOnly = true)
 @AllArgsConstructor
@@ -42,8 +44,24 @@ public class SpaceServiceImpl implements SpaceService {
         spaceRepository.delete(targetSpace);
     }
 
+
+    /**
+     * 내 마이프로필 수정
+     * @param memberId 멤버 식별자
+     * @param request
+     * @return 수정된 마이스페이스의 특징
+     */
     @Transactional
     public Space updateResult(Long memberId, SpaceRequest.UpdateDTO request) {
-        return null;
+        Member member = memberService.findMember(memberId);
+        Optional<Space> optionalSpace = spaceRepository.findByMember(member);
+
+        if (!optionalSpace.isPresent()) {
+            throw new GeneralException(ErrorStatus.SPACE_NOT_FOUND);
+        }
+
+        Space targetSpace = optionalSpace.get();
+
+        return targetSpace;
     }
 }
