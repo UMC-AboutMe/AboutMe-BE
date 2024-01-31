@@ -29,7 +29,7 @@ public class ProfileController {
 
     /**
      * [GET] /myprofiles
-     * 내 마이프로필 조회
+     * 내 마이프로필 목록 
      * @param memberId 멤버 식별자
      * @return
      */
