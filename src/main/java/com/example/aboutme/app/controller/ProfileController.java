@@ -6,6 +6,7 @@ import com.example.aboutme.app.dto.ProfileResponse;
 import com.example.aboutme.converter.ProfileConverter;
 import com.example.aboutme.domain.Profile;
 import com.example.aboutme.domain.ProfileFeature;
+import com.example.aboutme.service.MemberProfileService.MemberProfileService;
 import com.example.aboutme.service.ProfileService.ProfileService;
 import com.example.aboutme.validation.annotation.ExistMyProfile;
 import lombok.Getter;
@@ -15,8 +16,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Size;
 import java.util.List;
 
 @Validated
@@ -27,6 +26,7 @@ import java.util.List;
 public class ProfileController {
 
     private final ProfileService profileService;
+    private final MemberProfileService memberProfileService;
 
     /**
      * [GET] /myprofiles
@@ -80,6 +80,7 @@ public class ProfileController {
     }
 
     /**
+     * [PATCH] /myprofiles/{profile-id}
      * 내 마이프로필 수정
      * @param memberId 멤버 식별자
      * @param profileId 마이프로필 식별자
@@ -112,6 +113,24 @@ public class ProfileController {
         profileService.deleteMyProfile(memberId, profileId);
 
         log.info("마이프로필 삭제: {}", profileId);
+
+        return ApiResponse.onSuccess(null);
+    }
+
+    /**
+     * [POST] /myprofiles/share
+     * 상대방 마이프로필 내 보관함에 추가하기
+     * @param memberId 멤버 식별자
+     * @param request
+     * @return
+     */
+    @PostMapping("/share")
+    public ApiResponse<Void> shareProfile(@RequestHeader("member-id") Long memberId,
+                                          @RequestBody @Valid ProfileRequest.ShareProfileDTO request){
+
+        memberProfileService.addOthersProfilesAtMyStorage(memberId, request);
+
+        log.info("상대방 마이프로필 내 보관함에 추가하기: member={}, other's profile={}", memberId, request.getProfileSerialNumberList());
 
         return ApiResponse.onSuccess(null);
     }
