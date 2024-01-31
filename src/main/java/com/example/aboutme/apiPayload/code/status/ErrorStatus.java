@@ -34,7 +34,10 @@ public enum ErrorStatus implements BaseErrorCode {
     PROFILE_FEATURE_NAME_CANNOT_EMPTY(HttpStatus.BAD_REQUEST, "FEATURE401", "프로필의 이름은 필수입니다"),
 
     // 멤버 에러
-    MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "MEMBER400", "해당하는 사용자가 존재하지 않습니다");
+    MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "MEMBER400", "해당하는 사용자가 존재하지 않습니다"),
+
+    // S3 에러
+    FILE_NOT_FOUND(HttpStatus.NOT_FOUND, "FILE400", "해당 파일이 존재하지 않습니다.");
 
     private final HttpStatus httpStatus;
     private final String code;

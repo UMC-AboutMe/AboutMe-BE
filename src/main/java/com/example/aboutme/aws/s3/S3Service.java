@@ -1,15 +1,14 @@
 package com.example.aboutme.aws.s3;
 
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.CannedAccessControlList;
-import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.amazonaws.services.s3.model.S3Object;
-import com.amazonaws.services.s3.model.S3ObjectInputStream;
+import com.amazonaws.services.s3.model.*;
 import com.amazonaws.util.IOUtils;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.UUID;
+
+import com.example.aboutme.apiPayload.code.status.ErrorStatus;
+import com.example.aboutme.apiPayload.exception.GeneralException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -51,6 +50,10 @@ public class S3Service {
      * MultipartFile 을 S3에 업로드하고 S3Result 로 반환
      */
     public S3ResponseDto uploadFile(MultipartFile multipartFile) {
+        if (multipartFile == null || multipartFile.isEmpty()) {
+            throw new GeneralException(ErrorStatus._BAD_REQUEST);
+        }
+
         String fileName = createFileName(multipartFile.getOriginalFilename());
 
         ObjectMetadata objectMetadata = new ObjectMetadata();
@@ -62,7 +65,7 @@ public class S3Service {
                     new PutObjectRequest(bucket, fileName, inputStream, objectMetadata)
                             .withCannedAcl(CannedAccessControlList.PublicRead));
         } catch (IOException e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                     "파일 업로드에 실패했습니다.");
         }
         return new S3ResponseDto(amazonS3.getUrl(bucket, fileName).toString());
@@ -73,6 +76,8 @@ public class S3Service {
         try (S3Object s3Object = amazonS3.getObject(bucket, fileKey);
              S3ObjectInputStream stream = s3Object.getObjectContent()) {
             return IOUtils.toByteArray(stream);
+        } catch (AmazonS3Exception e) {
+            throw new GeneralException(ErrorStatus.FILE_NOT_FOUND);
         } catch (IOException e) {
             throw new RuntimeException("S3 파일 다운로드 중 오류 발생: " + e.getMessage(), e);
         }
