@@ -2,12 +2,11 @@ package com.example.aboutme.service.MemberProfileService;
 
 import com.example.aboutme.apiPayload.code.status.ErrorStatus;
 import com.example.aboutme.apiPayload.exception.GeneralException;
-import com.example.aboutme.app.dto.MemberProfileResponse;
-import com.example.aboutme.app.dto.MemberSpaceResponse;
+import com.example.aboutme.app.dto.ProfileRequest;
+import com.example.aboutme.converter.MemberProfileConverter;
 import com.example.aboutme.domain.Member;
 import com.example.aboutme.domain.Profile;
 import com.example.aboutme.domain.mapping.MemberProfile;
-import com.example.aboutme.domain.mapping.MemberSpace;
 import com.example.aboutme.repository.MemberProfileRepository;
 import com.example.aboutme.repository.MemberRepository;
 import com.example.aboutme.repository.ProfileRepository;
@@ -17,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Service
 @Transactional(readOnly = true)
@@ -55,13 +53,51 @@ public class MemberProfileServiceImpl implements MemberProfileService {
     }
 
     @Transactional
-    public MemberProfile deleteMemberProfile(Long memberId, int serialNumber){
+    public MemberProfile deleteMemberProfile(Long memberId, Long profileId){
         Member member = memberService.findMember(memberId);
-        Profile profile = profileRepository.findBySerialNumber(serialNumber)
+        Profile profile = profileRepository.findById(profileId)
                 .orElseThrow(()->new GeneralException(ErrorStatus.PROFILE_NOT_FOUND));
+        boolean isSame = profile.getMember().getId().equals(memberId);
+        if (!isSame){
+            throw new GeneralException(ErrorStatus.MEMBER_IS_NOT_PROFILE_CREATOR);
+        }
         MemberProfile memberProfile = memberProfileRepository.findByMemberAndProfile(member, profile);
         memberProfileRepository.delete(memberProfile);
         return memberProfile;
     }
 
+    /**
+     * 상대방 마이프로필 내 보관함에 추가하기
+     * @param memberId 멤버 식별자
+     * @param request
+     */
+    @Transactional
+    public void addOthersProfilesAtMyStorage(Long memberId, ProfileRequest.ShareProfileDTO request){
+
+        Member member = memberService.findMember(memberId);
+
+        // 추가하려는 마이프로필 목록 조회
+        List<Profile> otherProfileList = request.getProfileSerialNumberList().stream()
+                .map(serialNum -> profileRepository.findBySerialNumber(serialNum).get())
+                .toList();
+
+        for(Profile otherProfile : otherProfileList){
+            // 이미 공유된 프로필일 경우
+            if(memberProfileRepository.existsByMemberAndProfile(member, otherProfile)){
+                throw new GeneralException(ErrorStatus.MEMBER_PROFILE_ALREADY_EXIST);
+            }
+            // 본인의 프로필을 추가하려는 경우
+            if(otherProfile.getMember() == member){
+                throw new GeneralException(ErrorStatus.CANNOT_SHARE_OWN_PROFILE);
+            }
+        }
+
+        List<MemberProfile> memberProfileList = otherProfileList.stream()
+                .map(otherProfile -> MemberProfileConverter.toMemberProfile(member, otherProfile))
+                .toList();
+
+        memberProfileList.forEach(memberProfile -> {
+            memberProfileRepository.save(memberProfile);
+        });
+    }
 }

@@ -2,6 +2,7 @@ package com.example.aboutme.app.dto;
 
 import com.example.aboutme.domain.Member;
 import com.example.aboutme.domain.Profile;
+import com.example.aboutme.domain.constant.Social;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
@@ -31,10 +32,10 @@ public class MemberProfileResponse {
         private Boolean favorite;
 
         @JsonProperty("member")
-        private Member member;
+        private DeleteMemberDTO member;
 
         @JsonProperty("profile")
-        private Profile profile;
+        private DeleteProfileDTO profile;
     }
     @Data
     @AllArgsConstructor
@@ -42,5 +43,35 @@ public class MemberProfileResponse {
     @Builder
     public static class favoriteDto {
         private Boolean favorite;
+    }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Builder
+    public static class DeleteMemberDTO {
+        @JsonProperty("social")
+        private Social social;
+
+        @JsonProperty("email")
+        private String email;
+    }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Builder
+    public static class DeleteProfileDTO {
+        @JsonProperty("profile_id")
+        private Long id;
+
+        @JsonProperty("serial_number")
+        private int serialNumber;
+
+        @JsonProperty("is_default")
+        private Boolean isDefault;
+
+        @JsonProperty("profile_img_url")
+        private String profileImageUrl;
     }
 }

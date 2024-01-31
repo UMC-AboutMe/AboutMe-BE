@@ -33,7 +33,7 @@ public class MemberProfileController {
 
     @DeleteMapping("/{profileId}")
     public ApiResponse<MemberProfileResponse.MemberProfileDTO> deleteMemberProfile(@RequestHeader("member-id") Long memberId, @RequestBody @Valid MemberProfileRequest.DeleteMemberDTO request) {
-        MemberProfile memberProfile = memberProfileService.deleteMemberProfile(memberId, request.getSerialNumber());
+        MemberProfile memberProfile = memberProfileService.deleteMemberProfile(memberId, request.getProfileId());
         return ApiResponse.onSuccess(MemberProfileConverter.toMemberProfileDTO(memberProfile));
     }
 

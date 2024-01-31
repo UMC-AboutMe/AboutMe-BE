@@ -5,6 +5,6 @@ import lombok.Getter;
 public class MemberProfileRequest {
     @Getter
     public static class DeleteMemberDTO {
-        private int serialNumber;
+        private Long profileId;
     }
 }

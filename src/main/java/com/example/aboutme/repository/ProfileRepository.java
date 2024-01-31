@@ -15,4 +15,6 @@ public interface ProfileRepository extends JpaRepository<Profile, Long> {
     int countByMember(Member member);
 
     List<Profile> findAllByMemberOrderByIsDefaultDesc(Member member);
+
+    boolean existsBySerialNumber(int serialNumber);
 }
