@@ -35,7 +35,7 @@ public class SpaceServiceImpl implements SpaceService {
     @Transactional
     public void deleteSpace(Long memberId) {
         Member member = memberService.findMember(memberId);
-        if (!spaceRepository.existsByMember_Id(memberId)) {
+        if (!spaceRepository.existsByMember(member)) {
             throw new GeneralException(ErrorStatus.SPACE_NOT_FOUND);
         }
         Space targetSpace = spaceRepository.findByMember_Id(memberId);
