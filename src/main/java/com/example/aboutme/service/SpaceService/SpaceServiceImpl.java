@@ -41,4 +41,9 @@ public class SpaceServiceImpl implements SpaceService {
         Space targetSpace = spaceRepository.findByMember_Id(memberId);
         spaceRepository.delete(targetSpace);
     }
+
+    @Transactional
+    public Space updateResult(Long memberId, SpaceRequest.UpdateDTO request) {
+        return null;
+    }
 }

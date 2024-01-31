@@ -9,4 +9,6 @@ public interface SpaceService {
     Space readSpace(Long memberId);
 
     void deleteSpace(Long memberId);
+
+    Space updateResult(Long memberId, SpaceRequest.UpdateDTO request);
 }
