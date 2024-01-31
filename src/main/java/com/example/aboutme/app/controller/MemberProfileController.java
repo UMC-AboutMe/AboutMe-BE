@@ -2,6 +2,7 @@ package com.example.aboutme.app.controller;
 
 import com.example.aboutme.apiPayload.ApiResponse;
 
+import com.example.aboutme.app.dto.MemberProfileRequest;
 import com.example.aboutme.app.dto.MemberProfileResponse;
 import com.example.aboutme.converter.MemberProfileConverter;
 import com.example.aboutme.domain.mapping.MemberProfile;
@@ -24,15 +25,15 @@ public class MemberProfileController {
     private final MemberProfileService memberProfileService;
 
     @GetMapping()
-    public ApiResponse getMyProfilesStorage(@RequestHeader("member_id") Long memberId) {
+    public ApiResponse<MemberProfileResponse.GetMemberProfileListDTO> getMyProfilesStorage(@RequestHeader("member-id") Long memberId) {
         List<MemberProfile> memberProfileList = memberProfileService.getMyProfilesStorage(memberId);
 
         return ApiResponse.onSuccess(MemberProfileConverter.toGetMemberProfileListDTO(memberProfileList));
     }
 
-    @DeleteMapping("/{profile_id}")
-    public ApiResponse deleteMemberProfile(@RequestHeader("member_id") Long memberId, @RequestBody @Valid Long profile_id) {
-        MemberProfile memberProfile = memberProfileService.deleteMemberProfile(memberId, profile_id);
+    @DeleteMapping("/{profileId}")
+    public ApiResponse<MemberProfileResponse.MemberProfileDTO> deleteMemberProfile(@RequestHeader("member-id") Long memberId, @RequestBody @Valid MemberProfileRequest.DeleteMemberDTO request) {
+        MemberProfile memberProfile = memberProfileService.deleteMemberProfile(memberId, request.getSerialNumber());
         return ApiResponse.onSuccess(MemberProfileConverter.toMemberProfileDTO(memberProfile));
     }
 

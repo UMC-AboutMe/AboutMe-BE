@@ -55,10 +55,11 @@ public class MemberProfileServiceImpl implements MemberProfileService {
     }
 
     @Transactional
-    public MemberProfile deleteMemberProfile(Long memberId, Long profileId){
+    public MemberProfile deleteMemberProfile(Long memberId, int serialNumber){
         Member member = memberService.findMember(memberId);
-
-        MemberProfile memberProfile = memberProfileRepository.findByMemberAndId(member, profileId);
+        Profile profile = profileRepository.findBySerialNumber(serialNumber)
+                .orElseThrow(()->new GeneralException(ErrorStatus.PROFILE_NOT_FOUND));
+        MemberProfile memberProfile = memberProfileRepository.findByMemberAndProfile(member, profile);
         memberProfileRepository.delete(memberProfile);
         return memberProfile;
     }

@@ -12,5 +12,5 @@ public interface MemberProfileService {
 
     List<MemberProfile> getMyProfilesStorage(Long memberId);
 
-    MemberProfile deleteMemberProfile(Long memberId, Long profileId);
+    MemberProfile deleteMemberProfile(Long memberId, int serialNumber);
 }
