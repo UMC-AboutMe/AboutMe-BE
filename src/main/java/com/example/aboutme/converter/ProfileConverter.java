@@ -61,10 +61,10 @@ public class ProfileConverter {
                 .profileImageUrl(null) // 아직 미설정
                 .frontFeatureList(profile.getProfileFeatureList().stream()
                         .filter(profileFeature -> profileFeature.getSide()== Side.FRONT)
-                        .map(ProfileConverter::toProfileFeatureDTO)
-                        .toList())
-                .backFeatureList(profile.getProfileFeatureList().stream()
-                        .filter(profileFeature -> profileFeature.getSide()== Side.BACK)
+                        .filter(profileFeature -> {
+                            boolean isEmpty = (profileFeature.getProfileKey() == null && profileFeature.getProfileValue() == null);
+                            return !isEmpty;
+                        })
                         .map(ProfileConverter::toProfileFeatureDTO)
                         .toList())
                 .build();
@@ -75,6 +75,31 @@ public class ProfileConverter {
                 .featureId(profileFeature.getId())
                 .featureKey(profileFeature.getProfileKey())
                 .featureValue(profileFeature.getProfileValue())
+                .build();
+    }
+
+    public static ProfileResponse.GetMyProfileDTO toGetMyProfileDTO(Profile profile){
+        return ProfileResponse.GetMyProfileDTO.builder()
+                .profileId(profile.getId())
+                .serialNumber(profile.getSerialNumber())
+                .isDefault(profile.getIsDefault())
+                .profileImageUrl(null)
+                .frontFeatureList(profile.getProfileFeatureList().stream()
+                        .filter(profileFeature -> profileFeature.getSide()== Side.FRONT)
+                        .map(ProfileConverter::toProfileFeatureDTO)
+                        .toList())
+                .backFeatureList(profile.getProfileFeatureList().stream()
+                        .filter(profileFeature -> profileFeature.getSide()== Side.BACK)
+                        .map(ProfileConverter::toProfileFeatureDTO)
+                        .toList())
+                .build();
+    }
+
+    public static ProfileResponse.UpdateDefaultProfileDTO toUpdateDefaultProfile(Profile profile){
+        return ProfileResponse.UpdateDefaultProfileDTO.builder()
+                .id(profile.getId())
+                .serialNumber(profile.getSerialNumber())
+                .isDefault(profile.getIsDefault())
                 .build();
     }
 }

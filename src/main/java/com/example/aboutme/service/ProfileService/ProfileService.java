@@ -9,11 +9,19 @@ import java.util.List;
 public interface ProfileService {
 
     /**
-     * 내 마이프로필 조회
+     * 내 마이프로필 목록 조회
      * @param memberId 멤버 식별자
-     * @return
+     * @return 마이프로필 목록
      */
     List<Profile> getMyProfiles(Long memberId);
+
+    /**
+     * 내 마이프로필 단건 조회
+     * @param memberId 멤버 식별자
+     * @param profileId 프로필 식별자
+     * @return 마이프로필
+     */
+    Profile getMyProfile(Long memberId, Long profileId);
 
     /**
      * 마이프로필 생성
@@ -23,7 +31,7 @@ public interface ProfileService {
      */
     Profile createMyProfile(Long memberId, ProfileRequest.CreateProfileDTO request);
 
-    Profile updateIsDefault(List<Profile> profileList, Integer profile_id);
+    Profile updateIsDefault(Long memberID, Long profileId);
 
     /**
      * 내 마이프로필 수정
@@ -40,4 +48,6 @@ public interface ProfileService {
      * @param profileId 마이프로필 식별자
      */
     void deleteMyProfile(Long memberId, Long profileId);
+
+
 }

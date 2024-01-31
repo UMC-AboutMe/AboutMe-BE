@@ -26,7 +26,7 @@ public class ProfileFeatureValidator implements ConstraintValidator<ExistProfile
         if(!isValid){
             log.info("프로필 특징이 존재하지 않음: {}", profileFeatureId);
             context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate(ErrorStatus.PROFILE_NOT_FOUND.toString()).addConstraintViolation();
+            context.buildConstraintViolationWithTemplate(ErrorStatus.PROFILE_FEATURE_NOT_FOUND.toString()).addConstraintViolation();
         }
 
         return isValid;

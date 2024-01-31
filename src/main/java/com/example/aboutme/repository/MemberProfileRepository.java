@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface MemberProfileRepository extends JpaRepository<MemberProfile, Long> {
     MemberProfile findByMemberAndProfile(Member member, Profile profile);
-
+    Boolean existsByMemberAndProfile(Member member, Profile profile);
 }
