@@ -1,6 +1,8 @@
 package com.example.aboutme.app.controller;
 
 import com.example.aboutme.apiPayload.ApiResponse;
+import com.example.aboutme.app.dto.PlanRequest;
+import com.example.aboutme.app.dto.PlanResponse;
 import com.example.aboutme.app.dto.SpaceRequest;
 import com.example.aboutme.app.dto.SpaceResponse;
 import com.example.aboutme.converter.SpaceConverter;
@@ -35,5 +37,11 @@ public class SpaceController {
     public ApiResponse delete(@RequestHeader("member-id") Long memberId) {
         spaceCommandService.deleteSpace(memberId);
         return ApiResponse.onSuccess(null);
+    }
+
+    @PostMapping(value = "/plans/", produces = "application/json;charset=UTF-8")
+    public ApiResponse<SpaceResponse.ReadResultDTO> join (@RequestHeader("member-id") Long memberId, @RequestBody @Valid PlanRequest.CreatePlanDTO request) {
+        Space newSpace = spaceCommandService.createPlan(memberId, request);
+        return ApiResponse.onSuccess(SpaceConverter.toReadResultDTO(newSpace));
     }
 }
