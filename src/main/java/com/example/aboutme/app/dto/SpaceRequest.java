@@ -30,10 +30,9 @@ public class SpaceRequest {
 
         @RoomTypeBoundary
         private Integer roomType;
-
-        @Enumerated(EnumType.STRING)
+        
         @ExistMood
-        private Mood mood;
+        private String mood;
 
         private String musicUrl;
 

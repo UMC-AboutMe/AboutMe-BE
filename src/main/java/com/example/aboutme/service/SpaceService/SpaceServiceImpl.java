@@ -6,6 +6,7 @@ import com.example.aboutme.app.dto.SpaceRequest;
 import com.example.aboutme.converter.SpaceConverter;
 import com.example.aboutme.domain.Member;
 import com.example.aboutme.domain.Space;
+import com.example.aboutme.domain.constant.Mood;
 import com.example.aboutme.repository.SpaceRepository;
 import com.example.aboutme.service.MemberService.MemberService;
 import lombok.AllArgsConstructor;
@@ -21,19 +22,31 @@ public class SpaceServiceImpl implements SpaceService {
     private final SpaceRepository spaceRepository;
     private final MemberService memberService;
 
+    /**
+     * 내 마이프로필 생성
+     * @param request
+     * @return 생성된 마이스페이스의 특징
+     */
     @Transactional
     public Space JoinSpace(SpaceRequest.JoinDTO request) {
         Space newSpace = SpaceConverter.toSpace(request);
         return spaceRepository.save(newSpace);
     }
 
-
+    /**
+     * 내 마이프로필 조회
+     * @param memberId 멤버 식별자
+     * @return 조회된 마이스페이스의 특징
+     */
     public Space readSpace(Long memberId) {
         Member member = memberService.findMember(memberId);
         return spaceRepository.findByMember_Id(memberId);
     }
 
-
+    /**
+     * 내 마이프로필 삭제
+     * @param memberId 멤버 식별자
+     */
     @Transactional
     public void deleteSpace(Long memberId) {
         Member member = memberService.findMember(memberId);
@@ -65,7 +78,7 @@ public class SpaceServiceImpl implements SpaceService {
         if (request.getNickname() != null) targetSpace.updateNickname(request.getNickname());
         if (request.getCharacterType() != null) targetSpace.updateCharacterType(request.getCharacterType());
         if (request.getRoomType() != null) targetSpace.updateRoomType(request.getRoomType());
-        if (request.getMood() != null) targetSpace.updateMood(request.getMood());
+        if (request.getMood() != null) targetSpace.updateMood(Mood.valueOf(request.getMood()));
         if (request.getMusicUrl() != null) targetSpace.updateMusirUrl(request.getMusicUrl());
         if (request.getStatusMessage() != null) targetSpace.updateStatusMessage(request.getStatusMessage());
 
