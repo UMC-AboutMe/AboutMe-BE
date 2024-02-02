@@ -35,6 +35,6 @@ public class SpaceResponse {
         private String musicUrl;
         private String statusMessage;
         private List<SpaceImage> spaceImageList;
-        private List<Plan> planList;
+        private List<PlanResponse.CreatePlanDTO> planList;
     }
 }

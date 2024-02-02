@@ -4,6 +4,8 @@ import com.example.aboutme.app.dto.PlanRequest;
 import com.example.aboutme.app.dto.SpaceRequest;
 import com.example.aboutme.domain.Space;
 
+import java.text.ParseException;
+
 public interface SpaceService {
     Space JoinSpace(SpaceRequest.JoinDTO request);
 
@@ -11,5 +13,5 @@ public interface SpaceService {
 
     void deleteSpace(Long memberId);
 
-    Space createPlan(Long memberId, PlanRequest.CreatePlanDTO request);
+    Space createPlan(Long memberId, PlanRequest.CreatePlanDTO request) throws ParseException;
 }

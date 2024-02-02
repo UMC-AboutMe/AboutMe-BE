@@ -11,7 +11,5 @@ public class PlanRequest {
         @NotEmpty
         private String content;
 
-        @NotEmpty
-        private Date date;
     }
 }

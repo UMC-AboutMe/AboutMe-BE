@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.joda.time.DateTime;
+import org.joda.time.LocalDateTime;
 
 import java.util.Date;
 
@@ -14,6 +16,6 @@ public class PlanResponse {
     @AllArgsConstructor
     public static class CreatePlanDTO {
         private String content;
-        private Date date;
+        private String date;
     }
 }
