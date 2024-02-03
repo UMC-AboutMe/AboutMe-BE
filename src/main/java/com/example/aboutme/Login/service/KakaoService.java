@@ -1,10 +1,10 @@
 package com.example.aboutme.Login.service;
 
-import com.example.aboutme.Login.dto.SocialInfoDTO;
+import com.example.aboutme.Login.dto.SocialInfoRequest;
 
 public interface KakaoService {
     String getKakaoLogin();
-    SocialInfoDTO.KakaoDTO getKakaoInfo(String code) throws Exception;
-    SocialInfoDTO.KakaoDTO getUserInfoWithToken(String accessToken) throws Exception;
-    void saveKakaoMember(SocialInfoDTO.KakaoDTO kakaoDTO);
+    SocialInfoRequest.KakaoDTO getKakaoInfo(String code) throws Exception;
+    SocialInfoRequest.KakaoDTO getUserInfoWithToken(String accessToken) throws Exception;
+    String saveKakaoMember(SocialInfoRequest.KakaoDTO kakaoDTO);
 }

@@ -1,19 +1,16 @@
 package com.example.aboutme.Login.controller;
 
-import com.example.aboutme.Login.dto.MsgDTO;
-import com.example.aboutme.Login.dto.SocialInfoDTO;
+import com.example.aboutme.Login.dto.MsgResponse;
+import com.example.aboutme.Login.dto.SocialInfoRequest;
 //import com.example.aboutme.Login.jwt.JwtAuthenticationFilter;
-import com.example.aboutme.Login.jwt.TokenDTO;
 import com.example.aboutme.Login.jwt.TokenProvider;
 import com.example.aboutme.Login.service.GoogleService;
 import com.example.aboutme.Login.service.KakaoService;
-import com.example.aboutme.domain.constant.Social;
+import com.example.aboutme.converter.LoginConverter;
 import com.example.aboutme.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 //import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 //import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -22,12 +19,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
 import java.io.IOException;
 
 @RequiredArgsConstructor
@@ -73,27 +68,33 @@ public class LoginController {
 //    }
 
     @GetMapping("/kakao/callback")
-    public ResponseEntity<MsgDTO> kakaoCallback(HttpServletRequest request) throws Exception {
-        SocialInfoDTO.KakaoDTO kakaoInfo = kakaoService.getKakaoInfo(request.getParameter("code"));
+    public ResponseEntity<MsgResponse.LoginMsgDTO> kakaoCallback(HttpServletRequest request) throws Exception {
+        SocialInfoRequest.KakaoDTO kakaoInfo = kakaoService.getKakaoInfo(request.getParameter("code"));
+        String newToken = tokenProvider.createToken(kakaoInfo.getEmail());
         kakaoService.saveKakaoMember(kakaoInfo);
         return ResponseEntity.ok()
-                .body(new MsgDTO("Success", kakaoInfo, tokenProvider.createToken(kakaoInfo.getEmail())));
+                .body(LoginConverter.toLoginDTO("success",kakaoInfo.getEmail(),newToken));
     }
 
     @GetMapping("/google/callback")
-    public ResponseEntity<MsgDTO> googleCallback(HttpServletRequest request) throws Exception {
-        SocialInfoDTO.GoogleDTO googleInfo = googleService.getGoogleInfo(request.getParameter("code"));
+    public ResponseEntity<MsgResponse.LoginMsgDTO> googleCallback(HttpServletRequest request) throws Exception {
+        SocialInfoRequest.GoogleDTO googleInfo = googleService.getGoogleInfo(request.getParameter("code"));
+        String newToken = tokenProvider.createToken(googleInfo.getEmail());
         googleService.saveGoogleMember(googleInfo);
         return ResponseEntity.ok()
-                .body(new MsgDTO("Success", googleInfo, tokenProvider.createToken(googleInfo.getEmail())));
+                .body(LoginConverter.toLoginDTO("success",googleInfo.getEmail(),newToken));
     }
 
     @GetMapping("/members/valid")
-    public ResponseEntity<MsgDTO.validMsg> isValidToken(@RequestBody String token) throws Exception {
+    public ResponseEntity<MsgResponse.validMsgDTO> isValidToken(@RequestBody String token) throws Exception {
         JSONParser jsonParser = new JSONParser();
         JSONObject jsonObj = (JSONObject) jsonParser.parse(token);
         boolean res = tokenProvider.validateToken((String) jsonObj.get("token"));
-        return ResponseEntity.ok().body(new MsgDTO.validMsg("Success"));
+        if (res == true){
+            return ResponseEntity.ok().body(LoginConverter.toValidMsgDTO("success"));
+        }else {
+            return ResponseEntity.ok().body(LoginConverter.toValidMsgDTO("fail"));
+        }
     }
 
 

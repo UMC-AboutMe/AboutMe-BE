@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Builder
 @Data
-public class SocialInfoDTO {
+public class SocialInfoRequest {
     @Builder
     @Data
     public static class KakaoDTO{

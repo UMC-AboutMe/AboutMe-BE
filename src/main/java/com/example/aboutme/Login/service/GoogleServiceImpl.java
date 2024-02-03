@@ -1,8 +1,10 @@
 package com.example.aboutme.Login.service;
 
 import com.example.aboutme.Login.MemberConverter;
-import com.example.aboutme.Login.dto.SocialInfoDTO;
+import com.example.aboutme.Login.dto.SocialInfoRequest;
 import com.example.aboutme.Login.jwt.TokenProvider;
+import com.example.aboutme.apiPayload.code.status.ErrorStatus;
+import com.example.aboutme.apiPayload.exception.GeneralException;
 import com.example.aboutme.domain.Member;
 import com.example.aboutme.domain.constant.Social;
 import com.example.aboutme.repository.MemberRepository;
@@ -27,6 +29,7 @@ import java.util.Map;
 @Transactional
 public class GoogleServiceImpl implements GoogleService{
     private final MemberRepository memberRepository;
+    private final TokenProvider tokenProvider;
 
     @Value("${spring.security.oauth2.client.registration.google.client-id}")
     private String GOOGLE_CLIENT_ID;
@@ -42,7 +45,7 @@ public class GoogleServiceImpl implements GoogleService{
                 + "&redirect_uri=" + GOOGLE_REDIRECT_URL
                 + "&response_type=code" + "&scope=email";
     }
-    public SocialInfoDTO.GoogleDTO getGoogleInfo(String code) throws Exception {
+    public SocialInfoRequest.GoogleDTO getGoogleInfo(String code) throws Exception {
         if (code == null) throw new Exception("Failed get authorization code");
 
         String accessToken = "";
@@ -77,13 +80,14 @@ public class GoogleServiceImpl implements GoogleService{
 
             System.out.println(accessToken);
         } catch (Exception e) {
-            throw new Exception("API call failed");
+//            throw new Exception("API call failed");
+            throw new GeneralException(ErrorStatus._BAD_REQUEST);
         }
 
         return getUserInfoWithToken(accessToken);
     }
 
-    public SocialInfoDTO.GoogleDTO getUserInfoWithToken(String accessToken) throws Exception {
+    public SocialInfoRequest.GoogleDTO getUserInfoWithToken(String accessToken) throws Exception {
         //HttpHeader 생성
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(accessToken);
@@ -105,17 +109,19 @@ public class GoogleServiceImpl implements GoogleService{
         System.out.println(email);
 
 
-        return SocialInfoDTO.GoogleDTO.builder()
+        return SocialInfoRequest.GoogleDTO.builder()
                 .email(email)
                 .build();
     }
 
 
-    public void saveGoogleMember(SocialInfoDTO.GoogleDTO googleDTO){
+    public String saveGoogleMember(SocialInfoRequest.GoogleDTO googleDTO){
+        String newToken = tokenProvider.createToken(googleDTO.getEmail());
         Member newMember = MemberConverter.toMember(googleDTO, Social.GOOGLE);
         Boolean principal = memberRepository.existsByEmail(newMember.getEmail());
         if (principal == false){
             memberRepository.save(newMember);
         }
+        return newToken;
     }
 }

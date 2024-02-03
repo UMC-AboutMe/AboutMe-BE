@@ -1,7 +1,10 @@
 package com.example.aboutme.Login.service;
 
 import com.example.aboutme.Login.MemberConverter;
-import com.example.aboutme.Login.dto.SocialInfoDTO;
+import com.example.aboutme.Login.dto.SocialInfoRequest;
+import com.example.aboutme.Login.jwt.TokenProvider;
+import com.example.aboutme.apiPayload.code.status.ErrorStatus;
+import com.example.aboutme.apiPayload.exception.GeneralException;
 import com.example.aboutme.domain.Member;
 import com.example.aboutme.domain.constant.Social;
 import com.example.aboutme.repository.MemberRepository;
@@ -24,6 +27,7 @@ import org.springframework.web.client.RestTemplate;
 @Transactional
 public class KakaoServiceImpl implements KakaoService {
     private final MemberRepository memberRepository;
+    private final TokenProvider tokenProvider;
 
     @Value("${spring.security.oauth2.client.registration.kakao.client-id}")
     private String KAKAO_CLIENT_ID;
@@ -44,7 +48,7 @@ public class KakaoServiceImpl implements KakaoService {
                 + "&response_type=code";
     }
 
-    public SocialInfoDTO.KakaoDTO getKakaoInfo(String code) throws Exception {
+    public SocialInfoRequest.KakaoDTO getKakaoInfo(String code) throws Exception {
         if (code == null) throw new Exception("Failed get authorization code");
 
         String accessToken = "";
@@ -77,13 +81,14 @@ public class KakaoServiceImpl implements KakaoService {
             accessToken  = (String) jsonObj.get("access_token");
             refreshToken = (String) jsonObj.get("refresh_token");
         } catch (Exception e) {
-            throw new Exception("API call failed");
+//            throw new Exception("API call failed");
+            throw new GeneralException(ErrorStatus._BAD_REQUEST);
         }
 
         return getUserInfoWithToken(accessToken);
     }
 
-    public SocialInfoDTO.KakaoDTO getUserInfoWithToken(String accessToken) throws Exception {
+    public SocialInfoRequest.KakaoDTO getUserInfoWithToken(String accessToken) throws Exception {
         //HttpHeader 생성
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "Bearer " + accessToken);
@@ -110,14 +115,19 @@ public class KakaoServiceImpl implements KakaoService {
         String email = String.valueOf(account.get("email"));
         String nickname = String.valueOf(profile.get("nickname"));
 
-        return SocialInfoDTO.KakaoDTO.builder()
+        return SocialInfoRequest.KakaoDTO.builder()
                 .id(id)
                 .email(email)
                 .nickname(nickname).build();
     }
 
-    public void saveKakaoMember(SocialInfoDTO.KakaoDTO kakaoDTO){
-        Member newMember = MemberConverter.toMember(kakaoDTO, Social.KAKAO);
-        memberRepository.save(newMember);
+    public String saveKakaoMember(SocialInfoRequest.KakaoDTO kakaoDTO){
+        String newToken = tokenProvider.createToken(kakaoDTO.getEmail());
+        Member newMember = MemberConverter.toMember(kakaoDTO, Social.KAKAO, newToken);
+        Boolean principal = memberRepository.existsByEmail(newMember.getEmail());
+        if (principal == false){
+            memberRepository.save(newMember);
+        }
+        return newToken;
     }
 }

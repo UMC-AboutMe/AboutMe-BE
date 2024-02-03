@@ -8,11 +8,11 @@ import io.jsonwebtoken.security.Keys;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
+//import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+//import org.springframework.security.core.Authentication;
+//import org.springframework.security.core.GrantedAuthority;
+//import org.springframework.security.core.authority.SimpleGrantedAuthority;
+//import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
 
@@ -62,23 +62,23 @@ public class TokenProvider implements InitializingBean {
         }
     }
 
-    public Authentication getAuthentication(String token) {
-        Claims claims = Jwts
-                .parserBuilder()
-                .setSigningKey(key)
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
-
-        Collection<? extends GrantedAuthority> authorities =
-                Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
-                        .map(SimpleGrantedAuthority::new)
-                        .collect(Collectors.toList());
-
-        User principal = new User(claims.getSubject(), "", authorities);
-
-        return new UsernamePasswordAuthenticationToken(principal, token, authorities);
-    }
+//    public Authentication getAuthentication(String token) {
+//        Claims claims = Jwts
+//                .parserBuilder()
+//                .setSigningKey(key)
+//                .build()
+//                .parseClaimsJws(token)
+//                .getBody();
+//
+//        Collection<? extends GrantedAuthority> authorities =
+//                Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
+//                        .map(SimpleGrantedAuthority::new)
+//                        .collect(Collectors.toList());
+//
+//        User principal = new User(claims.getSubject(), "", authorities);
+//
+//        return new UsernamePasswordAuthenticationToken(principal, token, authorities);
+//    }
 
     @Override
     public void afterPropertiesSet() throws Exception {
@@ -93,7 +93,7 @@ public class TokenProvider implements InitializingBean {
                 .parseClaimsJws(token)
                 .getBody();
 
-        return claims.get("email", String.class); // userId 추출
+        return claims.get("sub", String.class); // userId 추출
     }
 
 
