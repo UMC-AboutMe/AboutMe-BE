@@ -65,4 +65,8 @@ public class Space extends BaseEntity {
     public void updateStatusMessage(String statusMessage) {
         this.statusMessage = statusMessage;
     }
+  
+    public void addPlan(Plan newPlan) {
+        planList.add(newPlan);
+    }
 }

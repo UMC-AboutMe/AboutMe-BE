@@ -1,6 +1,8 @@
 package com.example.aboutme.app.controller;
 
 import com.example.aboutme.apiPayload.ApiResponse;
+import com.example.aboutme.app.dto.PlanRequest;
+import com.example.aboutme.app.dto.PlanResponse;
 import com.example.aboutme.app.dto.SpaceRequest;
 import com.example.aboutme.app.dto.SpaceResponse;
 import com.example.aboutme.converter.SpaceConverter;
@@ -11,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.text.ParseException;
 
 @RestController
 @RequiredArgsConstructor
@@ -41,5 +44,11 @@ public class SpaceController {
     public ApiResponse<SpaceResponse.UpdateResultDTO> update(@RequestHeader("member-id") Long memberId, @RequestBody @Valid SpaceRequest.UpdateDTO request) {
         Space updateSpace = spaceCommandService.updateResult(memberId, request);
         return ApiResponse.onSuccess(SpaceConverter.toUpdateResultDTO(updateSpace));
+    }
+  
+    @PostMapping(value = "/plans/", produces = "application/json;charset=UTF-8")
+    public ApiResponse<SpaceResponse.ReadResultDTO> join (@RequestHeader("member-id") Long memberId, @RequestBody @Valid PlanRequest.CreatePlanDTO request) throws ParseException {
+        Space newSpace = spaceCommandService.createPlan(memberId, request);
+        return ApiResponse.onSuccess(SpaceConverter.toReadResultDTO(newSpace));
     }
 }
