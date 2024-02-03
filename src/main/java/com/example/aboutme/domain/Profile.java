@@ -1,6 +1,7 @@
 package com.example.aboutme.domain;
 
 import com.example.aboutme.domain.common.BaseEntity;
+import com.example.aboutme.domain.mapping.MemberProfile;
 import lombok.*;
 
 import javax.persistence.*;
@@ -26,6 +27,9 @@ public class Profile extends BaseEntity {
 
     @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL)
     private List<ProfileFeature> profileFeatureList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL)
+    private List<MemberProfile> memberProfileList = new ArrayList<>();
 
     public void setMember(Member member){
         this.member = member;
