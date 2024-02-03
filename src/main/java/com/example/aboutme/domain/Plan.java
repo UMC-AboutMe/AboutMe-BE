@@ -3,6 +3,8 @@ package com.example.aboutme.domain;
 import com.example.aboutme.domain.common.BaseEntity;
 import com.example.aboutme.domain.constant.Mood;
 import lombok.*;
+import org.joda.time.DateTime;
+import org.joda.time.LocalDateTime;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -21,6 +23,7 @@ public class Plan extends BaseEntity {
 
     private String content;
 
+    @Temporal(TemporalType.DATE)
     private Date date;
 
     @ManyToOne(fetch = FetchType.LAZY)

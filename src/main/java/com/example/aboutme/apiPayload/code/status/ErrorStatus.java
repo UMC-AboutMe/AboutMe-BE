@@ -41,6 +41,9 @@ public enum ErrorStatus implements BaseErrorCode {
     // 멤버 에러
     MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "MEMBER400", "해당하는 사용자가 존재하지 않습니다"),
 
+    // 멤버 프로필 에러
+    MEMBER_IS_NOT_PROFILE_CREATOR(HttpStatus.NOT_FOUND, "MEMBERPROFILE400", "제거하려는 프로필과 프로필 작성자가 일치하지 않습니다"),
+
     // S3 에러
     FILE_NOT_FOUND(HttpStatus.NOT_FOUND, "FILE400", "해당 파일이 존재하지 않습니다.");
 

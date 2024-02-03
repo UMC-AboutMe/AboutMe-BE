@@ -46,6 +46,25 @@ public class MemberProfileServiceImpl implements MemberProfileService {
         return memberProfile.getFavorite();
     }
 
+    public List<MemberProfile> getMyProfilesStorage(Long memberId){
+        Member member = memberService.findMember(memberId);
+        return memberProfileRepository.findAllByMember(member);
+    }
+
+    @Transactional
+    public MemberProfile deleteMemberProfile(Long memberId, Long profileId){
+        Member member = memberService.findMember(memberId);
+        Profile profile = profileRepository.findById(profileId)
+                .orElseThrow(()->new GeneralException(ErrorStatus.PROFILE_NOT_FOUND));
+        boolean isSame = profile.getMember().getId().equals(memberId);
+        if (!isSame){
+            throw new GeneralException(ErrorStatus.MEMBER_IS_NOT_PROFILE_CREATOR);
+        }
+        MemberProfile memberProfile = memberProfileRepository.findByMemberAndProfile(member, profile);
+        memberProfileRepository.delete(memberProfile);
+        return memberProfile;
+    }
+
     /**
      * 상대방 마이프로필 내 보관함에 추가하기
      * @param memberId 멤버 식별자
