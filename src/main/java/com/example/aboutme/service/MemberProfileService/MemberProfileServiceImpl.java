@@ -48,7 +48,6 @@ public class MemberProfileServiceImpl implements MemberProfileService {
 
     public List<MemberProfile> getMyProfilesStorage(Long memberId){
         Member member = memberService.findMember(memberId);
-
         return memberProfileRepository.findAllByMember(member);
     }
 

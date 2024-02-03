@@ -27,13 +27,12 @@ public class MemberProfileController {
     @GetMapping()
     public ApiResponse<MemberProfileResponse.GetMemberProfileListDTO> getMyProfilesStorage(@RequestHeader("member-id") Long memberId) {
         List<MemberProfile> memberProfileList = memberProfileService.getMyProfilesStorage(memberId);
-
         return ApiResponse.onSuccess(MemberProfileConverter.toGetMemberProfileListDTO(memberProfileList));
     }
 
     @DeleteMapping("/{profileId}")
-    public ApiResponse<MemberProfileResponse.DeleteMemberProfileMsgDTO> deleteMemberProfile(@RequestHeader("member-id") Long memberId, @RequestBody @Valid MemberProfileRequest.DeleteMemberDTO request) {
-        MemberProfile memberProfile = memberProfileService.deleteMemberProfile(memberId, request.getProfileId());
+    public ApiResponse<MemberProfileResponse.DeleteMemberProfileMsgDTO> deleteMemberProfile(@RequestHeader("member-id") Long memberId, @PathVariable Long profileId) {
+        MemberProfile memberProfile = memberProfileService.deleteMemberProfile(memberId, profileId);
         return ApiResponse.onSuccess(MemberProfileConverter.toDeleteMemberProfileMsgDTO(memberProfile.getId(),"success"));
     }
 
