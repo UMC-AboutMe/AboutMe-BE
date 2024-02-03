@@ -173,7 +173,7 @@ public class ProfileServiceImpl implements ProfileService{
                 }
         );
         Profile profile = profileRepository.findById(profileId).orElseThrow(
-                ()-> new NoSuchElementException("Can not found profile")
+                ()-> new GeneralException(ErrorStatus.PROFILE_NOT_FOUND)
         );
 
         profile.setIsDefault(true);
