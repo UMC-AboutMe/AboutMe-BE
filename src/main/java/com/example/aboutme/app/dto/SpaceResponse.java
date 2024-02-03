@@ -35,6 +35,21 @@ public class SpaceResponse {
         private String musicUrl;
         private String statusMessage;
         private List<SpaceImage> spaceImageList;
+        private List<PlanResponse.CreatePlanDTO> planList;
+    }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class UpdateResultDTO {
+        private String nickname;
+        private Integer characterType;
+        private Integer roomType;
+        private Mood mood;
+        private String musicUrl;
+        private String statusMessage;
+        private List<SpaceImage> spaceImageList;
         private List<Plan> planList;
     }
 }
