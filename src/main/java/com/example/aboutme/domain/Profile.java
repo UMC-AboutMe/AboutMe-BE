@@ -27,6 +27,9 @@ public class Profile extends BaseEntity {
     @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL)
     private List<ProfileFeature> profileFeatureList = new ArrayList<>();
 
+    @OneToOne(mappedBy = "profile", cascade = CascadeType.ALL)
+    private ProfileImage profileImage;
+
     public void setMember(Member member){
         this.member = member;
         member.getProfileList().add(this);
