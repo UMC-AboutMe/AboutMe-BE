@@ -47,6 +47,9 @@ public enum ErrorStatus implements BaseErrorCode {
     // S3 에러
     FILE_NOT_FOUND(HttpStatus.NOT_FOUND, "FILE400", "해당 파일이 존재하지 않습니다.");
 
+    // 토큰 에러
+
+
     private final HttpStatus httpStatus;
     private final String code;
     private final String message;
