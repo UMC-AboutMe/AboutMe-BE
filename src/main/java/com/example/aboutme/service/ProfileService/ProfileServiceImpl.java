@@ -16,7 +16,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -30,14 +29,31 @@ public class ProfileServiceImpl implements ProfileService{
     private final ProfileFeatureRepository profileFeatureRepository;
 
     /**
-     * 내 마이프로필 조회
+     * 내 마이프로필 목록 조회
      * @param memberId 멤버 식별자
-     * @return
+     * @return 마이프로필 목록
      */
     public List<Profile> getMyProfiles(Long memberId){
         Member member = memberService.findMember(memberId);
 
         return profileRepository.findAllByMemberOrderByIsDefaultDesc(member);
+    }
+
+    /**
+     * 내 마이프로필 단건 조회
+     * @param memberId 멤버 식별자
+     * @param profileId 프로필 식별자
+     * @return 마이프로필
+     */
+    public Profile getMyProfile(Long memberId, Long profileId){
+        Member member = memberService.findMember(memberId);
+        Profile profile = profileRepository.findById(profileId).get();
+
+        if(profile.getMember() != member){
+            throw new GeneralException(ErrorStatus.PROFILE_NOT_MATCH_MEMBER_AT_GET);
+        }
+
+        return profile;
     }
 
     /**
@@ -86,7 +102,7 @@ public class ProfileServiceImpl implements ProfileService{
         ProfileFeature profileFeature = profileFeatureRepository.findById(request.getFeatureId()).get();
 
         if(profile.getMember() != member){
-            throw new GeneralException(ErrorStatus.PROFILE_NOT_MATCH_MEMBER);
+            throw new GeneralException(ErrorStatus.PROFILE_NOT_MATCH_MEMBER_AT_UPDATE);
         }
 
         if(profileFeature.getProfile() != profile){
@@ -94,7 +110,8 @@ public class ProfileServiceImpl implements ProfileService{
         }
 
         // 이름은 필수
-        if(profileFeature.getProfileKey().equals("name")){
+        boolean isName = profileFeature.getProfileKey() != null && profileFeature.getProfileKey().equals("name");
+        if(isName){
             boolean isNameEmpty = request.getFeatureKey() == null || !request.getFeatureKey().equals("name") || request.getFeatureValue() == null || request.getFeatureValue().isEmpty();
             if(isNameEmpty){
                 throw new GeneralException(ErrorStatus.PROFILE_FEATURE_NAME_CANNOT_EMPTY);
@@ -117,7 +134,7 @@ public class ProfileServiceImpl implements ProfileService{
         Profile profile = profileRepository.findById(profileId).get();
 
         if(profile.getMember() != member){
-            throw new GeneralException(ErrorStatus.PROFILE_NOT_MATCH_MEMBER);
+            throw new GeneralException(ErrorStatus.PROFILE_NOT_MATCH_MEMBER_AT_DELETE);
         }
 
         profileRepository.delete(profile);
