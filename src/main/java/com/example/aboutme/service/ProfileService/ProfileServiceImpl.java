@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 @Transactional(readOnly = true)
@@ -160,4 +161,24 @@ public class ProfileServiceImpl implements ProfileService{
 
         return serialNumber;
     }
+
+    @Transactional
+    public Profile updateIsDefault(Long memberID, Long profileId) {
+        List<Profile> profileList = getMyProfiles(memberID);
+        profileList.forEach(
+                profile -> {
+                    if (profile.getIsDefault()) {
+                        profile.setIsDefault(false);
+                    }
+                }
+        );
+        Profile profile = profileRepository.findById(profileId).orElseThrow(
+                ()-> new GeneralException(ErrorStatus.PROFILE_NOT_FOUND)
+        );
+
+        profile.setIsDefault(true);
+        return profile;
+    }
+
+
 }

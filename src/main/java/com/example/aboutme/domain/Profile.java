@@ -31,4 +31,8 @@ public class Profile extends BaseEntity {
         this.member = member;
         member.getProfileList().add(this);
     }
+
+    public void setIsDefault(Boolean isDefault){
+        this.isDefault = isDefault;
+    }
 }

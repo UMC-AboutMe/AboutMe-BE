@@ -90,6 +90,7 @@ public class ProfileResponse {
         private String featureValue;
     }
 
+
     @Builder
     @Getter
     @NoArgsConstructor
@@ -112,5 +113,20 @@ public class ProfileResponse {
 
         @JsonProperty("back_features")
         private List<ProfileFeatureDTO> backFeatureList;
+    }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class UpdateDefaultProfileDTO{
+        @JsonProperty("profile_id")
+        private Long id;
+
+        @JsonProperty("serial_number")
+        private int serialNumber;
+
+        @JsonProperty("is_default")
+        private Boolean isDefault;
     }
 }
