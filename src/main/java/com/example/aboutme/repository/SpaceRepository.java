@@ -6,9 +6,10 @@ import com.example.aboutme.service.MemberService.MemberService;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface SpaceRepository extends JpaRepository<Space, Long> {
     Space findByMember_Id(Long memberId);
-    List<Space> findByNicknameIn(List<String> nicknames);
     boolean existsByMember(Member member);
+    Optional<Space> findByMember(Member member);
 }
