@@ -48,4 +48,17 @@ public class SpaceConverter {
                 .planList(readPlanDTOList)
                 .build();
     }
+
+    public static SpaceResponse.UpdateResultDTO toUpdateResultDTO(Space space) {
+        return SpaceResponse.UpdateResultDTO.builder()
+                .nickname(space.getNickname())
+                .characterType(space.getCharacterType())
+                .roomType(space.getRoomType())
+                .mood(space.getMood())
+                .musicUrl(space.getMusicUrl())
+                .statusMessage(space.getStatusMessage())
+                .spaceImageList(space.getSpaceImageList())
+                .planList(space.getPlanList())
+                .build();
+    }
 }

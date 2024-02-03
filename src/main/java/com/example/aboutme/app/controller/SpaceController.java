@@ -40,6 +40,12 @@ public class SpaceController {
         return ApiResponse.onSuccess(null);
     }
 
+    @PatchMapping(value = "/", produces = "application/json;charset=UTF-8")
+    public ApiResponse<SpaceResponse.UpdateResultDTO> update(@RequestHeader("member-id") Long memberId, @RequestBody @Valid SpaceRequest.UpdateDTO request) {
+        Space updateSpace = spaceCommandService.updateResult(memberId, request);
+        return ApiResponse.onSuccess(SpaceConverter.toUpdateResultDTO(updateSpace));
+    }
+  
     @PostMapping(value = "/plans/", produces = "application/json;charset=UTF-8")
     public ApiResponse<SpaceResponse.ReadResultDTO> join (@RequestHeader("member-id") Long memberId, @RequestBody @Valid PlanRequest.CreatePlanDTO request) throws ParseException {
         Space newSpace = spaceCommandService.createPlan(memberId, request);

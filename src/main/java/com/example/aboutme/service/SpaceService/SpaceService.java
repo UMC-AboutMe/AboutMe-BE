@@ -13,5 +13,8 @@ public interface SpaceService {
 
     void deleteSpace(Long memberId);
 
+    Space updateResult(Long memberId, SpaceRequest.UpdateDTO request);
+    
     Space createPlan(Long memberId, PlanRequest.CreatePlanDTO request) throws ParseException;
+
 }
