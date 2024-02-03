@@ -32,9 +32,9 @@ public class MemberProfileController {
     }
 
     @DeleteMapping("/{profileId}")
-    public ApiResponse<MemberProfileResponse.MemberProfileDTO> deleteMemberProfile(@RequestHeader("member-id") Long memberId, @RequestBody @Valid MemberProfileRequest.DeleteMemberDTO request) {
+    public ApiResponse<MemberProfileResponse.DeleteMemberProfileMsgDTO> deleteMemberProfile(@RequestHeader("member-id") Long memberId, @RequestBody @Valid MemberProfileRequest.DeleteMemberDTO request) {
         MemberProfile memberProfile = memberProfileService.deleteMemberProfile(memberId, request.getProfileId());
-        return ApiResponse.onSuccess(MemberProfileConverter.toMemberProfileDTO(memberProfile));
+        return ApiResponse.onSuccess(MemberProfileConverter.toDeleteMemberProfileMsgDTO(memberProfile.getId(),"success"));
     }
 
     @PatchMapping("/{profileId}/favorite")

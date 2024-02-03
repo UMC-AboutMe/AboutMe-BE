@@ -25,8 +25,14 @@ public class MemberProfileConverter {
         return MemberProfileResponse.MemberProfileDTO.builder()
                 .id(memberProfile.getId())
                 .favorite(memberProfile.getFavorite())
-                .member(memberProfile.getMember())
-                .profile(memberProfile.getProfile())
+                .member(MemberProfileResponse.StorageMemberDTO.builder()
+                        .email(memberProfile.getMember().getEmail())
+                        .social(memberProfile.getMember().getSocial()).build())
+                .profile(MemberProfileResponse.StorageProfileDTO.builder()
+                        .id(memberProfile.getProfile().getId())
+                        .serialNumber(memberProfile.getProfile().getSerialNumber())
+                        .isDefault(memberProfile.getProfile().getIsDefault())
+                        .build())
                 .build();
     }
     public static MemberProfileResponse.favoriteDto toToggleFavorite(Boolean favorite) {
@@ -40,6 +46,13 @@ public class MemberProfileConverter {
                 .favorite(false)
                 .member(member)
                 .profile(profile)
+                .build();
+    }
+
+    public static MemberProfileResponse.DeleteMemberProfileMsgDTO toDeleteMemberProfileMsgDTO(Long profileId, String msg){
+        return MemberProfileResponse.DeleteMemberProfileMsgDTO.builder()
+                .msg(msg)
+                .profileId(profileId)
                 .build();
     }
 }
