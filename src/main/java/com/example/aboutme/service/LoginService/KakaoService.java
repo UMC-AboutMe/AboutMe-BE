@@ -1,6 +1,6 @@
-package com.example.aboutme.Login.service;
+package com.example.aboutme.service.LoginService;
 
-import com.example.aboutme.Login.dto.SocialInfoRequest;
+import com.example.aboutme.app.dto.SocialInfoRequest;
 
 public interface KakaoService {
     String getKakaoLogin();

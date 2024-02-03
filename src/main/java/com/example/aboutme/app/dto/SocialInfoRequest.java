@@ -1,4 +1,4 @@
-package com.example.aboutme.Login.dto;
+package com.example.aboutme.app.dto;
 
 import lombok.Builder;
 import lombok.Data;

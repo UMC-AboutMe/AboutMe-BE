@@ -20,4 +20,10 @@ public class MemberServiceImpl implements MemberService{
                 () -> new GeneralException(ErrorStatus.MEMBER_NOT_FOUND)
         );
     }
+
+    @Transactional
+    public void deleteMember(Long memberId){
+        findMember(memberId);
+        memberRepository.deleteById(memberId);
+    }
 }

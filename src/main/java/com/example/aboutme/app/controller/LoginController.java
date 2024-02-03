@@ -1,13 +1,15 @@
-package com.example.aboutme.Login.controller;
+package com.example.aboutme.app.controller;
 
-import com.example.aboutme.Login.dto.MsgResponse;
-import com.example.aboutme.Login.dto.SocialInfoRequest;
+import com.example.aboutme.app.dto.MsgResponse;
+import com.example.aboutme.app.dto.SocialInfoRequest;
 //import com.example.aboutme.Login.jwt.JwtAuthenticationFilter;
 import com.example.aboutme.Login.jwt.TokenProvider;
-import com.example.aboutme.Login.service.GoogleService;
-import com.example.aboutme.Login.service.KakaoService;
+import com.example.aboutme.service.LoginService.GoogleService;
+import com.example.aboutme.service.LoginService.KakaoService;
+import com.example.aboutme.apiPayload.ApiResponse;
 import com.example.aboutme.converter.LoginConverter;
 import com.example.aboutme.repository.MemberRepository;
+import com.example.aboutme.service.MemberService.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -17,21 +19,19 @@ import org.springframework.http.ResponseEntity;
 //import org.springframework.security.core.Authentication;
 //import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @RequiredArgsConstructor
-@Controller
+@RestController
 public class LoginController {
     private final KakaoService kakaoService;
     private final GoogleService googleService;
     private final TokenProvider tokenProvider;
-    private final MemberRepository memberRepository;
+    private final MemberService memberService;
 
     @GetMapping("members/{socialType}/login")
     public void socialLogin(HttpServletResponse response, @PathVariable String socialType) throws IOException {
@@ -68,33 +68,37 @@ public class LoginController {
 //    }
 
     @GetMapping("/kakao/callback")
-    public ResponseEntity<MsgResponse.LoginMsgDTO> kakaoCallback(HttpServletRequest request) throws Exception {
+    public ApiResponse<MsgResponse.LoginMsgDTO> kakaoCallback(HttpServletRequest request) throws Exception {
         SocialInfoRequest.KakaoDTO kakaoInfo = kakaoService.getKakaoInfo(request.getParameter("code"));
         String newToken = tokenProvider.createToken(kakaoInfo.getEmail());
         kakaoService.saveKakaoMember(kakaoInfo);
-        return ResponseEntity.ok()
-                .body(LoginConverter.toLoginDTO("success",kakaoInfo.getEmail(),newToken));
+        return ApiResponse.onSuccess(LoginConverter.toLoginDTO("success",kakaoInfo.getEmail(),newToken));
     }
 
     @GetMapping("/google/callback")
-    public ResponseEntity<MsgResponse.LoginMsgDTO> googleCallback(HttpServletRequest request) throws Exception {
+    public ApiResponse<MsgResponse.LoginMsgDTO> googleCallback(HttpServletRequest request) throws Exception {
         SocialInfoRequest.GoogleDTO googleInfo = googleService.getGoogleInfo(request.getParameter("code"));
         String newToken = tokenProvider.createToken(googleInfo.getEmail());
         googleService.saveGoogleMember(googleInfo);
-        return ResponseEntity.ok()
-                .body(LoginConverter.toLoginDTO("success",googleInfo.getEmail(),newToken));
+        return ApiResponse.onSuccess(LoginConverter.toLoginDTO("success",googleInfo.getEmail(),newToken));
     }
 
     @GetMapping("/members/valid")
-    public ResponseEntity<MsgResponse.validMsgDTO> isValidToken(@RequestBody String token) throws Exception {
+    public ApiResponse<MsgResponse.validMsgDTO> isValidToken(@RequestBody String token) throws Exception {
         JSONParser jsonParser = new JSONParser();
         JSONObject jsonObj = (JSONObject) jsonParser.parse(token);
         boolean res = tokenProvider.validateToken((String) jsonObj.get("token"));
         if (res == true){
-            return ResponseEntity.ok().body(LoginConverter.toValidMsgDTO("success"));
+            return ApiResponse.onSuccess(LoginConverter.toValidMsgDTO("success"));
         }else {
-            return ResponseEntity.ok().body(LoginConverter.toValidMsgDTO("fail"));
+            return ApiResponse.onSuccess(LoginConverter.toValidMsgDTO("fail"));
         }
+    }
+
+    @DeleteMapping("/members/unregister")
+    private ApiResponse<MsgResponse.unregisterMsgDTO> unregisterMember(@RequestHeader("member-id") Long memberId){
+        memberService.deleteMember(memberId);
+        return ApiResponse.onSuccess(LoginConverter.toUnregisterMsgDTO(memberId,"unregister Member"));
     }
 
 
