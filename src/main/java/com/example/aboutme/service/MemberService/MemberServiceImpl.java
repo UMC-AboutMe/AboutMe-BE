@@ -23,6 +23,7 @@ public class MemberServiceImpl implements MemberService{
 
     @Transactional
     public void deleteMember(Long memberId){
+        findMember(memberId);
         memberRepository.deleteById(memberId);
     }
 }
