@@ -1,7 +1,7 @@
-package com.example.aboutme.Login.service;
+package com.example.aboutme.service.LoginService;
 
-import com.example.aboutme.Login.MemberConverter;
-import com.example.aboutme.Login.dto.SocialInfoRequest;
+import com.example.aboutme.converter.MemberConverter;
+import com.example.aboutme.app.dto.SocialInfoRequest;
 import com.example.aboutme.Login.jwt.TokenProvider;
 import com.example.aboutme.apiPayload.code.status.ErrorStatus;
 import com.example.aboutme.apiPayload.exception.GeneralException;

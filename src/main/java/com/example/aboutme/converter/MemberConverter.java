@@ -1,6 +1,6 @@
-package com.example.aboutme.Login;
+package com.example.aboutme.converter;
 
-import com.example.aboutme.Login.dto.SocialInfoRequest;
+import com.example.aboutme.app.dto.SocialInfoRequest;
 import com.example.aboutme.domain.Member;
 import com.example.aboutme.domain.constant.Social;
 
