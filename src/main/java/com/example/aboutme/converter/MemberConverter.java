@@ -10,9 +10,10 @@ public class MemberConverter {
                 .social(social)
                 .jwtAccessToken(token).build();
     }
-    public static Member toMember(SocialInfoRequest.GoogleDTO googleDTO, Social social){
+    public static Member toMember(SocialInfoRequest.GoogleDTO googleDTO, Social social, String token){
         return Member.builder().email(googleDTO.getEmail())
-                .social(social).build();
+                .social(social)
+                .jwtAccessToken(token).build();
     }
 
 }

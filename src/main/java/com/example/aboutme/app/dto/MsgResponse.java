@@ -1,5 +1,6 @@
 package com.example.aboutme.app.dto;
 
+import com.example.aboutme.domain.constant.Social;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,9 +13,9 @@ public class MsgResponse {
     @NoArgsConstructor
     @Builder
     public static class LoginMsgDTO{
-        private String msg;
         private String email;
-        private String token;
+        private String jwtToken;
+        private Social social;
     }
     @Data
     @AllArgsConstructor

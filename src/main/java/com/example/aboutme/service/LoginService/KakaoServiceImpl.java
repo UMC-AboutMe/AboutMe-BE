@@ -84,7 +84,7 @@ public class KakaoServiceImpl implements KakaoService {
 //            throw new Exception("API call failed");
             throw new GeneralException(ErrorStatus._BAD_REQUEST);
         }
-
+        System.out.println("acct:"+accessToken);
         return getUserInfoWithToken(accessToken);
     }
 
@@ -121,13 +121,14 @@ public class KakaoServiceImpl implements KakaoService {
                 .nickname(nickname).build();
     }
 
-    public String saveKakaoMember(SocialInfoRequest.KakaoDTO kakaoDTO){
+    public Member saveKakaoMember(SocialInfoRequest.KakaoDTO kakaoDTO){
         String newToken = tokenProvider.createToken(kakaoDTO.getEmail());
         Member newMember = MemberConverter.toMember(kakaoDTO, Social.KAKAO, newToken);
-        Boolean principal = memberRepository.existsByEmail(newMember.getEmail());
+        Boolean principal = memberRepository.existsByEmailAndSocial(newMember.getEmail(), Social.KAKAO);
         if (principal == false){
             memberRepository.save(newMember);
         }
-        return newToken;
+
+        return newMember;
     }
 }

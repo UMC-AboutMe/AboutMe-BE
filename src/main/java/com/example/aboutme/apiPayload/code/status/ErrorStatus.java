@@ -45,9 +45,10 @@ public enum ErrorStatus implements BaseErrorCode {
     MEMBER_IS_NOT_PROFILE_CREATOR(HttpStatus.NOT_FOUND, "MEMBERPROFILE400", "제거하려는 프로필과 프로필 작성자가 일치하지 않습니다"),
 
     // S3 에러
-    FILE_NOT_FOUND(HttpStatus.NOT_FOUND, "FILE400", "해당 파일이 존재하지 않습니다.");
+    FILE_NOT_FOUND(HttpStatus.NOT_FOUND, "FILE400", "해당 파일이 존재하지 않습니다."),
 
-    // 토큰 에러
+    // 소셜타입 에러
+    UNKNOWN_SOCIALTYPE(HttpStatus.NOT_FOUND, "SOCIAL400", "해당 소셜 타입이 존재하지 않습니다.");
 
 
     private final HttpStatus httpStatus;

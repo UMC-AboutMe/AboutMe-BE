@@ -1,9 +1,13 @@
 package com.example.aboutme.app.controller;
 
+import com.example.aboutme.apiPayload.code.status.ErrorStatus;
+import com.example.aboutme.apiPayload.exception.GeneralException;
 import com.example.aboutme.app.dto.MsgResponse;
 import com.example.aboutme.app.dto.SocialInfoRequest;
 //import com.example.aboutme.Login.jwt.JwtAuthenticationFilter;
 import com.example.aboutme.Login.jwt.TokenProvider;
+import com.example.aboutme.domain.Member;
+import com.example.aboutme.domain.constant.Social;
 import com.example.aboutme.service.LoginService.GoogleService;
 import com.example.aboutme.service.LoginService.KakaoService;
 import com.example.aboutme.apiPayload.ApiResponse;
@@ -67,21 +71,21 @@ public class LoginController {
 //        }
 //    }
 
-    @GetMapping("/kakao/callback")
-    public ApiResponse<MsgResponse.LoginMsgDTO> kakaoCallback(HttpServletRequest request) throws Exception {
-        SocialInfoRequest.KakaoDTO kakaoInfo = kakaoService.getKakaoInfo(request.getParameter("code"));
-        String newToken = tokenProvider.createToken(kakaoInfo.getEmail());
-        kakaoService.saveKakaoMember(kakaoInfo);
-        return ApiResponse.onSuccess(LoginConverter.toLoginDTO("success",kakaoInfo.getEmail(),newToken));
-    }
-
-    @GetMapping("/google/callback")
-    public ApiResponse<MsgResponse.LoginMsgDTO> googleCallback(HttpServletRequest request) throws Exception {
-        SocialInfoRequest.GoogleDTO googleInfo = googleService.getGoogleInfo(request.getParameter("code"));
-        String newToken = tokenProvider.createToken(googleInfo.getEmail());
-        googleService.saveGoogleMember(googleInfo);
-        return ApiResponse.onSuccess(LoginConverter.toLoginDTO("success",googleInfo.getEmail(),newToken));
-    }
+//    @GetMapping("/kakao/callback")
+//    public ApiResponse<MsgResponse.LoginMsgDTO> kakaoCallback(HttpServletRequest request) throws Exception {
+//        SocialInfoRequest.KakaoDTO kakaoInfo = kakaoService.getKakaoInfo(request.getParameter("code"));
+//        String newToken = tokenProvider.createToken(kakaoInfo.getEmail());
+//        kakaoService.saveKakaoMember(kakaoInfo);
+//        return ApiResponse.onSuccess(LoginConverter.toLoginDTO(kakaoInfo.getEmail(),newToken,Social.KAKAO));
+//    }
+//
+//    @GetMapping("/google/callback")
+//    public ApiResponse<MsgResponse.LoginMsgDTO> googleCallback(HttpServletRequest request) throws Exception {
+//        SocialInfoRequest.GoogleDTO googleInfo = googleService.getGoogleInfo(request.getParameter("code"));
+//        String newToken = tokenProvider.createToken(googleInfo.getEmail());
+//        googleService.saveGoogleMember(googleInfo);
+//        return ApiResponse.onSuccess(LoginConverter.toLoginDTO(googleInfo.getEmail(),newToken,Social.GOOGLE));
+//    }
 
     @GetMapping("/members/valid")
     public ApiResponse<MsgResponse.validMsgDTO> isValidToken(@RequestBody String token) throws Exception {
@@ -100,6 +104,31 @@ public class LoginController {
         memberService.deleteMember(memberId);
         return ApiResponse.onSuccess(LoginConverter.toUnregisterMsgDTO(memberId,"unregister Member"));
     }
+
+    @PostMapping("members/{socialType}/login")
+    public ApiResponse<MsgResponse.LoginMsgDTO> androidFrontLogin(@PathVariable String socialType, @RequestBody String token) throws Exception {
+        String newJwtToken;
+        JSONParser jsonParser = new JSONParser();
+        JSONObject jsonObj = (JSONObject) jsonParser.parse(token);
+        String frontAccessToken = (String) jsonObj.get("token");
+        System.out.println(frontAccessToken);
+
+        switch (socialType) {
+            case "kakao":
+                SocialInfoRequest.KakaoDTO kakaoInfo = kakaoService.getUserInfoWithToken(frontAccessToken);
+                newJwtToken = tokenProvider.createToken(kakaoInfo.getEmail());
+                Member newMemberKakao = kakaoService.saveKakaoMember(kakaoInfo);
+                return ApiResponse.onSuccess(LoginConverter.toLoginDTO(kakaoInfo.getEmail(),newJwtToken, Social.KAKAO));
+            case "google":
+                SocialInfoRequest.GoogleDTO googleInfo = googleService.getUserInfoWithToken(frontAccessToken);
+                newJwtToken = tokenProvider.createToken(googleInfo.getEmail());
+                Member newMemberGoogle = googleService.saveGoogleMember(googleInfo);
+                return ApiResponse.onSuccess(LoginConverter.toLoginDTO(googleInfo.getEmail(),newJwtToken,Social.GOOGLE));
+            default:
+                throw new GeneralException(ErrorStatus.UNKNOWN_SOCIALTYPE);
+        }
+    }
+
 
 
 

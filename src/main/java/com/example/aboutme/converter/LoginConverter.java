@@ -1,13 +1,14 @@
 package com.example.aboutme.converter;
 
 import com.example.aboutme.app.dto.MsgResponse;
+import com.example.aboutme.domain.constant.Social;
 
 public class LoginConverter {
-    public static MsgResponse.LoginMsgDTO toLoginDTO(String msg, String email, String token){
+    public static MsgResponse.LoginMsgDTO toLoginDTO(String email, String token, Social social){
         return MsgResponse.LoginMsgDTO.builder()
-                .msg(msg)
                 .email(email)
-                .token(token)
+                .jwtToken(token)
+                .social(social)
                 .build();
     }
 
