@@ -39,7 +39,11 @@ public class SpaceServiceImpl implements SpaceService {
      * @return 생성된 마이스페이스의 특징
      */
     @Transactional
-    public Space JoinSpace(SpaceRequest.JoinDTO request) {
+    public Space JoinSpace(Long memberId, SpaceRequest.JoinDTO request) {
+        Member member = memberService.findMember(memberId);
+        if (spaceRepository.existsByMember(member)) {
+            throw new GeneralException(ErrorStatus.SPACE_ALREADY_EXIST);
+        }
         Space newSpace = SpaceConverter.toSpace(request);
         return spaceRepository.save(newSpace);
     }

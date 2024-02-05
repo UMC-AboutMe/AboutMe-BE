@@ -8,7 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.text.ParseException;
 
 public interface SpaceService {
-    Space JoinSpace(SpaceRequest.JoinDTO request);
+    Space JoinSpace(Long memberId, SpaceRequest.JoinDTO request);
 
     Space readSpace(Long memberId);
 
