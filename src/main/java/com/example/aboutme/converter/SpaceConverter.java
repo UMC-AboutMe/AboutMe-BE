@@ -1,5 +1,6 @@
 package com.example.aboutme.converter;
 
+import com.example.aboutme.app.dto.MemberSpaceResponse;
 import com.example.aboutme.app.dto.PlanResponse;
 import com.example.aboutme.app.dto.SpaceRequest;
 import com.example.aboutme.app.dto.SpaceResponse;
@@ -8,6 +9,7 @@ import com.example.aboutme.aws.s3.S3Service;
 import com.example.aboutme.domain.Plan;
 import com.example.aboutme.domain.Space;
 import com.example.aboutme.domain.SpaceImage;
+import com.example.aboutme.domain.mapping.MemberSpace;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,7 +60,7 @@ public class SpaceConverter {
     }
 
     public static SpaceResponse.UpdateResultDTO toUpdateResultDTO(Space space) {
-        List<String> readImageDTOList = new ArrayList<>();
+            List<String> readImageDTOList = new ArrayList<>();
 
         space.getSpaceImageList().stream()
                 .map(SpaceImage::getImage)
@@ -74,5 +76,14 @@ public class SpaceConverter {
                 .spaceImageList(readImageDTOList)
                 .planList(space.getPlanList())
                 .build();
+    }
+
+    public static SpaceResponse.SearchResultDto toSearchResultDTO(Space space) {
+        return SpaceResponse.SearchResultDto.builder()
+                        .spaceId(space.getId())
+                        .nickname(space.getNickname())
+                        .characterType(space.getCharacterType())
+                        .roomType(space.getRoomType())
+                        .build();
     }
 }

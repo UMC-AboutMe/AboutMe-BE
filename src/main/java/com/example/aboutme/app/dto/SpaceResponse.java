@@ -4,10 +4,7 @@ import com.example.aboutme.domain.Member;
 import com.example.aboutme.domain.Plan;
 import com.example.aboutme.domain.SpaceImage;
 import com.example.aboutme.domain.constant.Mood;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
@@ -51,5 +48,16 @@ public class SpaceResponse {
         private String statusMessage;
         private List<String> spaceImageList;
         private List<Plan> planList;
+    }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Builder
+    public static class SearchResultDto {
+        private Long spaceId;
+        private String nickname;
+        private Integer characterType;
+        private Integer roomType;
     }
 }

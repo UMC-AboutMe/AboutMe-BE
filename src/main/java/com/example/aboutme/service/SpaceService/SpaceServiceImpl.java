@@ -23,7 +23,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.text.ParseException;
 import java.util.Optional;
 
-
 @Slf4j
 @Service
 @Transactional(readOnly = true)
@@ -136,5 +135,16 @@ public class SpaceServiceImpl implements SpaceService {
 
         space.addImage(SpaceImageConverter.toSpaceImage(space, imageDTO));
         return space;
+    }
+
+    /**
+     * 스페이스 검색
+     *
+     * @param keyword 검색 키워드(스페이스 닉네임)
+     * @return 해당 스페이스
+     */
+    public Space searchSpace(String keyword) {
+        return spaceRepository.findByNickname(keyword)
+                .orElseThrow(() -> new GeneralException(ErrorStatus.SPACE_NOT_FOUND));
     }
 }
