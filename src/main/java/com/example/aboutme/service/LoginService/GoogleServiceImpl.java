@@ -78,12 +78,12 @@ public class GoogleServiceImpl implements GoogleService{
             accessToken  = (String) jsonObj.get("access_token");
             refreshToken = (String) jsonObj.get("refresh_token");
 
-            System.out.println(accessToken);
+            System.out.println("acct:"+accessToken);
         } catch (Exception e) {
 //            throw new Exception("API call failed");
             throw new GeneralException(ErrorStatus._BAD_REQUEST);
         }
-
+        System.out.println(accessToken);
         return getUserInfoWithToken(accessToken);
     }
 
@@ -115,13 +115,13 @@ public class GoogleServiceImpl implements GoogleService{
     }
 
 
-    public String saveGoogleMember(SocialInfoRequest.GoogleDTO googleDTO){
+    public Member saveGoogleMember(SocialInfoRequest.GoogleDTO googleDTO){
         String newToken = tokenProvider.createToken(googleDTO.getEmail());
-        Member newMember = MemberConverter.toMember(googleDTO, Social.GOOGLE);
-        Boolean principal = memberRepository.existsByEmail(newMember.getEmail());
+        Member newMember = MemberConverter.toMember(googleDTO, Social.GOOGLE,newToken);
+        Boolean principal = memberRepository.existsByEmailAndSocial(newMember.getEmail(),Social.GOOGLE);
         if (principal == false){
             memberRepository.save(newMember);
         }
-        return newToken;
+        return newMember;
     }
 }

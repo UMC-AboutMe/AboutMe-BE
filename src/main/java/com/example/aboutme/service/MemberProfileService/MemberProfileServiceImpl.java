@@ -56,10 +56,10 @@ public class MemberProfileServiceImpl implements MemberProfileService {
         Member member = memberService.findMember(memberId);
         Profile profile = profileRepository.findById(profileId)
                 .orElseThrow(()->new GeneralException(ErrorStatus.PROFILE_NOT_FOUND));
-        boolean isSame = profile.getMember().getId().equals(memberId);
-        if (!isSame){
-            throw new GeneralException(ErrorStatus.MEMBER_IS_NOT_PROFILE_CREATOR);
-        }
+//        boolean isSame = profile.getMember().getId().equals(memberId);
+//        if (!isSame){
+//            throw new GeneralException(ErrorStatus.MEMBER_IS_NOT_PROFILE_CREATOR);
+//        }
         MemberProfile memberProfile = memberProfileRepository.findByMemberAndProfile(member, profile);
         memberProfileRepository.delete(memberProfile);
         return memberProfile;

@@ -52,7 +52,7 @@ public class MemberProfileConverter {
     public static MemberProfileResponse.DeleteMemberProfileMsgDTO toDeleteMemberProfileMsgDTO(Long profileId, String msg){
         return MemberProfileResponse.DeleteMemberProfileMsgDTO.builder()
                 .msg(msg)
-                .profileId(profileId)
+                .memberProfileId(profileId)
                 .build();
     }
 }

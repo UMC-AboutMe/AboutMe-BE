@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface MemberRepository extends JpaRepository<Member, Long> {
     Member findByEmailAndSocial(String email, Social social);
 
-    Boolean existsByEmail(String email);
+    Boolean existsByEmailAndSocial(String email, Social social);
 }
