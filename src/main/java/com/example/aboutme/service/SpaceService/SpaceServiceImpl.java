@@ -134,7 +134,7 @@ public class SpaceServiceImpl implements SpaceService {
             throw new GeneralException(ErrorStatus.SPACE_MAXIMUN_IMAGE_COUNT);
         }
 
-        space.addImage(SpaceImageConverter.toSpaceImage(space, imageDTO.getImgUrl()));
+        space.addImage(SpaceImageConverter.toSpaceImage(space, imageDTO));
         return space;
     }
 }
