@@ -6,6 +6,7 @@ import com.example.aboutme.domain.Space;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.text.ParseException;
+import java.util.Optional;
 
 public interface SpaceService {
     Space JoinSpace(SpaceRequest.JoinDTO request);
@@ -19,4 +20,6 @@ public interface SpaceService {
     Space createPlan(Long memberId, PlanRequest.CreatePlanDTO request) throws ParseException;
 
     Space uploadImage(Long memberId, MultipartFile multipartFile);
+
+    Space searchSpace(String keyword);
 }
