@@ -3,6 +3,7 @@ package com.example.aboutme.service.SpaceService;
 import com.example.aboutme.app.dto.PlanRequest;
 import com.example.aboutme.app.dto.SpaceRequest;
 import com.example.aboutme.domain.Space;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.text.ParseException;
 
@@ -17,4 +18,5 @@ public interface SpaceService {
     
     Space createPlan(Long memberId, PlanRequest.CreatePlanDTO request) throws ParseException;
 
+    Space uploadImage(Long memberId, MultipartFile multipartFile);
 }
