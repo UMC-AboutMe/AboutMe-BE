@@ -15,11 +15,7 @@ public class SpaceImage extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String imageOne;
-
-    private String imageTwo;
-
-    private String imageThree;
+    private String image;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "space_id")

@@ -8,6 +8,7 @@ import com.example.aboutme.aws.s3.S3ResponseDto;
 import com.example.aboutme.aws.s3.S3Service;
 import com.example.aboutme.converter.PlanConverter;
 import com.example.aboutme.converter.SpaceConverter;
+import com.example.aboutme.converter.SpaceImageConverter;
 import com.example.aboutme.domain.Member;
 import com.example.aboutme.domain.Space;
 import com.example.aboutme.domain.constant.Mood;
@@ -131,7 +132,7 @@ public class SpaceServiceImpl implements SpaceService {
             throw new GeneralException(ErrorStatus.SPACE_MAXIMUN_IMAGE_COUNT);
         }
 
-        space.addImage(imageDTO.getImgUrl());
+        space.addImage(SpaceImageConverter.toSpaceImage(imageDTO.getImgUrl()));
         return null;
     }
 }

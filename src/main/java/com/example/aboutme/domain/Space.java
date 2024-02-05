@@ -70,7 +70,7 @@ public class Space extends BaseEntity {
         planList.add(newPlan);
     }
 
-    public void addImage(String imgUrl) {
-
+    public void addImage(SpaceImage image) {
+        spaceImageList.add(image);
     }
 }
