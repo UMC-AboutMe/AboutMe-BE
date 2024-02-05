@@ -70,9 +70,7 @@ public class Space extends BaseEntity {
         planList.add(newPlan);
     }
 
-    public void addImage(SpaceImage image) {
-        spaceImageList.add(image);
-    }
+    public void addImage(SpaceImage image) { spaceImageList.add(image); }
 
     @Override
     public String toString() {
