@@ -15,6 +15,7 @@ import com.example.aboutme.domain.constant.Mood;
 import com.example.aboutme.repository.SpaceRepository;
 import com.example.aboutme.service.MemberService.MemberService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,6 +24,7 @@ import java.text.ParseException;
 import java.util.Optional;
 
 
+@Slf4j
 @Service
 @Transactional(readOnly = true)
 @AllArgsConstructor
@@ -133,6 +135,6 @@ public class SpaceServiceImpl implements SpaceService {
         }
 
         space.addImage(SpaceImageConverter.toSpaceImage(space, imageDTO.getImgUrl()));
-        return null;
+        return space;
     }
 }

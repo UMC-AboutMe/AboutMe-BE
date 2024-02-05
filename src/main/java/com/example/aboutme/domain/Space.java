@@ -73,4 +73,20 @@ public class Space extends BaseEntity {
     public void addImage(SpaceImage image) {
         spaceImageList.add(image);
     }
+
+    @Override
+    public String toString() {
+        return "Space{" +
+                "id=" + id +
+                ", nickname='" + nickname + '\'' +
+                ", characterType=" + characterType +
+                ", roomType=" + roomType +
+                ", mood=" + mood +
+                ", musicUrl='" + musicUrl + '\'' +
+                ", statusMessage='" + statusMessage + '\'' +
+                ", member=" + member +
+                ", spaceImageList=" + spaceImageList +
+                ", planList=" + planList +
+                '}';
+    }
 }

@@ -34,8 +34,8 @@ public class SpaceResponse {
         private Mood mood;
         private String musicUrl;
         private String statusMessage;
-        private List<SpaceImage> spaceImageList;
-        private List<PlanResponse.CreatePlanDTO> planList;
+        private List<String> spaceImageList;
+        private List<PlanResponse.planDTO> planList;
     }
 
     @Builder
@@ -49,7 +49,7 @@ public class SpaceResponse {
         private Mood mood;
         private String musicUrl;
         private String statusMessage;
-        private List<SpaceImage> spaceImageList;
+        private List<String> spaceImageList;
         private List<Plan> planList;
     }
 }
