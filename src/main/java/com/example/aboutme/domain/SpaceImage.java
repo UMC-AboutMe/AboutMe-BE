@@ -20,4 +20,5 @@ public class SpaceImage extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "space_id")
     private Space space;
+
 }

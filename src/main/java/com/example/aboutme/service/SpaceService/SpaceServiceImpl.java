@@ -120,6 +120,7 @@ public class SpaceServiceImpl implements SpaceService {
      * @return 수정된 마이스페이스
      */
     @Override
+    @Transactional
     public Space uploadImage(Long memberId, MultipartFile multipartFile) {
         Member member = memberService.findMember(memberId); // 멤버 검사
 
