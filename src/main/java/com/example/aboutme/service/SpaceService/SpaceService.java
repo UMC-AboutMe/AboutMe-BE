@@ -9,7 +9,7 @@ import java.text.ParseException;
 import java.util.Optional;
 
 public interface SpaceService {
-    Space JoinSpace(SpaceRequest.JoinDTO request);
+    Space JoinSpace(Long memberId, SpaceRequest.JoinDTO request);
 
     Space readSpace(Long memberId);
 

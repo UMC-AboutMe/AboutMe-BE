@@ -22,8 +22,8 @@ public class SpaceController {
     private final SpaceService spaceCommandService;
 
     @PostMapping(value = "/", produces = "application/json;charset=UTF-8")
-    public ApiResponse<SpaceResponse.JoinResultDTO> join (@RequestBody @Valid SpaceRequest.JoinDTO request) {
-        Space newSpace = spaceCommandService.JoinSpace(request);
+    public ApiResponse<SpaceResponse.JoinResultDTO> join (@RequestHeader("member-id") Long memberId, @RequestBody @Valid SpaceRequest.JoinDTO request) {
+        Space newSpace = spaceCommandService.JoinSpace(memberId, request);
         return ApiResponse.onSuccess(SpaceConverter.toJoinResultDTO(newSpace));
     }
 
