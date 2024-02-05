@@ -3,12 +3,14 @@ package com.example.aboutme.domain;
 import com.example.aboutme.domain.common.BaseEntity;
 import com.example.aboutme.domain.constant.Mood;
 import lombok.*;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.*;
 import javax.persistence.criteria.CriteriaBuilder;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Entity
 @AllArgsConstructor
 @Getter
@@ -70,21 +72,7 @@ public class Space extends BaseEntity {
         planList.add(newPlan);
     }
 
-    public void addImage(SpaceImage image) { spaceImageList.add(image); }
+    public void addImage(SpaceImage image) {
+        spaceImageList.add(image); }
 
-    @Override
-    public String toString() {
-        return "Space{" +
-                "id=" + id +
-                ", nickname='" + nickname + '\'' +
-                ", characterType=" + characterType +
-                ", roomType=" + roomType +
-                ", mood=" + mood +
-                ", musicUrl='" + musicUrl + '\'' +
-                ", statusMessage='" + statusMessage + '\'' +
-                ", member=" + member +
-                ", spaceImageList=" + spaceImageList +
-                ", planList=" + planList +
-                '}';
-    }
 }
