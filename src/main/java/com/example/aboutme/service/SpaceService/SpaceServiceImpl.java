@@ -4,6 +4,8 @@ import com.example.aboutme.apiPayload.code.status.ErrorStatus;
 import com.example.aboutme.apiPayload.exception.GeneralException;
 import com.example.aboutme.app.dto.PlanRequest;
 import com.example.aboutme.app.dto.SpaceRequest;
+import com.example.aboutme.aws.s3.S3ResponseDto;
+import com.example.aboutme.aws.s3.S3Service;
 import com.example.aboutme.converter.PlanConverter;
 import com.example.aboutme.converter.SpaceConverter;
 import com.example.aboutme.domain.Member;
@@ -14,6 +16,7 @@ import com.example.aboutme.service.MemberService.MemberService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.text.ParseException;
 import java.util.Optional;
@@ -25,6 +28,7 @@ import java.util.Optional;
 public class SpaceServiceImpl implements SpaceService {
     private final SpaceRepository spaceRepository;
     private final MemberService memberService;
+    private final S3Service s3Service;
 
     /**
      * 내 마이프로필 생성
@@ -87,7 +91,13 @@ public class SpaceServiceImpl implements SpaceService {
 
         return targetSpace;
     }
- 
+
+    /**
+     * 계획 추가
+     * @param memberId 멤버 식별자
+     * @param request
+     * @return 계획이 추가된 마이스페이스
+     */
     @Override
     @Transactional
     public Space createPlan(Long memberId, PlanRequest.CreatePlanDTO request) throws ParseException {
@@ -98,5 +108,30 @@ public class SpaceServiceImpl implements SpaceService {
         Space space = spaceRepository.findByMember(member).get();
         space.addPlan(PlanConverter.toPlan(space, request));
         return space;
+    }
+
+    /**
+     * 마이스페이스 이미지 추가
+     * @param memberId 멤버 식별자
+     * @param multipartFile 이미지
+     * @return 수정된 마이스페이스
+     */
+    @Override
+    public Space uploadImage(Long memberId, MultipartFile multipartFile) {
+        Member member = memberService.findMember(memberId); // 멤버 검사
+
+        if (!spaceRepository.existsByMember(member)) { // 스페이스 검사
+            throw new GeneralException(ErrorStatus.SPACE_NOT_FOUND);
+        }
+
+        Space space = spaceRepository.findByMember(member).get();
+        S3ResponseDto imageDTO = s3Service.uploadFile(multipartFile);
+
+        if (space.getSpaceImageList().size() >= 3) { // 이미지 세 개 이상 추가 불가능
+            throw new GeneralException(ErrorStatus.SPACE_MAXIMUN_IMAGE_COUNT);
+        }
+
+        space.addImage(imageDTO.getImgUrl());
+        return null;
     }
 }
