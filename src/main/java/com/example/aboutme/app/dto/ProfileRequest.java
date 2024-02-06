@@ -1,7 +1,9 @@
 package com.example.aboutme.app.dto;
 
+import com.example.aboutme.domain.constant.ProfileImageType;
 import com.example.aboutme.validation.annotation.ExistProfileFeature;
 import com.example.aboutme.validation.annotation.ExistProfilesBySerialNum;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 
@@ -34,5 +36,11 @@ public class ProfileRequest {
         @JsonProperty("profile_serial_numbers")
         @ExistProfilesBySerialNum
         private List<Integer> profileSerialNumberList;
+    }
+
+    @Getter
+    public static class UpdateProfileImageDTO{
+        @JsonProperty("profile_image_type")
+        private ProfileImageType profileImageType;
     }
 }

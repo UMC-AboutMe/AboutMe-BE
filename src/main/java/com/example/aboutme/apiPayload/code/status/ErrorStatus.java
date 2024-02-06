@@ -33,6 +33,10 @@ public enum ErrorStatus implements BaseErrorCode {
     PROFILE_NOT_MATCH_MEMBER_AT_GET(HttpStatus.BAD_REQUEST, "PROFILE406", "해당 프로필을 조회할 수 없습니다"),
     PROFILE_NOT_MATCH_MEMBER_AT_UPDATE(HttpStatus.BAD_REQUEST, "PROFILE407", "해당 프로필을 수정할 수 없습니다"),
 
+    // 마이프로필 이미지 에러
+    PROFILE_IMAGE_CANNOT_CHANGE_TO_CHARACTER(HttpStatus.BAD_REQUEST, "IMAGE400", "마이스페이스에서 캐릭터를 설정해야 합니다"),
+    PROFILE_IMAGE_REQUIRED(HttpStatus.BAD_REQUEST, "IMAGE401", "프로필 이미지는 필수입니다"),
+
     // 마이프로필 Feature 에러
     PROFILE_FEATURE_NOT_FOUND(HttpStatus.NOT_FOUND, "FEATURE400", "해당하는 프로필 특징이 존재하지 않습니다"),
     PROFILE_FEATURE_NOT_MATCH_PROFILE(HttpStatus.BAD_REQUEST, "FEATURE401", "해당 프로필 특징을 수정할 수 없습니다"),

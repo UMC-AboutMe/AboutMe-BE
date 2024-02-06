@@ -3,6 +3,8 @@ package com.example.aboutme.service.ProfileService;
 import com.example.aboutme.app.dto.ProfileRequest;
 import com.example.aboutme.domain.Profile;
 import com.example.aboutme.domain.ProfileFeature;
+import com.example.aboutme.domain.ProfileImage;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -39,6 +41,8 @@ public interface ProfileService {
      * @return 수정된 마이프로필의 특징
      */
     ProfileFeature updateMyProfile(Long memberId, Long profileId, ProfileRequest.UpdateProfileDTO request);
+
+    ProfileImage updateMyProfileImage(Long memberId, Long profileId, MultipartFile image, ProfileRequest.UpdateProfileImageDTO request);
 
     /**
      * 내 마이프로필 삭제

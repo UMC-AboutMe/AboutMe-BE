@@ -3,6 +3,8 @@ package com.example.aboutme.converter;
 import com.example.aboutme.app.dto.ProfileResponse;
 import com.example.aboutme.domain.Profile;
 import com.example.aboutme.domain.ProfileFeature;
+import com.example.aboutme.domain.ProfileImage;
+import com.example.aboutme.domain.constant.ProfileImageType;
 import com.example.aboutme.domain.constant.Side;
 
 import java.util.ArrayList;
@@ -11,6 +13,7 @@ import java.util.List;
 public class ProfileConverter {
 
     public static Profile toProfile(Integer serialNumber){
+
         return Profile.builder()
                 .isDefault(false)
                 .serialNumber(serialNumber)
@@ -92,6 +95,16 @@ public class ProfileConverter {
                         .filter(profileFeature -> profileFeature.getSide()== Side.BACK)
                         .map(ProfileConverter::toProfileFeatureDTO)
                         .toList())
+                .build();
+    }
+
+    public static ProfileResponse.UpdateMyProfileImageDTO toUpdateMyProfileImageDTO(ProfileImage profileImage){
+        Integer characterType = profileImage.getSpace() == null ? null : profileImage.getSpace().getCharacterType();
+
+        return ProfileResponse.UpdateMyProfileImageDTO.builder()
+                .type(profileImage.getType())
+                .profileImageUrl(profileImage.getImageUrl())
+                .characterType(characterType)
                 .build();
     }
 }

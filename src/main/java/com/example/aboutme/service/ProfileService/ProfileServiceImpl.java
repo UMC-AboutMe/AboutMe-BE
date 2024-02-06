@@ -3,18 +3,24 @@ package com.example.aboutme.service.ProfileService;
 import com.example.aboutme.apiPayload.code.status.ErrorStatus;
 import com.example.aboutme.apiPayload.exception.GeneralException;
 import com.example.aboutme.app.dto.ProfileRequest;
+import com.example.aboutme.aws.s3.S3ResponseDto;
+import com.example.aboutme.aws.s3.S3Service;
 import com.example.aboutme.converter.ProfileConverter;
 import com.example.aboutme.converter.ProfileFeatureConverter;
+import com.example.aboutme.converter.ProfileImageConverter;
 import com.example.aboutme.domain.Member;
 import com.example.aboutme.domain.Profile;
 import com.example.aboutme.domain.ProfileFeature;
+import com.example.aboutme.domain.ProfileImage;
 import com.example.aboutme.repository.ProfileFeatureRepository;
+import com.example.aboutme.repository.ProfileImageRepository;
 import com.example.aboutme.repository.ProfileRepository;
 import com.example.aboutme.service.MemberService.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -27,6 +33,8 @@ public class ProfileServiceImpl implements ProfileService{
     private final MemberService memberService;
     private final ProfileRepository profileRepository;
     private final ProfileFeatureRepository profileFeatureRepository;
+    private final ProfileImageRepository profileImageRepository;
+    private final S3Service s3Service;
 
     /**
      * 내 마이프로필 목록 조회
@@ -73,6 +81,7 @@ public class ProfileServiceImpl implements ProfileService{
         }
 
         Profile newProfile = ProfileConverter.toProfile(generateSerialNumber());
+        ProfileImage profileImage = ProfileImageConverter.toProfileImage(newProfile, member.getSpace());
 
         newProfile.setMember(member);
 
@@ -84,6 +93,7 @@ public class ProfileServiceImpl implements ProfileService{
         }
 
         profileRepository.save(newProfile);
+        profileImageRepository.save(profileImage);
 
         return newProfile;
     }
@@ -121,6 +131,40 @@ public class ProfileServiceImpl implements ProfileService{
         profileFeature.update(request.getFeatureKey(), request.getFeatureValue());
 
         return profileFeature;
+    }
+
+    @Transactional
+    public ProfileImage updateMyProfileImage(Long memberId, Long profileId, MultipartFile image, ProfileRequest.UpdateProfileImageDTO request){
+
+        Member member = memberService.findMember(memberId);
+        Profile profile = profileRepository.findById(profileId).get();
+
+        if(!profile.getMember().getId().equals(member.getId())){
+            throw new GeneralException(ErrorStatus.PROFILE_NOT_MATCH_MEMBER_AT_UPDATE);
+        }
+
+        ProfileImage profileImage = profile.getProfileImage();
+
+        switch (request.getProfileImageType()){
+            case USER_IMAGE -> {
+                S3ResponseDto s3ResponseDto = s3Service.uploadFile(image);
+//                log.info("이미지 url: {}", s3ResponseDto.getImgUrl());
+                profileImage.update(request.getProfileImageType(), s3ResponseDto.getImgUrl());
+                break;
+            }
+            case CHARACTER -> {
+                boolean illegalChangeToCharacter = (member.getSpace() == null);
+                if(illegalChangeToCharacter){
+                    throw new GeneralException(ErrorStatus.PROFILE_IMAGE_CANNOT_CHANGE_TO_CHARACTER);
+                }
+
+                profileImage.update(request.getProfileImageType(), member.getSpace());
+                break;
+            }
+            default -> profileImage.update(request.getProfileImageType());
+        }
+
+        return profileImage;
     }
 
     /**
