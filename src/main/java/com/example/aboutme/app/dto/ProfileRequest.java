@@ -1,9 +1,9 @@
 package com.example.aboutme.app.dto;
 
 import com.example.aboutme.domain.constant.ProfileImageType;
+import com.example.aboutme.validation.annotation.CheckEnumType;
 import com.example.aboutme.validation.annotation.ExistProfileFeature;
 import com.example.aboutme.validation.annotation.ExistProfilesBySerialNum;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 
@@ -41,6 +41,7 @@ public class ProfileRequest {
     @Getter
     public static class UpdateProfileImageDTO{
         @JsonProperty("profile_image_type")
-        private ProfileImageType profileImageType;
+        @CheckEnumType(enumClass = ProfileImageType.class)
+        private String profileImageType;
     }
 }

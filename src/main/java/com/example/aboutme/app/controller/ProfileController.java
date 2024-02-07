@@ -109,10 +109,11 @@ public class ProfileController {
     public ApiResponse<ProfileResponse.UpdateMyProfileImageDTO> updateMyProfileImage(@RequestHeader("member-id") Long memberId,
                                                                                      @PathVariable("profile-id") @ExistMyProfile Long profileId,
                                                                                      @RequestPart(value = "image", required = false) MultipartFile image,
-                                                                                     @RequestPart(value= "body", required = true) ProfileRequest.UpdateProfileImageDTO request){
+                                                                                     @RequestPart(value= "body", required = true) @Valid ProfileRequest.UpdateProfileImageDTO request){
 
 
-        boolean isEmptyProfileImage = (request.getProfileImageType() == ProfileImageType.USER_IMAGE) && (image == null);
+        ProfileImageType profileImageType = ProfileImageType.valueOf(request.getProfileImageType());
+        boolean isEmptyProfileImage = (profileImageType == ProfileImageType.USER_IMAGE) && (image == null);
         if(isEmptyProfileImage){
             throw new GeneralException(ErrorStatus.PROFILE_IMAGE_REQUIRED);
         }

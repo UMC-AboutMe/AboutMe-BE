@@ -12,6 +12,7 @@ import com.example.aboutme.domain.Member;
 import com.example.aboutme.domain.Profile;
 import com.example.aboutme.domain.ProfileFeature;
 import com.example.aboutme.domain.ProfileImage;
+import com.example.aboutme.domain.constant.ProfileImageType;
 import com.example.aboutme.repository.ProfileFeatureRepository;
 import com.example.aboutme.repository.ProfileImageRepository;
 import com.example.aboutme.repository.ProfileRepository;
@@ -145,11 +146,12 @@ public class ProfileServiceImpl implements ProfileService{
 
         ProfileImage profileImage = profile.getProfileImage();
 
-        switch (request.getProfileImageType()){
+        ProfileImageType profileImageType = ProfileImageType.valueOf(request.getProfileImageType());
+        switch (profileImageType){
             case USER_IMAGE -> {
                 S3ResponseDto s3ResponseDto = s3Service.uploadFile(image);
 //                log.info("이미지 url: {}", s3ResponseDto.getImgUrl());
-                profileImage.update(request.getProfileImageType(), s3ResponseDto.getImgUrl());
+                profileImage.update(profileImageType, s3ResponseDto.getImgUrl());
                 break;
             }
             case CHARACTER -> {
@@ -158,10 +160,10 @@ public class ProfileServiceImpl implements ProfileService{
                     throw new GeneralException(ErrorStatus.PROFILE_IMAGE_CANNOT_CHANGE_TO_CHARACTER);
                 }
 
-                profileImage.update(request.getProfileImageType(), member.getSpace());
+                profileImage.update(profileImageType, member.getSpace());
                 break;
             }
-            default -> profileImage.update(request.getProfileImageType());
+            default -> profileImage.update(profileImageType);
         }
 
         return profileImage;
