@@ -60,7 +60,7 @@ public class ProfileConverter {
                 .id(profile.getId())
                 .serialNumber(profile.getSerialNumber())
                 .isDefault(profile.getIsDefault())
-                .profileImageUrl(null) // 아직 미설정
+                .profileImage(toProfileImageDTO(profile.getProfileImage())) // 아직 미설정
                 .frontFeatureList(profile.getProfileFeatureList().stream()
                         .filter(profileFeature -> profileFeature.getSide()== Side.FRONT)
                         .filter(profileFeature -> {

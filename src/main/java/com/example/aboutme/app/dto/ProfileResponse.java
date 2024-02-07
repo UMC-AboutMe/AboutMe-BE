@@ -69,8 +69,8 @@ public class ProfileResponse {
         @JsonProperty("is_default")
         private Boolean isDefault;
 
-        @JsonProperty("profile_img_url")
-        private String profileImageUrl;
+        @JsonProperty("profile_image")
+        private ProfileImageDTO profileImage;
 
         @JsonProperty("front_features")
         private List<ProfileFeatureDTO> frontFeatureList;
