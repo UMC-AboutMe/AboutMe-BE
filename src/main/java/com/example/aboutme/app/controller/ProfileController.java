@@ -69,7 +69,6 @@ public class ProfileController {
     /**
      * [POST] /myprofiles
      * 마이프로필 생성
-     *
      * @param memberId 멤버 식별자
      * @param request
      * @return

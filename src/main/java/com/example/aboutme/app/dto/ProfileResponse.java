@@ -106,14 +106,28 @@ public class ProfileResponse {
         @JsonProperty("is_default")
         private Boolean isDefault;
 
-        @JsonProperty("profile_img_url")
-        private String profileImageUrl;
+        @JsonProperty("profile_image")
+        private ProfileImageDTO profileImage;
 
         @JsonProperty("front_features")
         private List<ProfileFeatureDTO> frontFeatureList;
 
         @JsonProperty("back_features")
         private List<ProfileFeatureDTO> backFeatureList;
+    }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class ProfileImageDTO{
+        private ProfileImageType type;
+
+        @JsonProperty("characterType")
+        private Integer characterType;
+
+        @JsonProperty("profile_image_url")
+        private String profileImageUrl;
     }
 
     @Builder
