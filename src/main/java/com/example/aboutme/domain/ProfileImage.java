@@ -38,10 +38,12 @@ public class ProfileImage extends BaseEntity {
     public void update(ProfileImageType type, String imageUrl){
         this.type = type;
         this.imageUrl = imageUrl;
+        this.space = null;
     }
 
     public void update(ProfileImageType type, Space space){
         this.type = type;
         this.space = space;
+        this.imageUrl = null;
     }
 }

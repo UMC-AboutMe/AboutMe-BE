@@ -34,7 +34,7 @@ public class ProfileController {
 
     /**
      * [GET] /myprofiles
-     * 내 마이프로필 목록 
+     * 내 마이프로필 목록 조회
      * @param memberId 멤버 식별자
      * @return
      */
@@ -105,6 +105,15 @@ public class ProfileController {
         return ApiResponse.onSuccess(ProfileConverter.toUpdateProfileDTO(profileFeature));
     }
 
+    /**
+     * [PATCH] /myprofiles/{profile-id}/image
+     * 내 마이프로필 이미지 수정
+     * @param memberId 멤버 식별자
+     * @param profileId 마이프로필 식별자
+     * @param image 이미지
+     * @param request
+     * @return
+     */
     @PatchMapping("/{profile-id}/image")
     public ApiResponse<ProfileResponse.UpdateMyProfileImageDTO> updateMyProfileImage(@RequestHeader("member-id") Long memberId,
                                                                                      @PathVariable("profile-id") @ExistMyProfile Long profileId,
@@ -113,8 +122,8 @@ public class ProfileController {
 
 
         ProfileImageType profileImageType = ProfileImageType.valueOf(request.getProfileImageType());
-        boolean isEmptyProfileImage = (profileImageType == ProfileImageType.USER_IMAGE) && (image == null);
-        if(isEmptyProfileImage){
+        boolean isProfileImageEmpty = (profileImageType == ProfileImageType.USER_IMAGE) && (image == null);
+        if(isProfileImageEmpty){
             throw new GeneralException(ErrorStatus.PROFILE_IMAGE_REQUIRED);
         }
 

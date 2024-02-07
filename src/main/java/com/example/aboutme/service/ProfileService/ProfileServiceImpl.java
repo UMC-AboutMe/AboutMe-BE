@@ -134,6 +134,14 @@ public class ProfileServiceImpl implements ProfileService{
         return profileFeature;
     }
 
+    /**
+     * 내 마이프로필 이미지 수정
+     * @param memberId 멤버 식별자
+     * @param profileId 마이프로필 식별자
+     * @param image 이미지
+     * @param request
+     * @return 수정된 마이프로필 이미지
+     */
     @Transactional
     public ProfileImage updateMyProfileImage(Long memberId, Long profileId, MultipartFile image, ProfileRequest.UpdateProfileImageDTO request){
 
@@ -152,7 +160,6 @@ public class ProfileServiceImpl implements ProfileService{
                 S3ResponseDto s3ResponseDto = s3Service.uploadFile(image);
 //                log.info("이미지 url: {}", s3ResponseDto.getImgUrl());
                 profileImage.update(profileImageType, s3ResponseDto.getImgUrl());
-                break;
             }
             case CHARACTER -> {
                 boolean illegalChangeToCharacter = (member.getSpace() == null);
@@ -161,9 +168,10 @@ public class ProfileServiceImpl implements ProfileService{
                 }
 
                 profileImage.update(profileImageType, member.getSpace());
-                break;
             }
-            default -> profileImage.update(profileImageType);
+            default -> {
+                profileImage.update(profileImageType);
+            }
         }
 
         return profileImage;
