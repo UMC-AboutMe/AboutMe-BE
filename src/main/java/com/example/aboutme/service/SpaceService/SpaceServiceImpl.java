@@ -43,7 +43,7 @@ public class SpaceServiceImpl implements SpaceService {
         if (spaceRepository.existsByMember(member)) {
             throw new GeneralException(ErrorStatus.SPACE_ALREADY_EXIST);
         }
-        Space newSpace = SpaceConverter.toSpace(request);
+        Space newSpace = SpaceConverter.toSpace(member, request);
         return spaceRepository.save(newSpace);
     }
 
