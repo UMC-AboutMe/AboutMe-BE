@@ -6,6 +6,7 @@ import com.example.aboutme.app.dto.SpaceRequest;
 import com.example.aboutme.app.dto.SpaceResponse;
 import com.example.aboutme.aws.s3.S3ResponseDto;
 import com.example.aboutme.aws.s3.S3Service;
+import com.example.aboutme.domain.Member;
 import com.example.aboutme.domain.Plan;
 import com.example.aboutme.domain.Space;
 import com.example.aboutme.domain.SpaceImage;
@@ -25,8 +26,9 @@ public class SpaceConverter {
                 .build();
     }
 
-    public static Space toSpace(SpaceRequest.JoinDTO request) {
+    public static Space toSpace(Member member, SpaceRequest.JoinDTO request) {
         return Space.builder()
+                .member(member)
                 .nickname(request.getNickname())
                 .characterType(request.getCharacterType())
                 .roomType(request.getRoomType())
