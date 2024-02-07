@@ -4,8 +4,11 @@ import com.example.aboutme.apiPayload.ApiResponse;
 
 import com.example.aboutme.app.dto.MemberProfileRequest;
 import com.example.aboutme.app.dto.MemberProfileResponse;
+import com.example.aboutme.app.dto.MemberSpaceResponse;
 import com.example.aboutme.converter.MemberProfileConverter;
+import com.example.aboutme.converter.MemberSpaceConverter;
 import com.example.aboutme.domain.mapping.MemberProfile;
+import com.example.aboutme.domain.mapping.MemberSpace;
 import com.example.aboutme.service.MemberProfileService.MemberProfileService;
 import com.example.aboutme.validation.annotation.ExistMyProfile;
 import lombok.RequiredArgsConstructor;
@@ -42,5 +45,12 @@ public class MemberProfileController {
         Boolean favoriteStatus = memberProfileService.toggleFavorite(memberId, profileId);
 
         return ApiResponse.onSuccess(MemberProfileConverter.toToggleFavorite(favoriteStatus));
+    }
+
+    @GetMapping("/search")
+    public ApiResponse<MemberProfileResponse.SearchMemberProfileListDTO> searchMemberProfileList(@RequestHeader("member-id") Long memberId,
+                                                                                           @RequestParam(defaultValue = "") String keyword) {
+        List<MemberProfile> memberProfileList = memberProfileService.filterWithKeyword(memberId, keyword);
+        return ApiResponse.onSuccess(MemberProfileConverter.toSearchMemberProfileListDTO(memberProfileList));
     }
 }

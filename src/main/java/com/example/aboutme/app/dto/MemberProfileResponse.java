@@ -78,4 +78,22 @@ public class MemberProfileResponse {
         @JsonProperty("is_default")
         private Boolean isDefault;
     }
+
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class SearchMemberProfileListDTO{
+        private List<MemberProfileResponse.SearchMemberProfileDTO> memberProfileList;
+    }
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class SearchMemberProfileDTO{
+        private Long profileId;
+        private String profileName;
+        private Boolean favorite;
+    }
 }

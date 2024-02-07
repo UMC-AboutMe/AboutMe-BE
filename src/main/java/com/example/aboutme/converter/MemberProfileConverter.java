@@ -1,13 +1,13 @@
 package com.example.aboutme.converter;
 
 import com.example.aboutme.app.dto.MemberProfileResponse;
-import com.example.aboutme.app.dto.ProfileResponse;
 import com.example.aboutme.domain.Member;
 import com.example.aboutme.domain.Profile;
-import com.example.aboutme.domain.constant.Side;
+import com.example.aboutme.domain.ProfileFeature;
 import com.example.aboutme.domain.mapping.MemberProfile;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class MemberProfileConverter {
     public static MemberProfileResponse.GetMemberProfileListDTO toGetMemberProfileListDTO(List<MemberProfile> memberProfileList){
@@ -54,5 +54,26 @@ public class MemberProfileConverter {
                 .msg(msg)
                 .memberProfileId(profileId)
                 .build();
+    }
+
+    public static MemberProfileResponse.SearchMemberProfileListDTO toSearchMemberProfileListDTO(List<MemberProfile> memberProfileList){
+        List<MemberProfileResponse.SearchMemberProfileDTO> memberProfileListDto =
+                memberProfileList.stream()
+                        .map(memberProfile -> {
+                            String profileValue = memberProfile.getProfile().getProfileFeatureList().stream()
+                                    .filter(profileFeature -> "name".equals(profileFeature.getProfileKey()))
+                                    .map(ProfileFeature::getProfileValue)
+                                    .findFirst()
+                                    .orElse("");
+
+                            return MemberProfileResponse.SearchMemberProfileDTO.builder()
+                                    .profileId(memberProfile.getProfile().getId())
+                                    .profileName(profileValue)
+                                    .favorite(memberProfile.getFavorite())
+                                    .build();
+                        })
+                        .collect(Collectors.toList());
+
+        return new MemberProfileResponse.SearchMemberProfileListDTO(memberProfileListDto);
     }
 }

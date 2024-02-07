@@ -1,5 +1,6 @@
 package com.example.aboutme.service.MemberProfileService;
 
+import com.example.aboutme.domain.ProfileFeature;
 import com.example.aboutme.domain.mapping.MemberProfile;
 import com.example.aboutme.app.dto.ProfileRequest;
 import org.springframework.stereotype.Service;
@@ -19,4 +20,6 @@ public interface MemberProfileService {
      * @param request
      */
     void addOthersProfilesAtMyStorage(Long memberId, ProfileRequest.ShareProfileDTO request);
+
+    List<MemberProfile> filterWithKeyword(Long memberId, String keyword);
 }

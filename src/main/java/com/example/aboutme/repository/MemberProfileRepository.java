@@ -14,4 +14,5 @@ public interface MemberProfileRepository extends JpaRepository<MemberProfile, Lo
 
     MemberProfile findByMemberAndProfile(Member member, Profile profile);
     Boolean existsByMemberAndProfile(Member member, Profile profile);
+    List<MemberProfile> findByMemberAndProfileIn(Member member, List<Profile> profiles);
 }
