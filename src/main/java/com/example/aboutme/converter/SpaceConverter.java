@@ -1,10 +1,16 @@
 package com.example.aboutme.converter;
 
+import com.example.aboutme.app.dto.MemberSpaceResponse;
 import com.example.aboutme.app.dto.PlanResponse;
 import com.example.aboutme.app.dto.SpaceRequest;
 import com.example.aboutme.app.dto.SpaceResponse;
+import com.example.aboutme.aws.s3.S3ResponseDto;
+import com.example.aboutme.aws.s3.S3Service;
+import com.example.aboutme.domain.Member;
 import com.example.aboutme.domain.Plan;
 import com.example.aboutme.domain.Space;
+import com.example.aboutme.domain.SpaceImage;
+import com.example.aboutme.domain.mapping.MemberSpace;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,8 +26,9 @@ public class SpaceConverter {
                 .build();
     }
 
-    public static Space toSpace(SpaceRequest.JoinDTO request) {
+    public static Space toSpace(Member member, SpaceRequest.JoinDTO request) {
         return Space.builder()
+                .member(member)
                 .nickname(request.getNickname())
                 .characterType(request.getCharacterType())
                 .roomType(request.getRoomType())
@@ -31,11 +38,16 @@ public class SpaceConverter {
     }
 
     public static SpaceResponse.ReadResultDTO toReadResultDTO(Space space) {
-        List<PlanResponse.CreatePlanDTO> readPlanDTOList = new ArrayList<>();
+        List<PlanResponse.planDTO> readPlanDTOList = new ArrayList<>();
+        List<String> readImageDTOList = new ArrayList<>();
 
         space.getPlanList().stream()
-                .map(PlanConverter::toCreatePlanDTO)
+                .map(PlanConverter::toPlanDTO)
                 .forEach(readPlanDTOList::add);
+
+        space.getSpaceImageList().stream()
+                .map(SpaceImage::getImage)
+                .forEach(readImageDTOList::add);
 
         return SpaceResponse.ReadResultDTO.builder()
                 .nickname(space.getNickname())
@@ -44,12 +56,18 @@ public class SpaceConverter {
                 .mood(space.getMood())
                 .musicUrl(space.getMusicUrl())
                 .statusMessage(space.getStatusMessage())
-                .spaceImageList(space.getSpaceImageList())
+                .spaceImageList(readImageDTOList)
                 .planList(readPlanDTOList)
                 .build();
     }
 
     public static SpaceResponse.UpdateResultDTO toUpdateResultDTO(Space space) {
+            List<String> readImageDTOList = new ArrayList<>();
+
+        space.getSpaceImageList().stream()
+                .map(SpaceImage::getImage)
+                .forEach(readImageDTOList::add);
+
         return SpaceResponse.UpdateResultDTO.builder()
                 .nickname(space.getNickname())
                 .characterType(space.getCharacterType())
@@ -57,8 +75,17 @@ public class SpaceConverter {
                 .mood(space.getMood())
                 .musicUrl(space.getMusicUrl())
                 .statusMessage(space.getStatusMessage())
-                .spaceImageList(space.getSpaceImageList())
+                .spaceImageList(readImageDTOList)
                 .planList(space.getPlanList())
                 .build();
+    }
+
+    public static SpaceResponse.SearchResultDto toSearchResultDTO(Space space) {
+        return SpaceResponse.SearchResultDto.builder()
+                        .spaceId(space.getId())
+                        .nickname(space.getNickname())
+                        .characterType(space.getCharacterType())
+                        .roomType(space.getRoomType())
+                        .build();
     }
 }

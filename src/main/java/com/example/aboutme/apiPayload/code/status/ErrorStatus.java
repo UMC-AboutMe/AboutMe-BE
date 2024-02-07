@@ -23,6 +23,8 @@ public enum ErrorStatus implements BaseErrorCode {
     MEMBER_SPACE_NOT_FOUND(HttpStatus.NOT_FOUND, "SPACE403", "해당 스페이스가 아지트에 존재하지 않습니다"),
     MEMBER_SPACE_ALREADY_EXISTING(HttpStatus.BAD_REQUEST, "SPACE404", "해당 스페이스가 이미 아지트에 존재합니다."),
     CANNOT_SHARE_OWN_SPACE(HttpStatus.BAD_REQUEST, "SPACE404", "본인 스페이스는 아지트에 추가할 수 없습니다."),
+    SPACE_MAXIMUN_IMAGE_COUNT(HttpStatus.BAD_REQUEST, "SPACE404", "이미지는 최대 세 개까지만 업로드할 수 있습니다."),
+    SPACE_ALREADY_EXIST(HttpStatus.BAD_REQUEST, "SPACE404", "이미 스페이스가 존재합니다."),
 
     // 마이프로필 에러
     PROFILE_SIZE_OVERFLOW(HttpStatus.BAD_REQUEST, "PROFILE400", "이 이상 마이프로필을 생성할 수 없습니다"),
@@ -50,7 +52,11 @@ public enum ErrorStatus implements BaseErrorCode {
     MEMBER_IS_NOT_PROFILE_CREATOR(HttpStatus.NOT_FOUND, "MEMBERPROFILE400", "제거하려는 프로필과 프로필 작성자가 일치하지 않습니다"),
 
     // S3 에러
-    FILE_NOT_FOUND(HttpStatus.NOT_FOUND, "FILE400", "해당 파일이 존재하지 않습니다.");
+    FILE_NOT_FOUND(HttpStatus.NOT_FOUND, "FILE400", "해당 파일이 존재하지 않습니다."),
+
+    // 소셜타입 에러
+    UNKNOWN_SOCIALTYPE(HttpStatus.NOT_FOUND, "SOCIAL400", "해당 소셜 타입이 존재하지 않습니다.");
+
 
     private final HttpStatus httpStatus;
     private final String code;

@@ -23,6 +23,8 @@ public class Member extends BaseEntity {
 
     private String email;
 
+    private String jwtAccessToken;
+
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<Profile> profileList = new ArrayList<>();
 

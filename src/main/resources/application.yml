@@ -5,6 +5,29 @@ spring:
     show-sql: true
     generate-ddl: true
 
+  security:
+    oauth2:
+      client:
+        registration:
+          kakao:
+            client-id: 9d761984fa81b79a5db21b541388959d
+            client-secret: L8Zlm5iTBbEfIHTKJm2mrYME1CJcxE25
+            redirect-uri: http://localhost:8080/kakao/callback
+            client-authentication-method: POST
+            authorization-grant-type: authorization_code
+            scope: account_email
+            client-name: kakao
+          google:
+            client-id: 194009379165-fk2ggap181l0kg9o9hcn8v2b49s4rhio.apps.googleusercontent.com
+            client-secret: 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
+            redirect-uri: http://localhost:8080/google/callback
+        provider:
+          kakao:
+            authorization_uri: https://kauth.kakao.com/oauth/authorize
+            token_uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kapi.kakao.com/v2/user/me
+            user_name_attribute: id
+
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://aboutmedb.cpk6suecg1c5.ap-northeast-2.rds.amazonaws.com/aboutme

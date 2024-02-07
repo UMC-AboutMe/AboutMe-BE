@@ -20,10 +20,11 @@ public class PlanConverter {
                 .build();
     }
 
-    public static PlanResponse.CreatePlanDTO toCreatePlanDTO(Plan plan) {
-        return PlanResponse.CreatePlanDTO.builder()
+    public static PlanResponse.planDTO toPlanDTO(Plan plan) {
+        return PlanResponse.planDTO.builder()
                 .content(plan.getContent())
                 .date(plan.getDate().toString())
                 .build();
     }
+
 }

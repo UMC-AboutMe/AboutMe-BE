@@ -14,7 +14,7 @@ public class PlanResponse {
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class CreatePlanDTO {
+    public static class planDTO {
         private String content;
         private String date;
     }

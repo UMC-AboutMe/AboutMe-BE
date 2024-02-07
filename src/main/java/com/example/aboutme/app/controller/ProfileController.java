@@ -39,7 +39,7 @@ public class ProfileController {
      * @return
      */
     @GetMapping()
-    public ApiResponse<ProfileResponse.GetProfileListDTO> getMyProfiles(@RequestHeader("member-id") Long memberId){
+    public ApiResponse<ProfileResponse.GetProfileListDTO> getMyProfiles(@RequestHeader("member-id") Long memberId) {
 
         List<Profile> profileList = profileService.getMyProfiles(memberId);
 
@@ -69,18 +69,25 @@ public class ProfileController {
     /**
      * [POST] /myprofiles
      * 마이프로필 생성
+     *
      * @param memberId 멤버 식별자
      * @param request
      * @return
      */
     @PostMapping()
-    public ApiResponse createMyProfile(@RequestHeader("member-id") Long memberId, @RequestBody @Valid ProfileRequest.CreateProfileDTO request){
+    public ApiResponse createMyProfile(@RequestHeader("member-id") Long memberId, @RequestBody @Valid ProfileRequest.CreateProfileDTO request) {
 
         Profile newProfile = profileService.createMyProfile(memberId, request);
 
         log.info("마이프로필 생성: {}", request.getName());
 
         return ApiResponse.onSuccess(ProfileConverter.toCreateProfileDTO(newProfile));
+    }
+
+    @PatchMapping("/default/{profileId}")
+    public ApiResponse<ProfileResponse.UpdateDefaultProfileDTO> patchDefaultMyProfile(@RequestHeader("member-id") Long memberId, @PathVariable Long profileId) {
+        Profile updatedProfile = profileService.updateIsDefault(memberId, profileId);
+        return ApiResponse.onSuccess(ProfileConverter.toUpdateDefaultProfile(updatedProfile));
     }
 
     /**

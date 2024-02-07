@@ -33,6 +33,8 @@ public interface ProfileService {
      */
     Profile createMyProfile(Long memberId, ProfileRequest.CreateProfileDTO request);
 
+    Profile updateIsDefault(Long memberID, Long profileId);
+
     /**
      * 내 마이프로필 수정
      * @param memberId 멤버 식별자
@@ -58,4 +60,6 @@ public interface ProfileService {
      * @param profileId 마이프로필 식별자
      */
     void deleteMyProfile(Long memberId, Long profileId);
+
+
 }

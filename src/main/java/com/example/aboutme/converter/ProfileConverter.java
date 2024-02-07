@@ -107,4 +107,12 @@ public class ProfileConverter {
                 .characterType(characterType)
                 .build();
     }
+
+    public static ProfileResponse.UpdateDefaultProfileDTO toUpdateDefaultProfile(Profile profile){
+        return ProfileResponse.UpdateDefaultProfileDTO.builder()
+                .id(profile.getId())
+                .serialNumber(profile.getSerialNumber())
+                .isDefault(profile.getIsDefault())
+                .build();
+    }
 }

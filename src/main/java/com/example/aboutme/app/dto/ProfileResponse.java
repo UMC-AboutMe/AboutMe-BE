@@ -91,6 +91,7 @@ public class ProfileResponse {
         private String featureValue;
     }
 
+
     @Builder
     @Getter
     @NoArgsConstructor
@@ -128,5 +129,21 @@ public class ProfileResponse {
 
         @JsonProperty("profile_image_url")
         private String profileImageUrl;
+    }
+
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class UpdateDefaultProfileDTO{
+        @JsonProperty("profile_id")
+        private Long id;
+
+        @JsonProperty("serial_number")
+        private int serialNumber;
+
+        @JsonProperty("is_default")
+        private Boolean isDefault;
     }
 }

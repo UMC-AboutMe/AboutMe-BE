@@ -1,6 +1,7 @@
 package com.example.aboutme.domain;
 
 import com.example.aboutme.domain.common.BaseEntity;
+import com.example.aboutme.domain.mapping.MemberProfile;
 import lombok.*;
 
 import javax.persistence.*;
@@ -29,9 +30,16 @@ public class Profile extends BaseEntity {
 
     @OneToOne(mappedBy = "profile", cascade = CascadeType.ALL)
     private ProfileImage profileImage;
+    
+    @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL)
+    private List<MemberProfile> memberProfileList = new ArrayList<>();
 
     public void setMember(Member member){
         this.member = member;
         member.getProfileList().add(this);
+    }
+
+    public void setIsDefault(Boolean isDefault){
+        this.isDefault = isDefault;
     }
 }

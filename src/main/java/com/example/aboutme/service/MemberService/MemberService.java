@@ -7,4 +7,6 @@ import org.springframework.stereotype.Service;
 public interface MemberService {
 
     Member findMember(Long memberId);
+    void deleteMember(Long memberId);
+
 }

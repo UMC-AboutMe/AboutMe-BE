@@ -41,7 +41,7 @@ public class MemberProfileResponse {
     @AllArgsConstructor
     public static class DeleteMemberProfileMsgDTO {
         private String msg;
-        private Long profileId;
+        private Long memberProfileId;
     }
 
     @Data
