@@ -98,7 +98,7 @@ public class ProfileConverter {
                 .build();
     }
 
-    private static ProfileResponse.ProfileImageDTO toProfileImageDTO(ProfileImage profileImage){
+    public static ProfileResponse.ProfileImageDTO toProfileImageDTO(ProfileImage profileImage){
         Integer characterType = profileImage.getSpace() == null ? null : profileImage.getSpace().getCharacterType();
 
         return ProfileResponse.ProfileImageDTO.builder()

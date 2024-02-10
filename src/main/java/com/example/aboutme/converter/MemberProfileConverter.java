@@ -70,6 +70,7 @@ public class MemberProfileConverter {
                                     .profileId(memberProfile.getProfile().getId())
                                     .profileName(profileValue)
                                     .favorite(memberProfile.getFavorite())
+                                    .image(ProfileConverter.toProfileImageDTO(memberProfile.getProfile().getProfileImage()))
                                     .build();
                         })
                         .collect(Collectors.toList());

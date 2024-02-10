@@ -95,5 +95,6 @@ public class MemberProfileResponse {
         private Long profileId;
         private String profileName;
         private Boolean favorite;
+        private ProfileResponse.ProfileImageDTO image;
     }
 }
