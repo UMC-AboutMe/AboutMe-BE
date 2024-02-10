@@ -14,6 +14,7 @@ public enum ErrorStatus implements BaseErrorCode {
     _BAD_REQUEST(HttpStatus.BAD_REQUEST,"COMMON400","잘못된 요청입니다."),
     _UNAUTHORIZED(HttpStatus.UNAUTHORIZED,"COMMON401","인증이 필요합니다."),
     _FORBIDDEN(HttpStatus.FORBIDDEN, "COMMON403", "금지된 요청입니다."),
+    _ENUM_TYPE_NOT_MATCH(HttpStatus.BAD_REQUEST, "COMMON404", "일치하는 타입이 없습니다"),
 
     // 마이스페이스 에러
     _UNVALID_CHARACTER_TYPE(HttpStatus.BAD_REQUEST, "SPACE400", "캐릭터 타입은 1부터 9까지의 숫자만 가능합니다."),
@@ -34,6 +35,10 @@ public enum ErrorStatus implements BaseErrorCode {
     PROFILE_NOT_MATCH_MEMBER_AT_DELETE(HttpStatus.BAD_REQUEST, "PROFILE402", "해당 프로필을 삭제할 수 없습니다"),
     PROFILE_NOT_MATCH_MEMBER_AT_GET(HttpStatus.BAD_REQUEST, "PROFILE406", "해당 프로필을 조회할 수 없습니다"),
     PROFILE_NOT_MATCH_MEMBER_AT_UPDATE(HttpStatus.BAD_REQUEST, "PROFILE407", "해당 프로필을 수정할 수 없습니다"),
+
+    // 마이프로필 이미지 에러
+    PROFILE_IMAGE_CANNOT_CHANGE_TO_CHARACTER(HttpStatus.BAD_REQUEST, "IMAGE400", "마이스페이스에서 캐릭터를 설정해야 합니다"),
+    PROFILE_IMAGE_REQUIRED(HttpStatus.BAD_REQUEST, "IMAGE401", "프로필 이미지는 필수입니다"),
 
     // 마이프로필 Feature 에러
     PROFILE_FEATURE_NOT_FOUND(HttpStatus.NOT_FOUND, "FEATURE400", "해당하는 프로필 특징이 존재하지 않습니다"),
