@@ -50,18 +50,16 @@ public class ProfileController {
 
     /**
      * [GET] /myprofiles/{profile-id}
-     * 내 마이프로필 단건 조회
-     * @param memberId 멤버 식별자
+     * 마이프로필 단건 조회
      * @param profileId 마이프로필 식별자
      * @return
      */
     @GetMapping("/{profile-id}")
-    public ApiResponse<ProfileResponse.GetMyProfileDTO> getMyProfile(@RequestHeader("member-id") Long memberId,
-                                                                     @PathVariable("profile-id") @ExistMyProfile Long profileId){
+    public ApiResponse<ProfileResponse.GetMyProfileDTO> getMyProfile(@PathVariable("profile-id") @ExistMyProfile Long profileId){
 
-        Profile profile = profileService.getMyProfile(memberId, profileId);
+        Profile profile = profileService.getMyProfile(profileId);
 
-        log.info("마이프로필 조회(단건): profileID={}", profileId);
+        log.info("마이프로필 조회(단건):git profileID={}", profileId);
 
         return ApiResponse.onSuccess(ProfileConverter.toGetMyProfileDTO(profile));
     }
