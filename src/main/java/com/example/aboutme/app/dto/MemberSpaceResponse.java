@@ -13,7 +13,7 @@ public class MemberSpaceResponse {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class GetListDto{
-        private List<MemberSpaceResponse.getDto> MemberSpaceList;
+        private List<MemberSpaceResponse.getDto> memberSpaceList;
     }
 
     @Data

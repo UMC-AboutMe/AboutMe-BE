@@ -6,9 +6,11 @@ import com.example.aboutme.app.dto.ProfileRequest;
 import com.example.aboutme.converter.MemberProfileConverter;
 import com.example.aboutme.domain.Member;
 import com.example.aboutme.domain.Profile;
+import com.example.aboutme.domain.ProfileFeature;
 import com.example.aboutme.domain.mapping.MemberProfile;
 import com.example.aboutme.repository.MemberProfileRepository;
 import com.example.aboutme.repository.MemberRepository;
+import com.example.aboutme.repository.ProfileFeatureRepository;
 import com.example.aboutme.repository.ProfileRepository;
 import com.example.aboutme.service.MemberService.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -25,6 +28,7 @@ public class MemberProfileServiceImpl implements MemberProfileService {
     private final MemberProfileRepository memberProfileRepository;
     private final MemberRepository memberRepository;
     private final ProfileRepository profileRepository;
+    private final ProfileFeatureRepository profileFeatureRepository;
     private final MemberService memberService;
 
     // 프로필 보관함 즐겨찾기
@@ -98,5 +102,23 @@ public class MemberProfileServiceImpl implements MemberProfileService {
         memberProfileList.forEach(memberProfile -> {
             memberProfileRepository.save(memberProfile);
         });
+    }
+
+    /**
+     * 프로필 보관함 내 검색하기
+     * @param memberId 멤버 식별자
+     * @param keyword 검색어(프로필 이름)
+     */
+    public List<MemberProfile> filterWithKeyword(Long memberId, String keyword) {
+
+        Member member = memberService.findMember(memberId);
+
+        List<ProfileFeature> profileFeatureList = profileFeatureRepository.findByProfileKeyAndProfileValueContaining("name", keyword);
+
+        List<Profile> profileList = profileFeatureList.stream()
+                .map(ProfileFeature::getProfile)
+                .toList();
+
+        return memberProfileRepository.findByMemberAndProfileIn(member, profileList);
     }
 }
