@@ -3,6 +3,7 @@ package com.example.aboutme.converter;
 import com.example.aboutme.app.dto.ProfileResponse;
 import com.example.aboutme.domain.Profile;
 import com.example.aboutme.domain.ProfileFeature;
+import com.example.aboutme.domain.ProfileImage;
 import com.example.aboutme.domain.constant.Side;
 
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ import java.util.List;
 public class ProfileConverter {
 
     public static Profile toProfile(Integer serialNumber){
+
         return Profile.builder()
                 .isDefault(false)
                 .serialNumber(serialNumber)
@@ -58,7 +60,7 @@ public class ProfileConverter {
                 .id(profile.getId())
                 .serialNumber(profile.getSerialNumber())
                 .isDefault(profile.getIsDefault())
-                .profileImageUrl(null) // 아직 미설정
+                .profileImage(toProfileImageDTO(profile.getProfileImage())) // 아직 미설정
                 .frontFeatureList(profile.getProfileFeatureList().stream()
                         .filter(profileFeature -> profileFeature.getSide()== Side.FRONT)
                         .filter(profileFeature -> {
@@ -79,11 +81,12 @@ public class ProfileConverter {
     }
 
     public static ProfileResponse.GetMyProfileDTO toGetMyProfileDTO(Profile profile){
+
         return ProfileResponse.GetMyProfileDTO.builder()
                 .profileId(profile.getId())
                 .serialNumber(profile.getSerialNumber())
                 .isDefault(profile.getIsDefault())
-                .profileImageUrl(null)
+                .profileImage(toProfileImageDTO(profile.getProfileImage()))
                 .frontFeatureList(profile.getProfileFeatureList().stream()
                         .filter(profileFeature -> profileFeature.getSide()== Side.FRONT)
                         .map(ProfileConverter::toProfileFeatureDTO)
@@ -92,6 +95,26 @@ public class ProfileConverter {
                         .filter(profileFeature -> profileFeature.getSide()== Side.BACK)
                         .map(ProfileConverter::toProfileFeatureDTO)
                         .toList())
+                .build();
+    }
+
+    private static ProfileResponse.ProfileImageDTO toProfileImageDTO(ProfileImage profileImage){
+        Integer characterType = profileImage.getSpace() == null ? null : profileImage.getSpace().getCharacterType();
+
+        return ProfileResponse.ProfileImageDTO.builder()
+                .type(profileImage.getType())
+                .characterType(characterType)
+                .profileImageUrl(profileImage.getImageUrl())
+                .build();
+    }
+
+    public static ProfileResponse.UpdateMyProfileImageDTO toUpdateMyProfileImageDTO(ProfileImage profileImage){
+        Integer characterType = profileImage.getSpace() == null ? null : profileImage.getSpace().getCharacterType();
+
+        return ProfileResponse.UpdateMyProfileImageDTO.builder()
+                .type(profileImage.getType())
+                .profileImageUrl(profileImage.getImageUrl())
+                .characterType(characterType)
                 .build();
     }
 

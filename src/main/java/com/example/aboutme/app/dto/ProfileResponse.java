@@ -1,5 +1,6 @@
 package com.example.aboutme.app.dto;
 
+import com.example.aboutme.domain.constant.ProfileImageType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -68,8 +69,8 @@ public class ProfileResponse {
         @JsonProperty("is_default")
         private Boolean isDefault;
 
-        @JsonProperty("profile_img_url")
-        private String profileImageUrl;
+        @JsonProperty("profile_image")
+        private ProfileImageDTO profileImage;
 
         @JsonProperty("front_features")
         private List<ProfileFeatureDTO> frontFeatureList;
@@ -105,8 +106,8 @@ public class ProfileResponse {
         @JsonProperty("is_default")
         private Boolean isDefault;
 
-        @JsonProperty("profile_img_url")
-        private String profileImageUrl;
+        @JsonProperty("profile_image")
+        private ProfileImageDTO profileImage;
 
         @JsonProperty("front_features")
         private List<ProfileFeatureDTO> frontFeatureList;
@@ -114,6 +115,36 @@ public class ProfileResponse {
         @JsonProperty("back_features")
         private List<ProfileFeatureDTO> backFeatureList;
     }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class ProfileImageDTO{
+        private ProfileImageType type;
+
+        @JsonProperty("characterType")
+        private Integer characterType;
+
+        @JsonProperty("profile_image_url")
+        private String profileImageUrl;
+    }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class UpdateMyProfileImageDTO {
+
+        private ProfileImageType type;
+
+        @JsonProperty("characterType")
+        private Integer characterType;
+
+        @JsonProperty("profile_image_url")
+        private String profileImageUrl;
+    }
+
 
     @Builder
     @Getter
