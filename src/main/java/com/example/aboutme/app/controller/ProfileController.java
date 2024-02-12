@@ -176,6 +176,12 @@ public class ProfileController {
         return ApiResponse.onSuccess(null);
     }
 
+    /**
+     * [GET] /myprofiles/search?q=
+     * 프로필 검색
+     * @param serialNumber 시리얼 넘버
+     * @return
+     */
     @GetMapping("/search")
     public ApiResponse<ProfileResponse.SearchProfileDTO> searchProfile(@RequestParam(value = "q") @ExistProfileBySerialNum int serialNumber){
 

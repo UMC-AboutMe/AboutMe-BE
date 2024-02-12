@@ -61,5 +61,10 @@ public interface ProfileService {
      */
     void deleteMyProfile(Long memberId, Long profileId);
 
+    /**
+     * 프로필 검색
+     * @param serialNumber 시리얼 넘버
+     * @return 검색된 프로필
+     */
     Profile searchProfile(int serialNumber);
 }

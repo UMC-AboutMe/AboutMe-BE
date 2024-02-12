@@ -234,6 +234,11 @@ public class ProfileServiceImpl implements ProfileService{
         return profile;
     }
 
+    /**
+     * 프로필 검색
+     * @param serialNumber 시리얼 넘버
+     * @return 검색된 프로필
+     */
     public Profile searchProfile(int serialNumber){
 
         Profile profile = profileRepository.findBySerialNumber(serialNumber).get();
