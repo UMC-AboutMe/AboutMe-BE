@@ -28,9 +28,9 @@ public class MemberProfileController {
     private final MemberProfileService memberProfileService;
 
     @GetMapping()
-    public ApiResponse<MemberProfileResponse.GetMemberProfileListDTO> getMyProfilesStorage(@RequestHeader("member-id") Long memberId) {
+    public ApiResponse<MemberProfileResponse.SearchMemberProfileListDTO> getMyProfilesStorage(@RequestHeader("member-id") Long memberId) {
         List<MemberProfile> memberProfileList = memberProfileService.getMyProfilesStorage(memberId);
-        return ApiResponse.onSuccess(MemberProfileConverter.toGetMemberProfileListDTO(memberProfileList));
+        return ApiResponse.onSuccess(MemberProfileConverter.toSearchMemberProfileListDTO(memberProfileList));
     }
 
     @DeleteMapping("/{profileId}")
