@@ -17,5 +17,4 @@ public class AlarmResponse {
         private boolean isRead;
         private String subscriberNickname;
     }
-
 }
