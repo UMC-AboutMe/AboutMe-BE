@@ -44,4 +44,15 @@ public class ProfileRequest {
         @CheckEnumType(enumClass = ProfileImageType.class)
         private String profileImageType;
     }
+
+    @Getter
+    public static class ShareMyProfileDTO{
+
+        @JsonProperty("member_id")
+        private Long memberId;
+
+        @JsonProperty("profile_serial_numbers")
+        @ExistProfilesBySerialNum
+        private List<Integer> profileSerialNumberList;
+    }
 }

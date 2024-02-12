@@ -13,11 +13,16 @@ import javax.persistence.*;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MemberProfile extends BaseEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Boolean favorite;
+    @Column(nullable = false) 
+    private Boolean favorite = false;
+
+    @Column(nullable = false)
+    private Boolean approved = true;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")

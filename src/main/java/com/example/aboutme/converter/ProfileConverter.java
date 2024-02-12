@@ -125,4 +125,10 @@ public class ProfileConverter {
                 .isDefault(profile.getIsDefault())
                 .build();
     }
+
+    public static ProfileResponse.ShareProfileDTO toShareMyProfileDTO(Long memberId){
+        return ProfileResponse.ShareProfileDTO.builder()
+                .memberId(memberId)
+                .build();
+    }
 }

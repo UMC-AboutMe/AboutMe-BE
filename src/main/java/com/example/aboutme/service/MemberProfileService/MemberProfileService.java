@@ -19,7 +19,9 @@ public interface MemberProfileService {
      * @param memberId 멤버 식별자
      * @param request
      */
-    void addOthersProfilesAtMyStorage(Long memberId, ProfileRequest.ShareProfileDTO request);
+    Long addOthersProfilesAtMyStorage(Long memberId, ProfileRequest.ShareProfileDTO request);
+
+    void shareMyProfilesToOthers(Long memberId, ProfileRequest.ShareMyProfileDTO request);
 
     List<MemberProfile> filterWithKeyword(Long memberId, String keyword);
 }

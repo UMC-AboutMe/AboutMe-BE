@@ -160,4 +160,13 @@ public class ProfileResponse {
         @JsonProperty("is_default")
         private Boolean isDefault;
     }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class ShareProfileDTO{
+        @JsonProperty("member_id")
+        private Long memberId;
+    }
 }
