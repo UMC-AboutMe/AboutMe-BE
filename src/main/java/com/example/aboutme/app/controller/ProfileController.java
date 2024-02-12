@@ -13,6 +13,8 @@ import com.example.aboutme.domain.constant.ProfileImageType;
 import com.example.aboutme.service.MemberProfileService.MemberProfileService;
 import com.example.aboutme.service.ProfileService.ProfileService;
 import com.example.aboutme.validation.annotation.ExistMyProfile;
+import com.example.aboutme.validation.annotation.ExistProfileBySerialNum;
+import com.example.aboutme.validation.annotation.ExistProfilesBySerialNum;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
@@ -196,5 +198,21 @@ public class ProfileController {
         log.info("상대방 마이프로필 내 보관함에 추가하기: member={}, other's profile={}", memberId, request.getProfileSerialNumberList());
 
         return ApiResponse.onSuccess(null);
+    }
+
+    /**
+     * [GET] /myprofiles/search?q=
+     * 프로필 검색
+     * @param serialNumber 시리얼 넘버
+     * @return
+     */
+    @GetMapping("/search")
+    public ApiResponse<ProfileResponse.SearchProfileDTO> searchProfile(@RequestParam(value = "q") @ExistProfileBySerialNum int serialNumber){
+
+        Profile profile = profileService.searchProfile(serialNumber);
+
+        log.info("마이프로필 검색하기: {}", serialNumber);
+
+        return ApiResponse.onSuccess(ProfileConverter.toSearchProfile(profile));
     }
 }

@@ -145,7 +145,6 @@ public class ProfileResponse {
         private String profileImageUrl;
     }
 
-
     @Builder
     @Getter
     @NoArgsConstructor
@@ -165,8 +164,26 @@ public class ProfileResponse {
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class ShareProfileDTO{
+    public static class ShareProfileDTO {
         @JsonProperty("member_id")
         private Long memberId;
+    }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class SearchProfileDTO{
+        @JsonProperty("profile_id")
+        private Long profileId;
+
+        @JsonProperty("serial_number")
+        private int serialNumber;
+
+        @JsonProperty("profile_image")
+        private ProfileImageDTO profileImage;
+
+        @JsonProperty("front_features")
+        private List<ProfileFeatureDTO> frontFeature;
     }
 }

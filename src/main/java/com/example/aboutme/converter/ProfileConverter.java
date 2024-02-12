@@ -126,9 +126,26 @@ public class ProfileConverter {
                 .build();
     }
 
-    public static ProfileResponse.ShareProfileDTO toShareMyProfileDTO(Long memberId){
+
+    public static ProfileResponse.ShareProfileDTO toShareMyProfileDTO(Long memberId) {
         return ProfileResponse.ShareProfileDTO.builder()
                 .memberId(memberId)
+                .build();
+    }
+
+    public static ProfileResponse.SearchProfileDTO toSearchProfile(Profile profile){
+        return ProfileResponse.SearchProfileDTO.builder()
+                .profileId(profile.getId())
+                .serialNumber(profile.getSerialNumber())
+                .profileImage(toProfileImageDTO(profile.getProfileImage()))
+                .frontFeature(profile.getProfileFeatureList().stream()
+                        .filter(profileFeature -> profileFeature.getSide()== Side.FRONT)
+                        .filter(profileFeature -> {
+                            boolean isEmpty = (profileFeature.getProfileKey() == null && profileFeature.getProfileValue() == null);
+                            return !isEmpty;
+                        })
+                        .map(ProfileConverter::toProfileFeatureDTO)
+                        .toList())
                 .build();
     }
 }
