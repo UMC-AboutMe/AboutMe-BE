@@ -45,13 +45,13 @@ public class SpaceController {
         return ApiResponse.onSuccess(SpaceConverter.toUpdateResultDTO(updateSpace));
     }
 
-    @PostMapping(value = "/plans/", produces = "application/json;charset=UTF-8")
+    @PostMapping(value = "/plans", produces = "application/json;charset=UTF-8")
     public ApiResponse<SpaceResponse.ReadResultDTO> join (@RequestHeader("member-id") Long memberId, @RequestBody @Valid PlanRequest.CreatePlanDTO request) throws ParseException {
         Space newSpace = spaceCommandService.createPlan(memberId, request);
         return ApiResponse.onSuccess(SpaceConverter.toReadResultDTO(newSpace));
     }
 
-    @PostMapping(value = "/images/", produces = "application/json;charset=UTF-8")
+    @PostMapping(value = "/images", produces = "application/json;charset=UTF-8")
     public ApiResponse<SpaceResponse.ReadResultDTO> uploadImage (@RequestHeader("member-id") Long memberId,
                                                                  @RequestPart(value = "file", required = false) @NotEmpty MultipartFile multipartFile) {
         Space newSpace = spaceCommandService.uploadImage(memberId, multipartFile);
@@ -62,5 +62,11 @@ public class SpaceController {
     public ApiResponse<SpaceResponse.SearchResultDto> search(@RequestParam(defaultValue = "") String keyword) {
         Space space = spaceCommandService.searchSpace(keyword);
         return ApiResponse.onSuccess(SpaceConverter.toSearchResultDTO(space));
+    }
+
+    @PostMapping(value = "/shares", produces = "application/json;charset=UTF-8")
+    public ApiResponse<SpaceResponse.JoinResultDTO> share (@RequestHeader("member-id") Long memberId, @RequestBody @Valid SpaceRequest.JoinDTO request) {
+        Space newSpace = spaceCommandService.JoinSpace(memberId, request);
+        return ApiResponse.onSuccess(SpaceConverter.toJoinResultDTO(newSpace));
     }
 }
