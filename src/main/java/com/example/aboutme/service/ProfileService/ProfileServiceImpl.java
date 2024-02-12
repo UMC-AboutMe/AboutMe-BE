@@ -234,5 +234,10 @@ public class ProfileServiceImpl implements ProfileService{
         return profile;
     }
 
+    public Profile searchProfile(int serialNumber){
 
+        Profile profile = profileRepository.findBySerialNumber(serialNumber).get();
+
+        return profile;
+    }
 }

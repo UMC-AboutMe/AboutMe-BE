@@ -61,5 +61,5 @@ public interface ProfileService {
      */
     void deleteMyProfile(Long memberId, Long profileId);
 
-
+    Profile searchProfile(int serialNumber);
 }
