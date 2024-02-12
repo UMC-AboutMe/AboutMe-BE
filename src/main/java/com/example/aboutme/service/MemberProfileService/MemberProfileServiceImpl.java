@@ -52,7 +52,7 @@ public class MemberProfileServiceImpl implements MemberProfileService {
 
     public List<MemberProfile> getMyProfilesStorage(Long memberId){
         Member member = memberService.findMember(memberId);
-        return memberProfileRepository.findAllByMember(member);
+        return memberProfileRepository.findAllByMemberAndApprovedIsTrue(member);
     }
 
     @Transactional
@@ -123,7 +123,7 @@ public class MemberProfileServiceImpl implements MemberProfileService {
                 .map(ProfileFeature::getProfile)
                 .toList();
 
-        return memberProfileRepository.findByMemberAndProfileIn(member, profileList);
+        return memberProfileRepository.findByMemberAndProfileInAndApprovedIsTrue(member, profileList);
     }
 
     /**

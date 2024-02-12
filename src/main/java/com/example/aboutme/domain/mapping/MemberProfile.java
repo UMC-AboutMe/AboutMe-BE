@@ -18,11 +18,9 @@ public class MemberProfile extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false) 
-    private Boolean favorite = false;
+    private Boolean favorite;
 
-    @Column(nullable = false)
-    private Boolean approved = true;
+    private Boolean approved;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")

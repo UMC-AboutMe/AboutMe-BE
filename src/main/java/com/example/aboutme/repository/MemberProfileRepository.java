@@ -8,11 +8,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface MemberProfileRepository extends JpaRepository<MemberProfile, Long> {
-    List<MemberProfile> findAllByMember(Member member);
+//    List<MemberProfile> findAllByMember(Member member);
+
+    List<MemberProfile> findAllByMemberAndApprovedIsTrue(Member member);
+
 
 //    MemberProfile findByMemberAndId(Member member, Long memberProfileId);
 
     MemberProfile findByMemberAndProfile(Member member, Profile profile);
     Boolean existsByMemberAndProfile(Member member, Profile profile);
-    List<MemberProfile> findByMemberAndProfileIn(Member member, List<Profile> profiles);
+    List<MemberProfile> findByMemberAndProfileInAndApprovedIsTrue(Member member, List<Profile> profileList);
 }
