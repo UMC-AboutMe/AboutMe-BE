@@ -18,6 +18,11 @@ public class MyPageController {
 
     private final MemberService memberService;
 
+    /**
+     * [GET] /mypages
+     * @param memberId 멤버 식별자
+     * @return
+     */
     @GetMapping("")
     public ApiResponse<MyPageResponse.GetMyPageDTO> getMyPage(@RequestHeader("member-id") Long memberId){
 
