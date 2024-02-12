@@ -50,20 +50,13 @@ public class ProfileServiceImpl implements ProfileService{
     }
 
     /**
-     * 내 마이프로필 단건 조회
-     * @param memberId 멤버 식별자
+     * 마이프로필 단건 조회
      * @param profileId 프로필 식별자
      * @return 마이프로필
      */
-    public Profile getMyProfile(Long memberId, Long profileId){
-        Member member = memberService.findMember(memberId);
-        Profile profile = profileRepository.findById(profileId).get();
+    public Profile getMyProfile(Long profileId){
 
-        if(profile.getMember() != member){
-            throw new GeneralException(ErrorStatus.PROFILE_NOT_MATCH_MEMBER_AT_GET);
-        }
-
-        return profile;
+        return profileRepository.findById(profileId).get();
     }
 
     /**
