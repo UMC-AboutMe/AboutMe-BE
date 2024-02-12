@@ -129,6 +129,29 @@ public class LoginController {
         }
     }
 
+    @PostMapping("members/{socialType}/loginEmail")
+    public ApiResponse<MsgResponse.LoginMsgDTO> loginWithEmail(@PathVariable String socialType, @RequestBody String email) throws Exception{
+        String newJwtToken;
+        JSONParser jsonParser = new JSONParser();
+        JSONObject jsonObj = (JSONObject) jsonParser.parse(email);
+        String parsedEmail = (String) jsonObj.get("email");
+
+        switch (socialType) {
+            case "kakao":
+                newJwtToken = tokenProvider.createToken(parsedEmail);
+                SocialInfoRequest.KakaoDTO  kakaoInfo = SocialInfoRequest.KakaoDTO.builder().email(parsedEmail).nickname("").build();
+                Member newMemberKakao = kakaoService.saveKakaoMember(kakaoInfo);
+                return ApiResponse.onSuccess(LoginConverter.toLoginDTO(kakaoInfo.getEmail(),newJwtToken, Social.KAKAO));
+            case "google":
+                newJwtToken = tokenProvider.createToken(parsedEmail);
+                SocialInfoRequest.GoogleDTO googleInfo = SocialInfoRequest.GoogleDTO.builder().email(parsedEmail).build();
+                Member newMemberGoogle = googleService.saveGoogleMember(googleInfo);
+                return ApiResponse.onSuccess(LoginConverter.toLoginDTO(googleInfo.getEmail(),newJwtToken,Social.GOOGLE));
+            default:
+                throw new GeneralException(ErrorStatus.UNKNOWN_SOCIALTYPE);
+        }
+    }
+
 
 
 

@@ -9,7 +9,6 @@ public class SocialInfoRequest {
     @Builder
     @Data
     public static class KakaoDTO{
-        private long id;
         private String email;
         private String nickname;
     }
