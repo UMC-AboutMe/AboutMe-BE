@@ -1,9 +1,11 @@
 package com.example.aboutme.service.AlarmService;
 
+import com.example.aboutme.app.dto.AlarmRequest;
 import com.example.aboutme.converter.AlarmConverter;
 import com.example.aboutme.domain.Alarm;
 import com.example.aboutme.domain.Member;
 import com.example.aboutme.domain.Space;
+import com.example.aboutme.repository.AlarmRepository;
 import com.example.aboutme.service.MemberService.MemberService;
 import com.example.aboutme.service.SpaceService.SpaceService;
 import lombok.AllArgsConstructor;
@@ -18,15 +20,19 @@ import org.springframework.transaction.annotation.Transactional;
 public class AlarmServiceImpl implements AlarmService{
     private final MemberService memberService;
     private final SpaceService spaceService;
+    private final AlarmRepository alarmRepository;
 
     @Override
     @Transactional
-    public Alarm shareSpace(Long memberId) {
-        // 멤버 조회
-        Member member = memberService.findMember(memberId);
+    public Alarm shareSpace(Long memberId, AlarmRequest.CreateDTO request) {
+        // 공유하려는 멤버 조회
+        Member fromMember = memberService.findMember(memberId);
         // 스페이스 조회
-        Space space = spaceService.findSpace(member);
-        Alarm alarm = AlarmConverter.toAlarm(member, space.getNickname());
-        return alarm;
+        Space space = spaceService.findSpace(fromMember);
+        // 공유받는 멤버 조회
+        Member toMember = memberService.findMember(request.getDestination());
+        Alarm alarm = AlarmConverter.toAlarm(toMember, space.getNickname());
+
+        return alarmRepository.save(alarm);
     }
 }

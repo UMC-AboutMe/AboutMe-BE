@@ -69,8 +69,8 @@ public class SpaceController {
     }
 
     @PostMapping(value = "/shares", produces = "application/json;charset=UTF-8")
-    public ApiResponse<AlarmResponse.JoinResultDTO> share (@RequestHeader("member-id") Long memberId) {
-        Alarm newAlarm = alarmService.shareSpace(memberId);
+    public ApiResponse<AlarmResponse.JoinResultDTO> share (@RequestHeader("member-id") Long memberId, @RequestBody @Valid AlarmRequest.CreateDTO request) {
+        Alarm newAlarm = alarmService.shareSpace(memberId, request);
         return ApiResponse.onSuccess(AlarmConverter.toJoinResultDTO(newAlarm));
     }
 }
