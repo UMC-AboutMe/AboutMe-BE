@@ -36,6 +36,7 @@ public enum ErrorStatus implements BaseErrorCode {
     PROFILE_NOT_MATCH_MEMBER_AT_GET(HttpStatus.BAD_REQUEST, "PROFILE406", "해당 프로필을 조회할 수 없습니다"),
     PROFILE_NOT_MATCH_MEMBER_AT_UPDATE(HttpStatus.BAD_REQUEST, "PROFILE407", "해당 프로필을 수정할 수 없습니다"),
     PROFILE_NOT_MINE(HttpStatus.BAD_REQUEST, "PROFILE408", "공유하려는 프로필이 본인 것이 아닙니다."),
+    PROFILE_ALREADY_SHARED(HttpStatus.BAD_REQUEST, "PROFILE409", "이미 저장된 프로필입니다."),
 
     // 마이프로필 이미지 에러
     PROFILE_IMAGE_CANNOT_CHANGE_TO_CHARACTER(HttpStatus.BAD_REQUEST, "IMAGE400", "마이스페이스에서 캐릭터를 설정해야 합니다"),

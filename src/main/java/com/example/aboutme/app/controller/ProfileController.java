@@ -215,4 +215,21 @@ public class ProfileController {
 
         return ApiResponse.onSuccess(ProfileConverter.toSearchProfile(profile));
     }
+
+    /**
+     * [PATCH] /myprofiles/share/approve
+     * 프로필 공유받기
+     *
+     * @param memberId 멤버 식별자
+     * @param profileId 마이프로필 식별자
+     * @return
+     */
+    @PatchMapping("/share/{profile-id}")
+    public ApiResponse<Void> approveProfile(@RequestHeader("member-id") Long memberId,
+                                            @PathVariable("profile-id") @ExistMyProfile Long profileId) {
+
+        memberProfileService.toggleApproved(memberId, profileId);
+
+        return ApiResponse.onSuccess(null);
+    }
 }

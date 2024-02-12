@@ -162,4 +162,31 @@ public class MemberProfileServiceImpl implements MemberProfileService {
             memberProfileRepository.save(memberProfile);
         });
     }
+
+
+    /**
+     * 프로필 공유받기
+     * @param memberId 멤버 식별자
+     * @param profileId 마이프로필 식별자
+     */
+    @Transactional
+    public Boolean toggleApproved(Long memberId, Long profileId) {
+
+        Member member = memberService.findMember(memberId);
+
+        Profile profile = profileRepository.findById(profileId).get();
+
+        MemberProfile memberProfile = memberProfileRepository.findByMemberAndProfile(member, profile);
+        if (memberProfile == null) {
+            throw new GeneralException(ErrorStatus.MEMBER_PROFILE_NOT_FOUND);
+        }
+
+        if (memberProfile.getApproved()) {
+            throw new GeneralException(ErrorStatus.PROFILE_ALREADY_SHARED);
+        }
+
+        memberProfile.toggleApproved();
+
+        return memberProfile.getApproved();
+    }
 }

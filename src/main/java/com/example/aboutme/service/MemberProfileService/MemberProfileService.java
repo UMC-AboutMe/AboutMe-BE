@@ -11,6 +11,8 @@ import java.util.List;
 public interface MemberProfileService {
     Boolean toggleFavorite(Long memberId, Long profileId);
 
+    Boolean toggleApproved(Long memberId, Long profileId);
+
     List<MemberProfile> getMyProfilesStorage(Long memberId);
 
     MemberProfile deleteMemberProfile(Long memberId, Long profileId);
