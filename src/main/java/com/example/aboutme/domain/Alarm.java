@@ -3,10 +3,7 @@ package com.example.aboutme.domain;
 import com.example.aboutme.domain.common.BaseEntity;
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @AllArgsConstructor
@@ -19,5 +16,10 @@ public class Alarm extends BaseEntity {
     private Long id;
 
     private String content;
+
     private boolean isRead;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
 }
