@@ -84,8 +84,14 @@ public class ProfileController {
     }
 
     @PatchMapping("/default/{profileId}")
-    public ApiResponse<ProfileResponse.UpdateDefaultProfileDTO> patchDefaultMyProfile(@RequestHeader("member-id") Long memberId, @PathVariable Long profileId) {
+    public ApiResponse<ProfileResponse.UpdateDefaultProfileDTO> patchDefaultMyProfileToTrue(@RequestHeader("member-id") Long memberId, @PathVariable Long profileId) {
         Profile updatedProfile = profileService.updateIsDefault(memberId, profileId);
+        return ApiResponse.onSuccess(ProfileConverter.toUpdateDefaultProfile(updatedProfile));
+    }
+
+    @PatchMapping("/defaultToFalse/{profileId}")
+    public ApiResponse<ProfileResponse.UpdateDefaultProfileDTO> patchDefaultMyProfileToFalse(@RequestHeader("member-id") Long memberId, @PathVariable Long profileId) {
+        Profile updatedProfile = profileService.updateIsDefaultToFalse(memberId,profileId);
         return ApiResponse.onSuccess(ProfileConverter.toUpdateDefaultProfile(updatedProfile));
     }
 

@@ -227,6 +227,18 @@ public class ProfileServiceImpl implements ProfileService{
         return profile;
     }
 
+    @Transactional
+    public Profile updateIsDefaultToFalse(Long memberId, Long profileId) {
+        Member member = memberService.findMember(memberId);
+        Profile myProfile = profileRepository.findByMemberAndId(member,profileId).orElseThrow(
+                () -> new GeneralException(ErrorStatus.PROFILE_NOT_FOUND)
+        );
+        if (myProfile.getIsDefault()){
+            myProfile.setIsDefault(false);
+        }
+        return myProfile;
+    }
+
     /**
      * 프로필 검색
      * @param serialNumber 시리얼 넘버
