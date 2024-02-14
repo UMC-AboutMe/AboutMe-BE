@@ -116,7 +116,6 @@ public class KakaoServiceImpl implements KakaoService {
         String nickname = String.valueOf(profile.get("nickname"));
 
         return SocialInfoRequest.KakaoDTO.builder()
-                .id(id)
                 .email(email)
                 .nickname(nickname).build();
     }
