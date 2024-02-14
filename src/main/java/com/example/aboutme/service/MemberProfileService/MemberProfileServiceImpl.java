@@ -141,7 +141,7 @@ public class MemberProfileServiceImpl implements MemberProfileService {
                 .map(serialNum -> profileRepository.findBySerialNumber(serialNum).get())
                 .toList();
 
-        Member shareTarget = memberService.findMember(request.getMemberId());
+        Member shareTarget = memberService.findMember(request.getTargetMemberId());
 
         for(Profile otherProfile : otherProfileList){
             // 공유하려는 프로필이 본인게 아닌 경우

@@ -48,8 +48,8 @@ public class ProfileRequest {
     @Getter
     public static class ShareMyProfileDTO{
 
-        @JsonProperty("member_id")
-        private Long memberId;
+        @JsonProperty("target_member_id")
+        private Long targetMemberId;
 
         @JsonProperty("profile_serial_numbers")
         @ExistProfilesBySerialNum
