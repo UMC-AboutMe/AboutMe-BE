@@ -47,9 +47,9 @@ public class ProfileRequest {
 
     @Getter
     public static class SendProfileDTO{
-        @JsonProperty("target_profile_serial_numbers")
+        @JsonProperty("others_profile_serial_numbers")
         @ExistProfilesBySerialNum
-        private List<Integer> TargetProfileSerialNumberList;
+        private List<Integer> OthersProfileSerialNumberList;
 
         @JsonProperty("my_profile_serial_numbers")
         @ExistProfilesBySerialNum

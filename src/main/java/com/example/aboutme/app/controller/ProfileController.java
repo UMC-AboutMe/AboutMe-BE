@@ -195,7 +195,7 @@ public class ProfileController {
 
         memberProfileService.sendMyProfile(memberId, request);
 
-        log.info("상대방 마이프로필 내 보관함에 추가하기: member={}, other's profile={}, my profile={}", memberId, request.getTargetProfileSerialNumberList(), request.getMyProfileSerialNumberList());
+        log.info("마이프로필 공유 → 알림 데이터 생성: member={}, other's profile={}, my profile={}", memberId, request.getOthersProfileSerialNumberList(), request.getMyProfileSerialNumberList());
 
         return ApiResponse.onSuccess(null);
     }
