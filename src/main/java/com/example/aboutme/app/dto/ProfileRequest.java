@@ -46,13 +46,13 @@ public class ProfileRequest {
     }
 
     @Getter
-    public static class ShareMyProfileDTO{
-
-        @JsonProperty("target_member_id")
-        private Long targetMemberId;
-
-        @JsonProperty("profile_serial_numbers")
+    public static class SendProfileDTO{
+        @JsonProperty("target_profile_serial_numbers")
         @ExistProfilesBySerialNum
-        private List<Integer> profileSerialNumberList;
+        private List<Integer> TargetProfileSerialNumberList;
+
+        @JsonProperty("my_profile_serial_numbers")
+        @ExistProfilesBySerialNum
+        private List<Integer> MyProfileSerialNumberList;
     }
 }

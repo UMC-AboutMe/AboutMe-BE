@@ -12,6 +12,7 @@ import com.example.aboutme.domain.mapping.MemberSpace;
 import com.example.aboutme.service.MemberProfileService.MemberProfileService;
 import com.example.aboutme.validation.annotation.ExistMyProfile;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +24,7 @@ import java.util.List;
 @RequestMapping("/myprofiles/storage")
 @RequiredArgsConstructor
 @Validated
+@Slf4j
 public class MemberProfileController {
 
     private final MemberProfileService memberProfileService;
@@ -51,6 +53,8 @@ public class MemberProfileController {
     public ApiResponse<MemberProfileResponse.SearchMemberProfileListDTO> searchMemberProfileList(@RequestHeader("member-id") Long memberId,
                                                                                            @RequestParam(defaultValue = "") String keyword) {
         List<MemberProfile> memberProfileList = memberProfileService.filterWithKeyword(memberId, keyword);
+        log.info("프로필 보관함 내 검색하기: member={}, keyword={}", memberId, keyword);
+
         return ApiResponse.onSuccess(MemberProfileConverter.toSearchMemberProfileListDTO(memberProfileList));
     }
 

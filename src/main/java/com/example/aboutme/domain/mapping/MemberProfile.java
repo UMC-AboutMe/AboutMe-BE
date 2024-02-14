@@ -20,8 +20,6 @@ public class MemberProfile extends BaseEntity {
 
     private Boolean favorite;
 
-    private Boolean approved;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
@@ -32,9 +30,5 @@ public class MemberProfile extends BaseEntity {
 
     public void toggleFavorite() {
         this.favorite = !this.favorite;
-    }
-
-    public void toggleApproved() {
-        this.approved = !this.approved;
     }
 }
