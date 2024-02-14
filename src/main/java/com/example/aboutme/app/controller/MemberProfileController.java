@@ -54,8 +54,7 @@ public class MemberProfileController {
                                                                                            @RequestParam(defaultValue = "") String keyword) {
         List<MemberProfile> memberProfileList = memberProfileService.filterWithKeyword(memberId, keyword);
         log.info("프로필 보관함 내 검색하기: member={}, keyword={}", memberId, keyword);
-        
+
         return ApiResponse.onSuccess(MemberProfileConverter.toSearchMemberProfileListDTO(memberProfileList));
     }
-
 }
