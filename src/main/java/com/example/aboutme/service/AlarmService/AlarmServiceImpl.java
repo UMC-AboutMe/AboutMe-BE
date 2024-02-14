@@ -30,7 +30,7 @@ public class AlarmServiceImpl implements AlarmService{
         // 스페이스 조회
         Space space = spaceService.findSpace(fromMember);
         // 공유받는 멤버 조회
-        Member toMember = memberService.findMember(request.getDestination());
+        Member toMember = memberService.findMember(request.getToMemberId());
         Alarm alarm = AlarmConverter.toAlarm(toMember, space.getNickname());
 
         return alarmRepository.save(alarm);

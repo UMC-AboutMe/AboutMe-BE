@@ -11,6 +11,6 @@ public class AlarmRequest {
     @Getter
     public static class CreateDTO {
         @ExistMember
-        private long destination;
+        private long toMemberId;
     }
 }
