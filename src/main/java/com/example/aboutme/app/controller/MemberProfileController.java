@@ -53,4 +53,5 @@ public class MemberProfileController {
         List<MemberProfile> memberProfileList = memberProfileService.filterWithKeyword(memberId, keyword);
         return ApiResponse.onSuccess(MemberProfileConverter.toSearchMemberProfileListDTO(memberProfileList));
     }
+
 }
