@@ -23,5 +23,5 @@ public interface MemberSpaceRepository extends JpaRepository<MemberSpace, Long> 
     @Query("select count(*)" +
             "from MemberSpace ms join Space s on ms.space = s " +
             "where s.member = :member")
-    Integer countSharedProfileByMember(@Param("member") Member member);
+    Integer countSharedSpaceByMember(@Param("member") Member member);
 }

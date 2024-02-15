@@ -45,7 +45,7 @@ public class MemberServiceImpl implements MemberService{
         String spaceName = member.getSpace() != null ? member.getSpace().getNickname() : null;
 
         int profileSharedNum = memberProfileRepository.countSharedProfileByMember(member);
-        int spaceSharedNum = memberSpaceRepository.countSharedProfileByMember(member);
+        int spaceSharedNum = memberSpaceRepository.countSharedSpaceByMember(member);
 
         return MemberConverter.toGetMyPageDTO(profileName, spaceName, profileSharedNum, spaceSharedNum);
     }
