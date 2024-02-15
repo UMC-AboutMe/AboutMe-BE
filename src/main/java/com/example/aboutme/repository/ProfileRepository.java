@@ -17,4 +17,6 @@ public interface ProfileRepository extends JpaRepository<Profile, Long> {
     List<Profile> findAllByMemberOrderByIsDefaultDesc(Member member);
 
     boolean existsBySerialNumber(int serialNumber);
+
+    Optional<Profile> findByMemberAndId(Member member, Long id);
 }

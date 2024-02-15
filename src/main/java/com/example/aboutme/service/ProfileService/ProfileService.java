@@ -34,6 +34,7 @@ public interface ProfileService {
 
     Profile updateIsDefault(Long memberID, Long profileId);
 
+    Profile updateIsDefaultToFalse(Long memberId, Long profileId);
     /**
      * 내 마이프로필 수정
      * @param memberId 멤버 식별자
