@@ -52,7 +52,7 @@ public class MemberProfileServiceImpl implements MemberProfileService {
 
     public List<MemberProfile> getMyProfilesStorage(Long memberId){
         Member member = memberService.findMember(memberId);
-        return memberProfileRepository.findAllByMember(member);
+        return memberProfileRepository.findAllByMemberAndApprovedIsTrue(member);
     }
 
     @Transactional
@@ -75,7 +75,7 @@ public class MemberProfileServiceImpl implements MemberProfileService {
      * @param request
      */
     @Transactional
-    public void addOthersProfilesAtMyStorage(Long memberId, ProfileRequest.ShareProfileDTO request){
+    public Long addOthersProfilesAtMyStorage(Long memberId, ProfileRequest.ShareProfileDTO request){
 
         Member member = memberService.findMember(memberId);
 
@@ -83,6 +83,8 @@ public class MemberProfileServiceImpl implements MemberProfileService {
         List<Profile> otherProfileList = request.getProfileSerialNumberList().stream()
                 .map(serialNum -> profileRepository.findBySerialNumber(serialNum).get())
                 .toList();
+
+        Long profileOwnerId = otherProfileList.isEmpty() ? null : otherProfileList.get(0).getMember().getId();
 
         for(Profile otherProfile : otherProfileList){
             // 이미 공유된 프로필일 경우
@@ -102,6 +104,8 @@ public class MemberProfileServiceImpl implements MemberProfileService {
         memberProfileList.forEach(memberProfile -> {
             memberProfileRepository.save(memberProfile);
         });
+
+        return profileOwnerId;
     }
 
     /**
@@ -119,6 +123,43 @@ public class MemberProfileServiceImpl implements MemberProfileService {
                 .map(ProfileFeature::getProfile)
                 .toList();
 
-        return memberProfileRepository.findByMemberAndProfileIn(member, profileList);
+        return memberProfileRepository.findByMemberAndProfileInAndApprovedIsTrue(member, profileList);
+    }
+
+    /**
+     * 내 마이프로필 상대방에게 공유하기
+     * @param memberId 멤버 식별자
+     * @param request
+     */
+    @Transactional
+    public void shareMyProfilesToOthers(Long memberId, ProfileRequest.ShareMyProfileDTO request){
+
+        Member member = memberService.findMember(memberId);
+
+        // 추가하려는 마이프로필 목록 조회
+        List<Profile> otherProfileList = request.getProfileSerialNumberList().stream()
+                .map(serialNum -> profileRepository.findBySerialNumber(serialNum).get())
+                .toList();
+
+        Member shareTarget = memberService.findMember(request.getMemberId());
+
+        for(Profile otherProfile : otherProfileList){
+            // 공유하려는 프로필이 본인게 아닌 경우
+            if(otherProfile.getMember() != member){
+                throw new GeneralException(ErrorStatus.PROFILE_NOT_MINE);
+            }
+            // 이미 공유된 프로필일 경우
+            if(memberProfileRepository.existsByMemberAndProfile(shareTarget, otherProfile)){
+                throw new GeneralException(ErrorStatus.MEMBER_PROFILE_ALREADY_EXIST);
+            }
+        }
+
+        List<MemberProfile> memberProfileList = otherProfileList.stream()
+                .map(otherProfile -> MemberProfileConverter.toMemberProfileNotApproved(shareTarget, otherProfile))
+                .toList();
+
+        memberProfileList.forEach(memberProfile -> {
+            memberProfileRepository.save(memberProfile);
+        });
     }
 }

@@ -37,6 +37,7 @@ public class ProfileController {
     /**
      * [GET] /myprofiles
      * 내 마이프로필 목록 조회
+     *
      * @param memberId 멤버 식별자
      * @return
      */
@@ -53,11 +54,12 @@ public class ProfileController {
     /**
      * [GET] /myprofiles/{profile-id}
      * 마이프로필 단건 조회
+     *
      * @param profileId 마이프로필 식별자
      * @return
      */
     @GetMapping("/{profile-id}")
-    public ApiResponse<ProfileResponse.GetMyProfileDTO> getMyProfile(@PathVariable("profile-id") @ExistMyProfile Long profileId){
+    public ApiResponse<ProfileResponse.GetMyProfileDTO> getMyProfile(@PathVariable("profile-id") @ExistMyProfile Long profileId) {
 
         Profile profile = profileService.getMyProfile(profileId);
 
@@ -69,6 +71,7 @@ public class ProfileController {
     /**
      * [POST] /myprofiles
      * 마이프로필 생성
+     *
      * @param memberId 멤버 식별자
      * @param request
      * @return
@@ -84,15 +87,22 @@ public class ProfileController {
     }
 
     @PatchMapping("/default/{profileId}")
-    public ApiResponse<ProfileResponse.UpdateDefaultProfileDTO> patchDefaultMyProfile(@RequestHeader("member-id") Long memberId, @PathVariable Long profileId) {
+    public ApiResponse<ProfileResponse.UpdateDefaultProfileDTO> patchDefaultMyProfileToTrue(@RequestHeader("member-id") Long memberId, @PathVariable Long profileId) {
         Profile updatedProfile = profileService.updateIsDefault(memberId, profileId);
+        return ApiResponse.onSuccess(ProfileConverter.toUpdateDefaultProfile(updatedProfile));
+    }
+
+    @PatchMapping("/defaultToFalse/{profileId}")
+    public ApiResponse<ProfileResponse.UpdateDefaultProfileDTO> patchDefaultMyProfileToFalse(@RequestHeader("member-id") Long memberId, @PathVariable Long profileId) {
+        Profile updatedProfile = profileService.updateIsDefaultToFalse(memberId,profileId);
         return ApiResponse.onSuccess(ProfileConverter.toUpdateDefaultProfile(updatedProfile));
     }
 
     /**
      * [PATCH] /myprofiles/{profile-id}
      * 내 마이프로필 수정
-     * @param memberId 멤버 식별자
+     *
+     * @param memberId  멤버 식별자
      * @param profileId 마이프로필 식별자
      * @param request
      * @return
@@ -100,7 +110,7 @@ public class ProfileController {
     @PatchMapping("/{profile-id}")
     public ApiResponse<ProfileResponse.UpdateProfileDTO> updateMyProfile(@RequestHeader("member-id") Long memberId,
                                                                          @PathVariable("profile-id") @ExistMyProfile Long profileId,
-                                                                         @RequestBody @Valid ProfileRequest.UpdateProfileDTO request){
+                                                                         @RequestBody @Valid ProfileRequest.UpdateProfileDTO request) {
 
         ProfileFeature profileFeature = profileService.updateMyProfile(memberId, profileId, request);
 
@@ -114,9 +124,10 @@ public class ProfileController {
     /**
      * [PATCH] /myprofiles/{profile-id}/image
      * 내 마이프로필 이미지 수정
-     * @param memberId 멤버 식별자
+     *
+     * @param memberId  멤버 식별자
      * @param profileId 마이프로필 식별자
-     * @param image 이미지
+     * @param image     이미지
      * @param request
      * @return
      */
@@ -124,12 +135,12 @@ public class ProfileController {
     public ApiResponse<ProfileResponse.UpdateMyProfileImageDTO> updateMyProfileImage(@RequestHeader("member-id") Long memberId,
                                                                                      @PathVariable("profile-id") @ExistMyProfile Long profileId,
                                                                                      @RequestPart(value = "image", required = false) MultipartFile image,
-                                                                                     @RequestPart(value= "body", required = true) @Valid ProfileRequest.UpdateProfileImageDTO request){
+                                                                                     @RequestPart(value = "body", required = true) @Valid ProfileRequest.UpdateProfileImageDTO request) {
 
 
         ProfileImageType profileImageType = ProfileImageType.valueOf(request.getProfileImageType());
         boolean isProfileImageEmpty = (profileImageType == ProfileImageType.USER_IMAGE) && (image == null);
-        if(isProfileImageEmpty){
+        if (isProfileImageEmpty) {
             throw new GeneralException(ErrorStatus.PROFILE_IMAGE_REQUIRED);
         }
 
@@ -143,12 +154,13 @@ public class ProfileController {
     /**
      * [DELETE] /myprofiles/{profile-id}
      * 내 마이프로필 삭제
-     * @param memberId 멤버 식별자
+     *
+     * @param memberId  멤버 식별자
      * @param profileId 마이프로필 식별자
      * @return
      */
     @DeleteMapping("/{profile-id}")
-    public ApiResponse deleteMyProfile(@RequestHeader("member-id") Long memberId, @PathVariable("profile-id") @ExistMyProfile Long profileId){
+    public ApiResponse deleteMyProfile(@RequestHeader("member-id") Long memberId, @PathVariable("profile-id") @ExistMyProfile Long profileId) {
         profileService.deleteMyProfile(memberId, profileId);
 
         log.info("마이프로필 삭제: {}", profileId);
@@ -159,15 +171,35 @@ public class ProfileController {
     /**
      * [POST] /myprofiles/share
      * 상대방 마이프로필 내 보관함에 추가하기
+     *
      * @param memberId 멤버 식별자
      * @param request
      * @return
      */
     @PostMapping("/share")
-    public ApiResponse<Void> shareProfile(@RequestHeader("member-id") Long memberId,
-                                          @RequestBody @Valid ProfileRequest.ShareProfileDTO request){
+    public ApiResponse<ProfileResponse.ShareProfileDTO> shareProfile(@RequestHeader("member-id") Long memberId,
+                                                                     @RequestBody @Valid ProfileRequest.ShareProfileDTO request) {
 
-        memberProfileService.addOthersProfilesAtMyStorage(memberId, request);
+        Long profileOwnerId = memberProfileService.addOthersProfilesAtMyStorage(memberId, request);
+
+        log.info("상대방 마이프로필 내 보관함에 추가하기: member={}, other's profile={}", memberId, request.getProfileSerialNumberList());
+
+        return ApiResponse.onSuccess(ProfileConverter.toShareMyProfileDTO(profileOwnerId));
+    }
+
+    /**
+     * [POST] /myprofiles/share/mine
+     * 내 마이프로필 상대방에게 공유하기
+     *
+     * @param memberId 멤버 식별자
+     * @param request
+     * @return
+     */
+    @PostMapping("/share/mine")
+    public ApiResponse<Void> shareProfile(@RequestHeader("member-id") Long memberId,
+                                          @RequestBody @Valid ProfileRequest.ShareMyProfileDTO request) {
+
+        memberProfileService.shareMyProfilesToOthers(memberId, request);
 
         log.info("상대방 마이프로필 내 보관함에 추가하기: member={}, other's profile={}", memberId, request.getProfileSerialNumberList());
 

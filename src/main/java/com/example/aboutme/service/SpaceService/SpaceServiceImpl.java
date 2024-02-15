@@ -152,4 +152,13 @@ public class SpaceServiceImpl implements SpaceService {
         return spaceRepository.findByNickname(keyword)
                 .orElseThrow(() -> new GeneralException(ErrorStatus.SPACE_NOT_FOUND));
     }
+
+    @Override
+    public Space findSpace(Member member) {
+        if (!spaceRepository.existsByMember(member)) { // 스페이스 검사
+            throw new GeneralException(ErrorStatus.SPACE_NOT_FOUND);
+        }
+        Space space = spaceRepository.findByMember(member).get();
+        return space;
+    }
 }

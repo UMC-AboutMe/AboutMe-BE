@@ -2,6 +2,7 @@ package com.example.aboutme.service.SpaceService;
 
 import com.example.aboutme.app.dto.PlanRequest;
 import com.example.aboutme.app.dto.SpaceRequest;
+import com.example.aboutme.domain.Member;
 import com.example.aboutme.domain.Space;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,4 +23,6 @@ public interface SpaceService {
     Space uploadImage(Long memberId, MultipartFile multipartFile);
 
     Space searchSpace(String keyword);
+
+    Space findSpace(Member member);
 }
