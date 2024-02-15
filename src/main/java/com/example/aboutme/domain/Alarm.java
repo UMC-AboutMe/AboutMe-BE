@@ -26,4 +26,12 @@ public class Alarm extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "profile_id")
     private Profile profile;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "space_id")
+    private Space space;
+
+    public void setIsRead (){
+        this.isRead = true;
+    }
 }

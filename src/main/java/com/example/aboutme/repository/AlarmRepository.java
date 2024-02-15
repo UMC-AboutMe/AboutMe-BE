@@ -11,3 +11,4 @@ public interface AlarmRepository extends JpaRepository<Alarm, Long> {
     List<Alarm> findByMember(Member member);
 
 }
+

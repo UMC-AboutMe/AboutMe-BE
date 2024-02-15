@@ -33,4 +33,7 @@ public class Member extends BaseEntity {
 
     @OneToMany(mappedBy = "writer", cascade = CascadeType.ALL)
     private List<GuestBook> guestBookList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private List<Alarm> alarmsList = new ArrayList<>();
 }
