@@ -100,32 +100,20 @@ public class ProfileConverter {
     }
 
     public static ProfileResponse.ProfileImageDTO toProfileImageDTO(ProfileImage profileImage){
-        Integer characterType = null;
-        String profileImageURL = null;
-
-        switch (profileImage.getType()){
-            case USER_IMAGE -> {
-                profileImageURL = profileImage.getImageUrl();
-            }
-            case CHARACTER -> {
-                characterType = profileImage.getSpace().getCharacterType();
-            }
-        }
 
         return ProfileResponse.ProfileImageDTO.builder()
                 .type(profileImage.getType())
-                .characterType(characterType)
-                .profileImageUrl(profileImageURL)
+                .characterType(profileImage.getCharacterType())
+                .profileImageUrl(profileImage.getImageUrl())
                 .build();
     }
 
     public static ProfileResponse.UpdateMyProfileImageDTO toUpdateMyProfileImageDTO(ProfileImage profileImage){
-        Integer characterType = profileImage.getSpace() == null ? null : profileImage.getSpace().getCharacterType();
 
         return ProfileResponse.UpdateMyProfileImageDTO.builder()
                 .type(profileImage.getType())
                 .profileImageUrl(profileImage.getImageUrl())
-                .characterType(characterType)
+                .characterType(profileImage.getCharacterType())
                 .build();
     }
 
