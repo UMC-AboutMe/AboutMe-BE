@@ -4,6 +4,7 @@ import com.example.aboutme.app.dto.ProfileResponse;
 import com.example.aboutme.domain.Profile;
 import com.example.aboutme.domain.ProfileFeature;
 import com.example.aboutme.domain.ProfileImage;
+import com.example.aboutme.domain.constant.ProfileImageType;
 import com.example.aboutme.domain.constant.Side;
 
 import java.util.ArrayList;
@@ -99,12 +100,22 @@ public class ProfileConverter {
     }
 
     public static ProfileResponse.ProfileImageDTO toProfileImageDTO(ProfileImage profileImage){
-        Integer characterType = profileImage.getSpace() == null ? null : profileImage.getSpace().getCharacterType();
+        Integer characterType = null;
+        String profileImageURL = null;
+
+        switch (profileImage.getType()){
+            case USER_IMAGE -> {
+                profileImageURL = profileImage.getImageUrl();
+            }
+            case CHARACTER -> {
+                characterType = profileImage.getSpace().getCharacterType();
+            }
+        }
 
         return ProfileResponse.ProfileImageDTO.builder()
                 .type(profileImage.getType())
                 .characterType(characterType)
-                .profileImageUrl(profileImage.getImageUrl())
+                .profileImageUrl(profileImageURL)
                 .build();
     }
 
