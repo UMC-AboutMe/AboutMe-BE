@@ -50,14 +50,14 @@ public class MemberProfileServiceImpl implements MemberProfileService {
         return memberProfile.getFavorite();
     }
 
-    public List<MemberProfile> getMyProfilesStorage(Long memberId) {
-        Member member = memberService.findMember(memberId);
+    public List<MemberProfile> getMyProfilesStorage(String email) {
+        Member member = memberService.findMember(email);
         return memberProfileRepository.findAllByMember(member);
     }
 
     @Transactional
-    public MemberProfile deleteMemberProfile(Long memberId, Long profileId) {
-        Member member = memberService.findMember(memberId);
+    public MemberProfile deleteMemberProfile(String email, Long profileId) {
+        Member member = memberService.findMember(email);
         Profile profile = profileRepository.findById(profileId)
                 .orElseThrow(() -> new GeneralException(ErrorStatus.PROFILE_NOT_FOUND));
 //        boolean isSame = profile.getMember().getId().equals(memberId);
