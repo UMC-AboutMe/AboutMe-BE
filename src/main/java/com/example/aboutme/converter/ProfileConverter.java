@@ -126,13 +126,6 @@ public class ProfileConverter {
                 .build();
     }
 
-
-    public static ProfileResponse.ShareProfileDTO toShareMyProfileDTO(Long memberId) {
-        return ProfileResponse.ShareProfileDTO.builder()
-                .memberId(memberId)
-                .build();
-    }
-
     public static ProfileResponse.SearchProfileDTO toSearchProfile(Profile profile){
         return ProfileResponse.SearchProfileDTO.builder()
                 .profileId(profile.getId())

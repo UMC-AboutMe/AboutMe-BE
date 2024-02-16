@@ -3,15 +3,14 @@ package com.example.aboutme.service.MemberProfileService;
 import com.example.aboutme.apiPayload.code.status.ErrorStatus;
 import com.example.aboutme.apiPayload.exception.GeneralException;
 import com.example.aboutme.app.dto.ProfileRequest;
+import com.example.aboutme.converter.AlarmConverter;
 import com.example.aboutme.converter.MemberProfileConverter;
+import com.example.aboutme.domain.Alarm;
 import com.example.aboutme.domain.Member;
 import com.example.aboutme.domain.Profile;
 import com.example.aboutme.domain.ProfileFeature;
 import com.example.aboutme.domain.mapping.MemberProfile;
-import com.example.aboutme.repository.MemberProfileRepository;
-import com.example.aboutme.repository.MemberRepository;
-import com.example.aboutme.repository.ProfileFeatureRepository;
-import com.example.aboutme.repository.ProfileRepository;
+import com.example.aboutme.repository.*;
 import com.example.aboutme.service.MemberService.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -30,6 +29,7 @@ public class MemberProfileServiceImpl implements MemberProfileService {
     private final ProfileRepository profileRepository;
     private final ProfileFeatureRepository profileFeatureRepository;
     private final MemberService memberService;
+    private final AlarmRepository alarmRepository;
 
     // 프로필 보관함 즐겨찾기
     @Transactional
@@ -50,16 +50,16 @@ public class MemberProfileServiceImpl implements MemberProfileService {
         return memberProfile.getFavorite();
     }
 
-    public List<MemberProfile> getMyProfilesStorage(Long memberId){
+    public List<MemberProfile> getMyProfilesStorage(Long memberId) {
         Member member = memberService.findMember(memberId);
-        return memberProfileRepository.findAllByMemberAndApprovedIsTrue(member);
+        return memberProfileRepository.findAllByMember(member);
     }
 
     @Transactional
-    public MemberProfile deleteMemberProfile(Long memberId, Long profileId){
+    public MemberProfile deleteMemberProfile(Long memberId, Long profileId) {
         Member member = memberService.findMember(memberId);
         Profile profile = profileRepository.findById(profileId)
-                .orElseThrow(()->new GeneralException(ErrorStatus.PROFILE_NOT_FOUND));
+                .orElseThrow(() -> new GeneralException(ErrorStatus.PROFILE_NOT_FOUND));
 //        boolean isSame = profile.getMember().getId().equals(memberId);
 //        if (!isSame){
 //            throw new GeneralException(ErrorStatus.MEMBER_IS_NOT_PROFILE_CREATOR);
@@ -71,11 +71,12 @@ public class MemberProfileServiceImpl implements MemberProfileService {
 
     /**
      * 상대방 마이프로필 내 보관함에 추가하기
+     *
      * @param memberId 멤버 식별자
      * @param request
      */
     @Transactional
-    public Long addOthersProfilesAtMyStorage(Long memberId, ProfileRequest.ShareProfileDTO request){
+    public void addOthersProfilesAtMyStorage(Long memberId, ProfileRequest.ShareProfileDTO request) {
 
         Member member = memberService.findMember(memberId);
 
@@ -84,15 +85,13 @@ public class MemberProfileServiceImpl implements MemberProfileService {
                 .map(serialNum -> profileRepository.findBySerialNumber(serialNum).get())
                 .toList();
 
-        Long profileOwnerId = otherProfileList.isEmpty() ? null : otherProfileList.get(0).getMember().getId();
-
-        for(Profile otherProfile : otherProfileList){
+        for (Profile otherProfile : otherProfileList) {
             // 이미 공유된 프로필일 경우
-            if(memberProfileRepository.existsByMemberAndProfile(member, otherProfile)){
+            if (memberProfileRepository.existsByMemberAndProfile(member, otherProfile)) {
                 throw new GeneralException(ErrorStatus.MEMBER_PROFILE_ALREADY_EXIST);
             }
             // 본인의 프로필을 추가하려는 경우
-            if(otherProfile.getMember() == member){
+            if (otherProfile.getMember() == member) {
                 throw new GeneralException(ErrorStatus.CANNOT_SHARE_OWN_PROFILE);
             }
         }
@@ -104,14 +103,13 @@ public class MemberProfileServiceImpl implements MemberProfileService {
         memberProfileList.forEach(memberProfile -> {
             memberProfileRepository.save(memberProfile);
         });
-
-        return profileOwnerId;
     }
 
     /**
      * 프로필 보관함 내 검색하기
+     *
      * @param memberId 멤버 식별자
-     * @param keyword 검색어(프로필 이름)
+     * @param keyword  검색어(프로필 이름)
      */
     public List<MemberProfile> filterWithKeyword(Long memberId, String keyword) {
 
@@ -123,43 +121,65 @@ public class MemberProfileServiceImpl implements MemberProfileService {
                 .map(ProfileFeature::getProfile)
                 .toList();
 
-        return memberProfileRepository.findByMemberAndProfileInAndApprovedIsTrue(member, profileList);
+        return memberProfileRepository.findByMemberAndProfileIn(member, profileList);
     }
 
     /**
-     * 내 마이프로필 상대방에게 공유하기
+     * 마이프로필 공유 -> 알람데이터 생성
+     *
      * @param memberId 멤버 식별자
      * @param request
      */
     @Transactional
-    public void shareMyProfilesToOthers(Long memberId, ProfileRequest.ShareMyProfileDTO request){
+    public void sendMyProfile(Long memberId, ProfileRequest.SendProfileDTO request) {
 
         Member member = memberService.findMember(memberId);
 
-        // 추가하려는 마이프로필 목록 조회
-        List<Profile> otherProfileList = request.getProfileSerialNumberList().stream()
+        // 상대방 마이프로필 목록 조회
+        List<Profile> otherProfileList = request.getOthersProfileSerialNumberList().stream()
                 .map(serialNum -> profileRepository.findBySerialNumber(serialNum).get())
                 .toList();
 
-        Member shareTarget = memberService.findMember(request.getMemberId());
-
-        for(Profile otherProfile : otherProfileList){
-            // 공유하려는 프로필이 본인게 아닌 경우
-            if(otherProfile.getMember() != member){
-                throw new GeneralException(ErrorStatus.PROFILE_NOT_MINE);
-            }
-            // 이미 공유된 프로필일 경우
-            if(memberProfileRepository.existsByMemberAndProfile(shareTarget, otherProfile)){
-                throw new GeneralException(ErrorStatus.MEMBER_PROFILE_ALREADY_EXIST);
+        for (Profile otherProfile : otherProfileList) {
+            // 상대방 프로필 일련번호란에 본인 프로필 일련번호를 기입한 경우
+            if (otherProfile.getMember() == member) {
+                throw new GeneralException(ErrorStatus._BAD_REQUEST);
             }
         }
 
-        List<MemberProfile> memberProfileList = otherProfileList.stream()
-                .map(otherProfile -> MemberProfileConverter.toMemberProfileNotApproved(shareTarget, otherProfile))
+        Member targetMember = otherProfileList.get(0).getMember();
+
+        // 공유할 마이프로필 목록 조회
+        List<Profile> myProfileList = request.getMyProfileSerialNumberList().stream()
+                .map(serialNum -> profileRepository.findBySerialNumber(serialNum).get())
                 .toList();
 
-        memberProfileList.forEach(memberProfile -> {
-            memberProfileRepository.save(memberProfile);
+        for (Profile myProfile : myProfileList) {
+            // 이미 공유된 프로필일 경우
+            if (memberProfileRepository.existsByMemberAndProfile(targetMember, myProfile)) {
+                throw new GeneralException(ErrorStatus.MEMBER_PROFILE_ALREADY_EXIST);
+            }
+            // 이미 생성된 알람인 경우
+            if (alarmRepository.existsByMemberAndProfile(targetMember, myProfile)) {
+                throw new GeneralException(ErrorStatus.ALARM_ALREADY_EXISTING);
+            }
+            // 본인의 프로필이 아닌 경우
+            if (myProfile.getMember() != member) {
+                throw new GeneralException(ErrorStatus.PROFILE_NOT_MINE);
+            }
+        }
+
+        List<Alarm> alarmList = myProfileList.stream()
+                .map(myProfile -> {
+                    String profileValue = myProfile.getProfileFeatureList().stream()
+                            .filter(profileFeature -> profileFeature.getProfileKey().equals("name"))
+                            .map(ProfileFeature::getProfileValue).findFirst().orElse(null);
+                    return AlarmConverter.toProfileAlarm(targetMember, myProfile, profileValue);
+                })
+                .toList();
+
+        alarmList.forEach(alarm -> {
+            alarmRepository.save(alarm);
         });
     }
 }

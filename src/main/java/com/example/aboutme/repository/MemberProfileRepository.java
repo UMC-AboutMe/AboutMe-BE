@@ -12,13 +12,16 @@ import java.util.List;
 public interface MemberProfileRepository extends JpaRepository<MemberProfile, Long> {
 //    List<MemberProfile> findAllByMember(Member member);
 
-    List<MemberProfile> findAllByMemberAndApprovedIsTrue(Member member);
+    List<MemberProfile> findAllByMember(Member member);
 
 
 //    MemberProfile findByMemberAndId(Member member, Long memberProfileId);
 
     MemberProfile findByMemberAndProfile(Member member, Profile profile);
+  
     Boolean existsByMemberAndProfile(Member member, Profile profile);
+
+    List<MemberProfile> findByMemberAndProfileIn(Member member, List<Profile> profileList);
 
     /**
      * 내 마이프로필 공유 현황 (내 마이프로필이 상대방의 보관함에 얼마나 저장되었는지)
@@ -31,5 +34,4 @@ public interface MemberProfileRepository extends JpaRepository<MemberProfile, Lo
     Integer countSharedProfileByMember(@Param("member") Member member);
 
     List<MemberProfile> findByMemberAndProfileInAndApprovedIsTrue(Member member, List<Profile> profileList);
-
 }

@@ -20,8 +20,6 @@ public class MemberProfile extends BaseEntity {
 
     private Boolean favorite;
 
-    private Boolean approved;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
@@ -30,7 +28,6 @@ public class MemberProfile extends BaseEntity {
     @JoinColumn(name = "profile_id")
     private Profile profile;
 
-    // 즐겨찾기 토글 메서드
     public void toggleFavorite() {
         this.favorite = !this.favorite;
     }
