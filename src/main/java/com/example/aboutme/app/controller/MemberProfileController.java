@@ -57,5 +57,4 @@ public class MemberProfileController {
 
         return ApiResponse.onSuccess(MemberProfileConverter.toSearchMemberProfileListDTO(memberProfileList));
     }
-
 }
