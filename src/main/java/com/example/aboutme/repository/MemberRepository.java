@@ -6,8 +6,11 @@ import com.example.aboutme.domain.constant.Social;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.Optional;
+
 public interface MemberRepository extends JpaRepository<Member, Long> {
     Member findByEmailAndSocial(String email, Social social);
+    Optional<Member> findByEmail(String email);
 
     Boolean existsByEmailAndSocial(String email, Social social);
 }
