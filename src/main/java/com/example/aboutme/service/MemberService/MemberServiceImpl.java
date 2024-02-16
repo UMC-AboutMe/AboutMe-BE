@@ -27,6 +27,13 @@ public class MemberServiceImpl implements MemberService{
         );
     }
 
+    @Override
+    public Member findMember(String email) {
+        return memberRepository.findByEmail(email).orElseThrow(
+                () -> new GeneralException(ErrorStatus.MEMBER_NOT_FOUND)
+        );
+    }
+
     @Transactional
     public void deleteMember(Long memberId){
         findMember(memberId);
