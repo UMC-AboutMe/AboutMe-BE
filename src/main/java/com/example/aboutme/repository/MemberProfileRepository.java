@@ -32,6 +32,4 @@ public interface MemberProfileRepository extends JpaRepository<MemberProfile, Lo
             "from MemberProfile mp join Profile as p on mp.profile = p " +
             "where p.member = :member")
     Integer countSharedProfileByMember(@Param("member") Member member);
-
-    List<MemberProfile> findByMemberAndProfileInAndApprovedIsTrue(Member member, List<Profile> profileList);
 }
