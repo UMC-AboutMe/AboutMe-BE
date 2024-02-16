@@ -49,6 +49,12 @@ public class ProfileServiceImpl implements ProfileService{
         return profileRepository.findAllByMemberOrderByIsDefaultDesc(member);
     }
 
+    public List<Profile> getMyProfiles(String email){
+        Member member = memberService.findMember(email);
+
+        return profileRepository.findAllByMemberOrderByIsDefaultDesc(member);
+    }
+
     /**
      * 마이프로필 단건 조회
      * @param profileId 프로필 식별자
@@ -210,8 +216,8 @@ public class ProfileServiceImpl implements ProfileService{
     }
 
     @Transactional
-    public Profile updateIsDefault(Long memberID, Long profileId) {
-        List<Profile> profileList = getMyProfiles(memberID);
+    public Profile updateIsDefault(String email, Long profileId) {
+        List<Profile> profileList = getMyProfiles(email);
         profileList.forEach(
                 profile -> {
                     if (profile.getIsDefault()) {
@@ -228,8 +234,8 @@ public class ProfileServiceImpl implements ProfileService{
     }
 
     @Transactional
-    public Profile updateIsDefaultToFalse(Long memberId, Long profileId) {
-        Member member = memberService.findMember(memberId);
+    public Profile updateIsDefaultToFalse(String email, Long profileId) {
+        Member member = memberService.findMember(email);
         Profile myProfile = profileRepository.findByMemberAndId(member,profileId).orElseThrow(
                 () -> new GeneralException(ErrorStatus.PROFILE_NOT_FOUND)
         );
