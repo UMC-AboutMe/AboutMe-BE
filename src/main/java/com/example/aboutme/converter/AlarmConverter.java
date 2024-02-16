@@ -15,11 +15,12 @@ public class AlarmConverter {
                 .build();
     }
 
-    public static AlarmResponse.JoinResultDTO toJoinResultDTO(Alarm newAlarm) {
-        return AlarmResponse.JoinResultDTO.builder()
+    public static AlarmResponse.ShareSpaceResultDTO toShareSpaceResultDTO(Alarm newAlarm, String spaceNickname) {
+        return AlarmResponse.ShareSpaceResultDTO.builder()
                 .content(newAlarm.getContent())
                 .isRead(newAlarm.isRead())
                 .subscriberNickname(newAlarm.getMember().getEmail())
+                .sharedSpaceNickname(spaceNickname)
                 .build();
     }
 }

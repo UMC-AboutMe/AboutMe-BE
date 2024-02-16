@@ -5,6 +5,7 @@ import com.example.aboutme.app.dto.*;
 import com.example.aboutme.converter.AlarmConverter;
 import com.example.aboutme.converter.SpaceConverter;
 import com.example.aboutme.domain.Alarm;
+import com.example.aboutme.domain.Member;
 import com.example.aboutme.domain.Space;
 import com.example.aboutme.service.AlarmService.AlarmService;
 import com.example.aboutme.service.SpaceService.SpaceService;
@@ -69,8 +70,9 @@ public class SpaceController {
     }
 
     @PostMapping(value = "/shares", produces = "application/json;charset=UTF-8")
-    public ApiResponse<AlarmResponse.JoinResultDTO> share (@RequestHeader("member-id") Long memberId, @RequestBody @Valid AlarmRequest.CreateDTO request) {
+    public ApiResponse<AlarmResponse.ShareSpaceResultDTO> share (@RequestHeader("member-id") Long memberId, @RequestBody @Valid AlarmRequest.CreateDTO request) {
         Alarm newAlarm = alarmService.shareSpace(memberId, request);
-        return ApiResponse.onSuccess(AlarmConverter.toJoinResultDTO(newAlarm));
+        Space space = spaceService.readSpace(memberId);
+        return ApiResponse.onSuccess(AlarmConverter.toShareSpaceResultDTO(newAlarm, space.getNickname()));
     }
 }
