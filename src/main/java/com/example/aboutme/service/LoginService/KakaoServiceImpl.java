@@ -121,7 +121,7 @@ public class KakaoServiceImpl implements KakaoService {
     }
 
     public Member saveKakaoMember(SocialInfoRequest.KakaoDTO kakaoDTO){
-        String newToken = tokenProvider.createToken(kakaoDTO.getEmail());
+        String newToken = tokenProvider.createToken(kakaoDTO.getEmail(), "KAKAO");
         Member newMember = MemberConverter.toMember(kakaoDTO, Social.KAKAO, newToken);
         Boolean principal = memberRepository.existsByEmailAndSocial(newMember.getEmail(), Social.KAKAO);
         if (principal == false){

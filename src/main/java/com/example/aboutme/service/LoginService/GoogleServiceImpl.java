@@ -116,7 +116,7 @@ public class GoogleServiceImpl implements GoogleService{
 
 
     public Member saveGoogleMember(SocialInfoRequest.GoogleDTO googleDTO){
-        String newToken = tokenProvider.createToken(googleDTO.getEmail());
+        String newToken = tokenProvider.createToken(googleDTO.getEmail(), "GOOGLE");
         Member newMember = MemberConverter.toMember(googleDTO, Social.GOOGLE,newToken);
         Boolean principal = memberRepository.existsByEmailAndSocial(newMember.getEmail(),Social.GOOGLE);
         if (principal == false){

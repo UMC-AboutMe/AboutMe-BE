@@ -40,6 +40,11 @@ public class MemberServiceImpl implements MemberService{
         memberRepository.deleteById(memberId);
     }
 
+    @Transactional
+    public void deleteMember(String email){
+        memberRepository.deleteByEmail(email);
+    }
+
     /**
      * 마이페이지 조회
      * @param memberId 멤버 식별자

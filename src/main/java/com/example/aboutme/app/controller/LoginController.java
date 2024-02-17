@@ -37,6 +37,11 @@ public class LoginController {
     private final TokenProvider tokenProvider;
     private final MemberService memberService;
 
+    @GetMapping("tokenTest")
+    public void tokenTest(@RequestHeader("token") String token){
+        System.out.println(tokenProvider.getEmailFromToken(token));
+    }
+
     @GetMapping("members/{socialType}/login")
     public void socialLogin(HttpServletResponse response, @PathVariable String socialType) throws IOException {
         switch (socialType) {
@@ -71,21 +76,21 @@ public class LoginController {
 //        }
 //    }
 
-//    @GetMapping("/kakao/callback")
-//    public ApiResponse<MsgResponse.LoginMsgDTO> kakaoCallback(HttpServletRequest request) throws Exception {
-//        SocialInfoRequest.KakaoDTO kakaoInfo = kakaoService.getKakaoInfo(request.getParameter("code"));
-//        String newToken = tokenProvider.createToken(kakaoInfo.getEmail());
-//        kakaoService.saveKakaoMember(kakaoInfo);
-//        return ApiResponse.onSuccess(LoginConverter.toLoginDTO(kakaoInfo.getEmail(),newToken,Social.KAKAO));
-//    }
-//
-//    @GetMapping("/google/callback")
-//    public ApiResponse<MsgResponse.LoginMsgDTO> googleCallback(HttpServletRequest request) throws Exception {
-//        SocialInfoRequest.GoogleDTO googleInfo = googleService.getGoogleInfo(request.getParameter("code"));
-//        String newToken = tokenProvider.createToken(googleInfo.getEmail());
-//        googleService.saveGoogleMember(googleInfo);
-//        return ApiResponse.onSuccess(LoginConverter.toLoginDTO(googleInfo.getEmail(),newToken,Social.GOOGLE));
-//    }
+    @GetMapping("/kakao/callback")
+    public ApiResponse<MsgResponse.LoginMsgDTO> kakaoCallback(HttpServletRequest request) throws Exception {
+        SocialInfoRequest.KakaoDTO kakaoInfo = kakaoService.getKakaoInfo(request.getParameter("code"));
+        String newToken = tokenProvider.createToken(kakaoInfo.getEmail(),"KAKAO");
+        kakaoService.saveKakaoMember(kakaoInfo);
+        return ApiResponse.onSuccess(LoginConverter.toLoginDTO(kakaoInfo.getEmail(),newToken,Social.KAKAO));
+    }
+
+    @GetMapping("/google/callback")
+    public ApiResponse<MsgResponse.LoginMsgDTO> googleCallback(HttpServletRequest request) throws Exception {
+        SocialInfoRequest.GoogleDTO googleInfo = googleService.getGoogleInfo(request.getParameter("code"));
+        String newToken = tokenProvider.createToken(googleInfo.getEmail(),"GOOGLE");
+        googleService.saveGoogleMember(googleInfo);
+        return ApiResponse.onSuccess(LoginConverter.toLoginDTO(googleInfo.getEmail(),newToken,Social.GOOGLE));
+    }
 
     @GetMapping("/members/valid")
     public ApiResponse<MsgResponse.validMsgDTO> isValidToken(@RequestBody String token) throws Exception {
@@ -100,9 +105,10 @@ public class LoginController {
     }
 
     @DeleteMapping("/members/unregister")
-    private ApiResponse<MsgResponse.unregisterMsgDTO> unregisterMember(@RequestHeader("member-id") Long memberId){
-        memberService.deleteMember(memberId);
-        return ApiResponse.onSuccess(LoginConverter.toUnregisterMsgDTO(memberId,"unregister Member"));
+    private ApiResponse<MsgResponse.unregisterMsgDTO> unregisterMember(@RequestHeader("token") String token){
+        String email = tokenProvider.getEmailFromToken(token);
+        memberService.deleteMember(email);
+        return ApiResponse.onSuccess(LoginConverter.toUnregisterMsgDTO(email,"unregister Member"));
     }
 
     @PostMapping("members/{socialType}/login")
@@ -116,12 +122,12 @@ public class LoginController {
         switch (socialType) {
             case "kakao":
                 SocialInfoRequest.KakaoDTO kakaoInfo = kakaoService.getUserInfoWithToken(frontAccessToken);
-                newJwtToken = tokenProvider.createToken(kakaoInfo.getEmail());
+                newJwtToken = tokenProvider.createToken(kakaoInfo.getEmail(), "KAKAO");
                 Member newMemberKakao = kakaoService.saveKakaoMember(kakaoInfo);
                 return ApiResponse.onSuccess(LoginConverter.toLoginDTO(kakaoInfo.getEmail(),newJwtToken, Social.KAKAO));
             case "google":
                 SocialInfoRequest.GoogleDTO googleInfo = googleService.getUserInfoWithToken(frontAccessToken);
-                newJwtToken = tokenProvider.createToken(googleInfo.getEmail());
+                newJwtToken = tokenProvider.createToken(googleInfo.getEmail(), "GOOGLE");
                 Member newMemberGoogle = googleService.saveGoogleMember(googleInfo);
                 return ApiResponse.onSuccess(LoginConverter.toLoginDTO(googleInfo.getEmail(),newJwtToken,Social.GOOGLE));
             default:
@@ -138,12 +144,12 @@ public class LoginController {
 
         switch (socialType) {
             case "kakao":
-                newJwtToken = tokenProvider.createToken(parsedEmail);
+                newJwtToken = tokenProvider.createToken(parsedEmail, "KAKAO");
                 SocialInfoRequest.KakaoDTO  kakaoInfo = SocialInfoRequest.KakaoDTO.builder().email(parsedEmail).nickname("").build();
                 Member newMemberKakao = kakaoService.saveKakaoMember(kakaoInfo);
                 return ApiResponse.onSuccess(LoginConverter.toLoginDTO(kakaoInfo.getEmail(),newJwtToken, Social.KAKAO));
             case "google":
-                newJwtToken = tokenProvider.createToken(parsedEmail);
+                newJwtToken = tokenProvider.createToken(parsedEmail, "GOOGLE");
                 SocialInfoRequest.GoogleDTO googleInfo = SocialInfoRequest.GoogleDTO.builder().email(parsedEmail).build();
                 Member newMemberGoogle = googleService.saveGoogleMember(googleInfo);
                 return ApiResponse.onSuccess(LoginConverter.toLoginDTO(googleInfo.getEmail(),newJwtToken,Social.GOOGLE));

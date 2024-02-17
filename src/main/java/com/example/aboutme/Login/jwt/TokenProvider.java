@@ -1,6 +1,7 @@
 package com.example.aboutme.Login.jwt;
 
 
+import com.example.aboutme.domain.constant.Social;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -37,10 +38,10 @@ public class TokenProvider implements InitializingBean {
     Date accessTokenExpireTime = new Date(now + ACCESS_TOKEN_EXPIRE_TIME);
     Date refreshTokenExpireTime = new Date(now + REFRESH_TOKEN_EXPIRE_TIME);
 
-    public String createToken(String email){
+    public String createToken(String email, String social){
         String newToken= Jwts.builder().
                 setSubject(email).
-                setExpiration(accessTokenExpireTime).
+                setIssuer(social).
                 signWith(key, SignatureAlgorithm.HS512).compact();
 
 //        return JwtDTO.builder()
@@ -94,8 +95,18 @@ public class TokenProvider implements InitializingBean {
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
+        System.out.println(claims.get("iss", String.class));
+        return claims.get("sub", String.class);
+    }
 
-        return claims.get("sub", String.class); // userId 추출
+    public String getSocialFromToken(String token) {
+        Claims claims = Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+
+        return claims.get("iss", String.class);
     }
 
 
