@@ -134,18 +134,20 @@ public class ProfileController {
      * [PATCH] /myprofiles/{profile-id}/image
      * 내 마이프로필 이미지 수정
      *
-     * @param memberId  멤버 식별자
+     * @param accessToken  멤버 식별자
      * @param profileId 마이프로필 식별자
      * @param image     이미지
      * @param request
      * @return
      */
     @PatchMapping("/{profile-id}/image")
-    public ApiResponse<ProfileResponse.UpdateMyProfileImageDTO> updateMyProfileImage(@RequestHeader("member-id") Long memberId,
+    public ApiResponse<ProfileResponse.UpdateMyProfileImageDTO> updateMyProfileImage(@RequestHeader("token") String accessToken,
                                                                                      @PathVariable("profile-id") @ExistMyProfile Long profileId,
                                                                                      @RequestPart(value = "image", required = false) MultipartFile image,
                                                                                      @RequestPart(value = "body", required = true) @Valid ProfileRequest.UpdateProfileImageDTO request) {
 
+
+        TokenDTO.tokenClaimsDTO tokenClaimsDTO = tokenProvider.getTokenInfoFromToken(accessToken);
 
         ProfileImageType profileImageType = ProfileImageType.valueOf(request.getProfileImageType());
         boolean isProfileImageEmpty = (profileImageType == ProfileImageType.USER_IMAGE) && (image == null);
@@ -153,7 +155,7 @@ public class ProfileController {
             throw new GeneralException(ErrorStatus.PROFILE_IMAGE_REQUIRED);
         }
 
-        ProfileImage updatedProfileImage = profileService.updateMyProfileImage(memberId, profileId, image, request);
+        ProfileImage updatedProfileImage = profileService.updateMyProfileImage(tokenClaimsDTO, profileId, image, request);
 
         log.info("내 마이프로필 이미지 수정: 타입={}, 프로필={}", request.getProfileImageType(), profileId);
 

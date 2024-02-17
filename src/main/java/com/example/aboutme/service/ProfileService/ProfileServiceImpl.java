@@ -137,16 +137,16 @@ public class ProfileServiceImpl implements ProfileService{
 
     /**
      * 내 마이프로필 이미지 수정
-     * @param memberId 멤버 식별자
+     * @param tokenClaimsDTO 멤버 식별자
      * @param profileId 마이프로필 식별자
      * @param image 이미지
      * @param request
      * @return 수정된 마이프로필 이미지
      */
     @Transactional
-    public ProfileImage updateMyProfileImage(Long memberId, Long profileId, MultipartFile image, ProfileRequest.UpdateProfileImageDTO request){
+    public ProfileImage updateMyProfileImage(TokenDTO.tokenClaimsDTO tokenClaimsDTO, Long profileId, MultipartFile image, ProfileRequest.UpdateProfileImageDTO request){
 
-        Member member = memberService.findMember(memberId);
+        Member member = memberService.findMember(tokenClaimsDTO);
         Profile profile = profileRepository.findById(profileId).get();
 
         if(!profile.getMember().getId().equals(member.getId())){
