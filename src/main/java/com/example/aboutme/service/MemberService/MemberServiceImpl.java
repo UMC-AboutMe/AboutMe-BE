@@ -9,6 +9,7 @@ import com.example.aboutme.domain.Member;
 import com.example.aboutme.domain.constant.Social;
 import com.example.aboutme.repository.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
+@Slf4j
 public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
@@ -42,6 +44,7 @@ public class MemberServiceImpl implements MemberService {
         );
     }
     public Member findMember(TokenDTO.tokenClaimsDTO tokenClaimsDTO){
+        log.info("이메일={}, 소셜={}", tokenClaimsDTO.getEmail(), tokenClaimsDTO.getSocial());
         return memberRepository.findByEmailAndSocial(tokenClaimsDTO.getEmail(), tokenClaimsDTO.getSocial())
                 .orElseThrow(() -> new GeneralException(ErrorStatus.MEMBER_NOT_FOUND));
     }

@@ -1,11 +1,14 @@
 package com.example.aboutme.Login.jwt;
 
 
+import com.example.aboutme.apiPayload.code.status.ErrorStatus;
+import com.example.aboutme.apiPayload.exception.GeneralException;
 import com.example.aboutme.domain.constant.Social;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 
+import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.InitializingBean;
@@ -26,6 +29,7 @@ import java.util.HashMap;
 import java.util.stream.Collectors;
 
 @Component
+@Slf4j
 public class TokenProvider implements InitializingBean {
     @Value("${spring.security.jwt.secret}")
     private String secret;
@@ -116,18 +120,22 @@ public class TokenProvider implements InitializingBean {
                 .parseClaimsJws(token)
                 .getBody();
 
-        if (claims.get("iss", String.class) == "GOOGLE"){
-            return TokenDTO.tokenClaimsDTO.builder()
-                    .email(claims.get("sub", String.class))
-                    .social(Social.GOOGLE)
-                    .build();
-        }else{
-            return TokenDTO.tokenClaimsDTO.builder()
-                    .email(claims.get("sub", String.class))
-                    .social(Social.KAKAO)
-                    .build();
+        switch (Social.valueOf(claims.getIssuer())){
+            case KAKAO -> {
+                return TokenDTO.tokenClaimsDTO.builder()
+                        .email(claims.getSubject())
+                        .social(Social.KAKAO)
+                        .build();
+            }
+            case GOOGLE -> {
+                return TokenDTO.tokenClaimsDTO.builder()
+                        .email(claims.getSubject())
+                        .social(Social.GOOGLE)
+                        .build();
+            }
+            default -> {
+                throw new GeneralException(ErrorStatus._UNAUTHORIZED);
+            }
         }
     }
-
-
 }
