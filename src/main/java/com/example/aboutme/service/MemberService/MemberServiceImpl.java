@@ -12,8 +12,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -60,8 +58,7 @@ public class MemberServiceImpl implements MemberService{
     public MyPageResponse.GetMyPageDTO getMyPage(TokenDTO.tokenClaimsDTO tokenClaimsDTO){
         Member member = findMember(tokenClaimsDTO);
 
-        List<String> profileNames = profileFeatureRepository.findProfileFeature(member);
-        String profileName = profileNames.size() == 0 ? null : profileNames.get(0);
+        String profileName = profileFeatureRepository.findProfileFeature(member, PageRequest.of(0,1)).get(0);
         String spaceName = member.getSpace() != null ? member.getSpace().getNickname() : null;
 
         int profileSharedNum = memberProfileRepository.countSharedProfileByMember(member);

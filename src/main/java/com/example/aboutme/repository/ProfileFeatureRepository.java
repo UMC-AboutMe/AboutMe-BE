@@ -17,5 +17,5 @@ public interface ProfileFeatureRepository extends JpaRepository<ProfileFeature, 
             "join ProfileFeature pf on p = pf.profile " +
             "where pf.profileKey = 'name' and p.member = :member " +
             "order by p.isDefault desc, p.createdAt asc ")
-    List<String> findProfileFeature(@Param("member") Member member);
+    List<String> findProfileFeature(@Param("member") Member member, Pageable pageable);
 }
