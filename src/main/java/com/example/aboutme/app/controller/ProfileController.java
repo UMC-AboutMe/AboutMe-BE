@@ -109,17 +109,19 @@ public class ProfileController {
      * [PATCH] /myprofiles/{profile-id}
      * 내 마이프로필 수정
      *
-     * @param memberId  멤버 식별자
+     * @param accessToken  멤버 식별자
      * @param profileId 마이프로필 식별자
      * @param request
      * @return
      */
     @PatchMapping("/{profile-id}")
-    public ApiResponse<ProfileResponse.UpdateProfileDTO> updateMyProfile(@RequestHeader("member-id") Long memberId,
+    public ApiResponse<ProfileResponse.UpdateProfileDTO> updateMyProfile(@RequestHeader("token") String accessToken,
                                                                          @PathVariable("profile-id") @ExistMyProfile Long profileId,
                                                                          @RequestBody @Valid ProfileRequest.UpdateProfileDTO request) {
 
-        ProfileFeature profileFeature = profileService.updateMyProfile(memberId, profileId, request);
+        TokenDTO.tokenClaimsDTO tokenClaimsDTO = tokenProvider.getTokenInfoFromToken(accessToken);
+
+        ProfileFeature profileFeature = profileService.updateMyProfile(tokenClaimsDTO, profileId, request);
 
         log.info("프로필 값: request={}, response={}", request.getFeatureValue(), profileFeature.getProfileValue());
 

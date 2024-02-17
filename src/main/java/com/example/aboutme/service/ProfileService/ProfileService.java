@@ -38,12 +38,12 @@ public interface ProfileService {
     Profile updateIsDefaultToFalse(String email, Long profileId);
     /**
      * 내 마이프로필 수정
-     * @param memberId 멤버 식별자
+     * @param tokenClaimsDTO 멤버 식별자
      * @param profileId 마이프로필 식별자
      * @param request
      * @return 수정된 마이프로필의 특징
      */
-    ProfileFeature updateMyProfile(Long memberId, Long profileId, ProfileRequest.UpdateProfileDTO request);
+    ProfileFeature updateMyProfile(TokenDTO.tokenClaimsDTO tokenClaimsDTO, Long profileId, ProfileRequest.UpdateProfileDTO request);
 
     /**
      * 내 마이프로필 이미지 수정
