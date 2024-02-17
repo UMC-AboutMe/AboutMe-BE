@@ -73,6 +73,7 @@ public class MemberProfileConverter {
                                     .image(ProfileConverter.toProfileImageDTO(memberProfile.getProfile().getProfileImage()))
                                     .build();
                         })
+                        .sorted((profile1, profile2) -> Boolean.compare(profile2.getFavorite(), profile1.getFavorite())) // favorite 값에 따라 정렬
                         .collect(Collectors.toList());
 
         return new MemberProfileResponse.SearchMemberProfileListDTO(memberProfileListDto);
