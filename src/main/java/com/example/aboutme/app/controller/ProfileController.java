@@ -166,13 +166,17 @@ public class ProfileController {
      * [DELETE] /myprofiles/{profile-id}
      * 내 마이프로필 삭제
      *
-     * @param memberId  멤버 식별자
+     * @param accessToken  멤버 식별자
      * @param profileId 마이프로필 식별자
      * @return
      */
     @DeleteMapping("/{profile-id}")
-    public ApiResponse deleteMyProfile(@RequestHeader("member-id") Long memberId, @PathVariable("profile-id") @ExistMyProfile Long profileId) {
-        profileService.deleteMyProfile(memberId, profileId);
+    public ApiResponse deleteMyProfile(@RequestHeader("token") String accessToken,
+                                       @PathVariable("profile-id") @ExistMyProfile Long profileId) {
+
+        TokenDTO.tokenClaimsDTO tokenClaimsDTO = tokenProvider.getTokenInfoFromToken(accessToken);
+
+        profileService.deleteMyProfile(tokenClaimsDTO, profileId);
 
         log.info("마이프로필 삭제: {}", profileId);
 
