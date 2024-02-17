@@ -1,5 +1,6 @@
 package com.example.aboutme.service.MemberProfileService;
 
+import com.example.aboutme.Login.jwt.TokenDTO;
 import com.example.aboutme.domain.ProfileFeature;
 import com.example.aboutme.domain.mapping.MemberProfile;
 import com.example.aboutme.app.dto.ProfileRequest;
@@ -16,10 +17,10 @@ public interface MemberProfileService {
     MemberProfile deleteMemberProfile(String email, Long profileId);
     /**
      * 상대방 마이프로필 내 보관함에 추가하기
-     * @param memberId 멤버 식별자
+     * @param tokenClaimsDTO 멤버 식별자
      * @param request
      */
-    void addOthersProfilesAtMyStorage(Long memberId, ProfileRequest.ShareProfileDTO request);
+    void addOthersProfilesAtMyStorage(TokenDTO.tokenClaimsDTO tokenClaimsDTO, ProfileRequest.ShareProfileDTO request);
 
     void sendMyProfile(Long memberId, ProfileRequest.SendProfileDTO request);
 

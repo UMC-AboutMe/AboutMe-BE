@@ -1,5 +1,6 @@
 package com.example.aboutme.service.MemberProfileService;
 
+import com.example.aboutme.Login.jwt.TokenDTO;
 import com.example.aboutme.apiPayload.code.status.ErrorStatus;
 import com.example.aboutme.apiPayload.exception.GeneralException;
 import com.example.aboutme.app.dto.ProfileRequest;
@@ -72,13 +73,13 @@ public class MemberProfileServiceImpl implements MemberProfileService {
     /**
      * 상대방 마이프로필 내 보관함에 추가하기
      *
-     * @param memberId 멤버 식별자
+     * @param tokenClaimsDTO 멤버 식별자
      * @param request
      */
     @Transactional
-    public void addOthersProfilesAtMyStorage(Long memberId, ProfileRequest.ShareProfileDTO request) {
+    public void addOthersProfilesAtMyStorage(TokenDTO.tokenClaimsDTO tokenClaimsDTO, ProfileRequest.ShareProfileDTO request) {
 
-        Member member = memberService.findMember(memberId);
+        Member member = memberService.findMember(tokenClaimsDTO);
 
         // 추가하려는 마이프로필 목록 조회
         List<Profile> otherProfileList = request.getProfileSerialNumberList().stream()
