@@ -187,17 +187,19 @@ public class ProfileController {
      * [POST] /myprofiles/share
      * 상대방 마이프로필 내 보관함에 추가하기
      *
-     * @param memberId 멤버 식별자
+     * @param accessToken 멤버 식별자
      * @param request
      * @return
      */
     @PostMapping("/share")
-    public ApiResponse<Void> shareProfile(@RequestHeader("member-id") Long memberId,
+    public ApiResponse<Void> shareProfile(@RequestHeader("token") String accessToken,
                                                                      @RequestBody @Valid ProfileRequest.ShareProfileDTO request) {
 
-        memberProfileService.addOthersProfilesAtMyStorage(memberId, request);
+        TokenDTO.tokenClaimsDTO tokenClaimsDTO = tokenProvider.getTokenInfoFromToken(accessToken);
 
-        log.info("상대방 마이프로필 내 보관함에 추가하기: member={}, other's profile={}", memberId, request.getProfileSerialNumberList());
+        memberProfileService.addOthersProfilesAtMyStorage(tokenClaimsDTO, request);
+
+        log.info("상대방 마이프로필 내 보관함에 추가하기: member={}, other's profile={}", tokenClaimsDTO.getEmail(), request.getProfileSerialNumberList());
 
         return ApiResponse.onSuccess(null);
     }
