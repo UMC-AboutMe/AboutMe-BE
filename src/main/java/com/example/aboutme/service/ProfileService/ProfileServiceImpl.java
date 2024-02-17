@@ -1,5 +1,6 @@
 package com.example.aboutme.service.ProfileService;
 
+import com.example.aboutme.Login.jwt.TokenDTO;
 import com.example.aboutme.apiPayload.code.status.ErrorStatus;
 import com.example.aboutme.apiPayload.exception.GeneralException;
 import com.example.aboutme.app.dto.ProfileRequest;
@@ -40,11 +41,11 @@ public class ProfileServiceImpl implements ProfileService{
 
     /**
      * 내 마이프로필 목록 조회
-     * @param memberId 멤버 식별자
+     * @param tokenClaimsDTO 멤버 식별자
      * @return 마이프로필 목록
      */
-    public List<Profile> getMyProfiles(Long memberId){
-        Member member = memberService.findMember(memberId);
+    public List<Profile> getMyProfiles(TokenDTO.tokenClaimsDTO tokenClaimsDTO){
+        Member member = memberService.findMember(tokenClaimsDTO);
 
         return profileRepository.findAllByMemberOrderByIsDefaultDesc(member);
     }
@@ -67,13 +68,13 @@ public class ProfileServiceImpl implements ProfileService{
 
     /**
      * 마이프로필 생성
-     * @param memberId 멤버 식별자
+     * @param tokenClaimsDTO
      * @param request
      * @return
      */
     @Transactional
-    public Profile createMyProfile(Long memberId, ProfileRequest.CreateProfileDTO request){
-        Member member = memberService.findMember(memberId);
+    public Profile createMyProfile(TokenDTO.tokenClaimsDTO tokenClaimsDTO, ProfileRequest.CreateProfileDTO request){
+        Member member = memberService.findMember(tokenClaimsDTO);
 
         // 최대 생성 개수 초과하는지 확인
         int MAX_PROFILE_SIZE = 3;
@@ -101,14 +102,14 @@ public class ProfileServiceImpl implements ProfileService{
 
     /**
      * 내 마이프로필 수정
-     * @param memberId 멤버 식별자
+     * @param tokenClaimsDTO 멤버 식별자
      * @param profileId 마이프로필 식별자
      * @param request
      * @return 수정된 마이프로필의 특징
      */
     @Transactional
-    public ProfileFeature updateMyProfile(Long memberId, Long profileId, ProfileRequest.UpdateProfileDTO request){
-        Member member = memberService.findMember(memberId);
+    public ProfileFeature updateMyProfile(TokenDTO.tokenClaimsDTO tokenClaimsDTO, Long profileId, ProfileRequest.UpdateProfileDTO request){
+        Member member = memberService.findMember(tokenClaimsDTO);
         Profile profile = profileRepository.findById(profileId).get();
         ProfileFeature profileFeature = profileFeatureRepository.findById(request.getFeatureId()).get();
 
@@ -136,16 +137,16 @@ public class ProfileServiceImpl implements ProfileService{
 
     /**
      * 내 마이프로필 이미지 수정
-     * @param memberId 멤버 식별자
+     * @param tokenClaimsDTO 멤버 식별자
      * @param profileId 마이프로필 식별자
      * @param image 이미지
      * @param request
      * @return 수정된 마이프로필 이미지
      */
     @Transactional
-    public ProfileImage updateMyProfileImage(Long memberId, Long profileId, MultipartFile image, ProfileRequest.UpdateProfileImageDTO request){
+    public ProfileImage updateMyProfileImage(TokenDTO.tokenClaimsDTO tokenClaimsDTO, Long profileId, MultipartFile image, ProfileRequest.UpdateProfileImageDTO request){
 
-        Member member = memberService.findMember(memberId);
+        Member member = memberService.findMember(tokenClaimsDTO);
         Profile profile = profileRepository.findById(profileId).get();
 
         if(!profile.getMember().getId().equals(member.getId())){
@@ -179,12 +180,12 @@ public class ProfileServiceImpl implements ProfileService{
 
     /**
      * 내 마이프로필 삭제
-     * @param memberId 멤버 식별자
+     * @param tokenClaimsDTO 멤버 식별자
      * @param profileId 마이프로필 식별자
      */
     @Transactional
-    public void deleteMyProfile(Long memberId, Long profileId){
-        Member member = memberService.findMember(memberId);
+    public void deleteMyProfile(TokenDTO.tokenClaimsDTO tokenClaimsDTO, Long profileId){
+        Member member = memberService.findMember(tokenClaimsDTO);
         Profile profile = profileRepository.findById(profileId).get();
 
         if(profile.getMember() != member){

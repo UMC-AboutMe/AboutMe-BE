@@ -1,5 +1,6 @@
 package com.example.aboutme.service.MemberService;
 
+import com.example.aboutme.Login.jwt.TokenDTO;
 import com.example.aboutme.apiPayload.code.status.ErrorStatus;
 import com.example.aboutme.apiPayload.exception.GeneralException;
 import com.example.aboutme.app.dto.MyPageResponse;
@@ -28,7 +29,6 @@ public class MemberServiceImpl implements MemberService {
         );
     }
 
-    @Override
     public Member findMember(String email) {
         return memberRepository.findByEmail(email).orElseThrow(
                 () -> new GeneralException(ErrorStatus.MEMBER_NOT_FOUND)
@@ -40,6 +40,10 @@ public class MemberServiceImpl implements MemberService {
         return memberRepository.findByEmailAndSocial(email, social).orElseThrow(
                 () -> new GeneralException(ErrorStatus.MEMBER_NOT_FOUND)
         );
+    }
+    public Member findMember(TokenDTO.tokenClaimsDTO tokenClaimsDTO){
+        return memberRepository.findByEmailAndSocial(tokenClaimsDTO.getEmail(), tokenClaimsDTO.getSocial())
+                .orElseThrow(() -> new GeneralException(ErrorStatus.MEMBER_NOT_FOUND));
     }
 
     @Transactional
@@ -55,19 +59,16 @@ public class MemberServiceImpl implements MemberService {
 
     /**
      * 마이페이지 조회
-     *
-     * @param memberId 멤버 식별자
+     * @param tokenClaimsDTO 멤버 식별자
      * @return 마이프로필 정보
      */
-    public MyPageResponse.GetMyPageDTO getMyPage(Long memberId) {
-        Member member = findMember(memberId);
+    public MyPageResponse.GetMyPageDTO getMyPage(TokenDTO.tokenClaimsDTO tokenClaimsDTO){
+        Member member = findMember(tokenClaimsDTO);
 
-        String profileName = profileFeatureRepository.findProfileFeature(member, PageRequest.of(0, 1)).get(0);
+        String profileName = profileFeatureRepository.findProfileFeature(member, PageRequest.of(0,1)).get(0);
         String spaceName = member.getSpace() != null ? member.getSpace().getNickname() : null;
-
         int profileSharedNum = memberProfileRepository.countSharedProfileByMember(member);
         int spaceSharedNum = memberSpaceRepository.countSharedSpaceByMember(member);
-
         return MemberConverter.toGetMyPageDTO(profileName, spaceName, profileSharedNum, spaceSharedNum);
     }
 }
