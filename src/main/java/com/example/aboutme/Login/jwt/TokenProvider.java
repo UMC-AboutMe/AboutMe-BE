@@ -40,7 +40,6 @@ public class TokenProvider implements InitializingBean {
     public String createToken(String email){
         String newToken= Jwts.builder().
                 setSubject(email).
-                setExpiration(accessTokenExpireTime).
                 signWith(key, SignatureAlgorithm.HS512).compact();
 
 //        return JwtDTO.builder()

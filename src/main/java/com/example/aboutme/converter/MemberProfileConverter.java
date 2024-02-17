@@ -46,16 +46,6 @@ public class MemberProfileConverter {
                 .favorite(false)
                 .member(member)
                 .profile(profile)
-                .approved(true)
-                .build();
-    }
-
-    public static MemberProfile toMemberProfileNotApproved(Member member, Profile profile){
-        return MemberProfile.builder()
-                .favorite(false)
-                .member(member)
-                .profile(profile)
-                .approved(false)
                 .build();
     }
 

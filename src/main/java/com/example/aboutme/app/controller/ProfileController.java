@@ -87,8 +87,14 @@ public class ProfileController {
     }
 
     @PatchMapping("/default/{profileId}")
-    public ApiResponse<ProfileResponse.UpdateDefaultProfileDTO> patchDefaultMyProfile(@RequestHeader("member-id") Long memberId, @PathVariable Long profileId) {
+    public ApiResponse<ProfileResponse.UpdateDefaultProfileDTO> patchDefaultMyProfileToTrue(@RequestHeader("member-id") Long memberId, @PathVariable Long profileId) {
         Profile updatedProfile = profileService.updateIsDefault(memberId, profileId);
+        return ApiResponse.onSuccess(ProfileConverter.toUpdateDefaultProfile(updatedProfile));
+    }
+
+    @PatchMapping("/defaultToFalse/{profileId}")
+    public ApiResponse<ProfileResponse.UpdateDefaultProfileDTO> patchDefaultMyProfileToFalse(@RequestHeader("member-id") Long memberId, @PathVariable Long profileId) {
+        Profile updatedProfile = profileService.updateIsDefaultToFalse(memberId,profileId);
         return ApiResponse.onSuccess(ProfileConverter.toUpdateDefaultProfile(updatedProfile));
     }
 
@@ -171,31 +177,31 @@ public class ProfileController {
      * @return
      */
     @PostMapping("/share")
-    public ApiResponse<ProfileResponse.ShareProfileDTO> shareProfile(@RequestHeader("member-id") Long memberId,
+    public ApiResponse<Void> shareProfile(@RequestHeader("member-id") Long memberId,
                                                                      @RequestBody @Valid ProfileRequest.ShareProfileDTO request) {
 
-        Long profileOwnerId = memberProfileService.addOthersProfilesAtMyStorage(memberId, request);
+        memberProfileService.addOthersProfilesAtMyStorage(memberId, request);
 
         log.info("상대방 마이프로필 내 보관함에 추가하기: member={}, other's profile={}", memberId, request.getProfileSerialNumberList());
 
-        return ApiResponse.onSuccess(ProfileConverter.toShareMyProfileDTO(profileOwnerId));
+        return ApiResponse.onSuccess(null);
     }
 
     /**
-     * [POST] /myprofiles/share/mine
-     * 내 마이프로필 상대방에게 공유하기
+     * [POST] /myprofiles/send
+     * 마이프로필 공유 → 알림 데이터 생성
      *
      * @param memberId 멤버 식별자
      * @param request
      * @return
      */
-    @PostMapping("/share/mine")
-    public ApiResponse<Void> shareProfile(@RequestHeader("member-id") Long memberId,
-                                          @RequestBody @Valid ProfileRequest.ShareMyProfileDTO request) {
+    @PostMapping("/send")
+    public ApiResponse<Void> sendProfile(@RequestHeader("member-id") Long memberId,
+                                          @RequestBody @Valid ProfileRequest.SendProfileDTO request) {
 
-        memberProfileService.shareMyProfilesToOthers(memberId, request);
+        memberProfileService.sendMyProfile(memberId, request);
 
-        log.info("상대방 마이프로필 내 보관함에 추가하기: member={}, other's profile={}", memberId, request.getProfileSerialNumberList());
+        log.info("마이프로필 공유 → 알림 데이터 생성: member={}, other's profile={}, my profile={}", memberId, request.getOthersProfileSerialNumberList(), request.getMyProfileSerialNumberList());
 
         return ApiResponse.onSuccess(null);
     }
