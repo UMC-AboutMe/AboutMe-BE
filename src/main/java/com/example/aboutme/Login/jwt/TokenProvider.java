@@ -116,15 +116,15 @@ public class TokenProvider implements InitializingBean {
                 .parseClaimsJws(token)
                 .getBody();
 
-        if (claims.get("iss", String.class) == "KAKAO"){
+        if (claims.get("iss", String.class) == "GOOGLE"){
             return TokenDTO.tokenClaimsDTO.builder()
                     .email(claims.get("sub", String.class))
-                    .social(Social.KAKAO)
+                    .social(Social.GOOGLE)
                     .build();
         }else{
             return TokenDTO.tokenClaimsDTO.builder()
                     .email(claims.get("sub", String.class))
-                    .social(Social.GOOGLE)
+                    .social(Social.KAKAO)
                     .build();
         }
     }

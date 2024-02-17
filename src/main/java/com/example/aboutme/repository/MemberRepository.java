@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.Optional;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
-    Member findByEmailAndSocial(String email, Social social);
+    Optional<Member> findByEmailAndSocial(String email, Social social);
     Optional<Member> findByEmail(String email);
     void deleteByEmail(String email);
     Boolean existsByEmailAndSocial(String email, Social social);

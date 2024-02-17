@@ -7,11 +7,14 @@ import com.example.aboutme.apiPayload.exception.GeneralException;
 import com.example.aboutme.app.dto.ProfileRequest;
 import com.example.aboutme.app.dto.ProfileResponse;
 import com.example.aboutme.converter.ProfileConverter;
+import com.example.aboutme.domain.Member;
 import com.example.aboutme.domain.Profile;
 import com.example.aboutme.domain.ProfileFeature;
 import com.example.aboutme.domain.ProfileImage;
 import com.example.aboutme.domain.constant.ProfileImageType;
+import com.example.aboutme.domain.constant.Social;
 import com.example.aboutme.service.MemberProfileService.MemberProfileService;
+import com.example.aboutme.service.MemberService.MemberService;
 import com.example.aboutme.service.ProfileService.ProfileService;
 import com.example.aboutme.validation.annotation.ExistMyProfile;
 import com.example.aboutme.validation.annotation.ExistProfileBySerialNum;
@@ -35,6 +38,7 @@ public class ProfileController {
     private final ProfileService profileService;
     private final MemberProfileService memberProfileService;
     private final TokenProvider tokenProvider;
+    private final MemberService memberService;
 
     /**
      * [GET] /myprofiles
@@ -195,17 +199,21 @@ public class ProfileController {
      * [POST] /myprofiles/send
      * 마이프로필 공유 → 알림 데이터 생성
      *
-     * @param memberId 멤버 식별자
+     * @param token 토큰
      * @param request
      * @return
      */
     @PostMapping("/send")
-    public ApiResponse<Void> sendProfile(@RequestHeader("member-id") Long memberId,
+    public ApiResponse<Void> sendProfile(@RequestHeader("token") String token,
                                           @RequestBody @Valid ProfileRequest.SendProfileDTO request) {
 
-        memberProfileService.sendMyProfile(memberId, request);
+        String email = tokenProvider.getTokenInfoFromToken(token).getEmail();
+        Social social = tokenProvider.getTokenInfoFromToken(token).getSocial();
+        Member member = memberService.findMember(email, social);
 
-        log.info("마이프로필 공유 → 알림 데이터 생성: member={}, other's profile={}, my profile={}", memberId, request.getOthersProfileSerialNumberList(), request.getMyProfileSerialNumberList());
+        memberProfileService.sendMyProfile(member.getId(), request);
+
+        log.info("마이프로필 공유 → 알림 데이터 생성: member={}, other's profile={}, my profile={}", member.getId(), request.getOthersProfileSerialNumberList(), request.getMyProfileSerialNumberList());
 
         return ApiResponse.onSuccess(null);
     }
