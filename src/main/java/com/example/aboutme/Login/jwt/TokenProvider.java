@@ -109,5 +109,25 @@ public class TokenProvider implements InitializingBean {
         return claims.get("iss", String.class);
     }
 
+    public TokenDTO.tokenClaimsDTO getTokenInfoFromToken(String token){
+        Claims claims = Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+
+        if (claims.get("iss", String.class) == "KAKAO"){
+            return TokenDTO.tokenClaimsDTO.builder()
+                    .email(claims.get("sub", String.class))
+                    .social(Social.KAKAO)
+                    .build();
+        }else{
+            return TokenDTO.tokenClaimsDTO.builder()
+                    .email(claims.get("sub", String.class))
+                    .social(Social.GOOGLE)
+                    .build();
+        }
+    }
+
 
 }

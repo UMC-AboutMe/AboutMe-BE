@@ -39,7 +39,8 @@ public class LoginController {
 
     @GetMapping("tokenTest")
     public void tokenTest(@RequestHeader("token") String token){
-        System.out.println(tokenProvider.getEmailFromToken(token));
+        System.out.println(tokenProvider.getTokenInfoFromToken(token).getEmail());
+        System.out.println(tokenProvider.getTokenInfoFromToken(token).getSocial());
     }
 
     @GetMapping("members/{socialType}/login")
