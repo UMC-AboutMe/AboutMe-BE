@@ -13,10 +13,10 @@ public interface ProfileService {
 
     /**
      * 내 마이프로필 목록 조회
-     * @param memberId 멤버 식별자
+     * @param tokenClaimsDTO 멤버 식별자
      * @return 마이프로필 목록
      */
-    List<Profile> getMyProfiles(Long memberId);
+    List<Profile> getMyProfiles(TokenDTO.tokenClaimsDTO tokenClaimsDTO);
 
     /**
      * 마이프로필 단건 조회

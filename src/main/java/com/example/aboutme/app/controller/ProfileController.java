@@ -41,15 +41,16 @@ public class ProfileController {
      * [GET] /myprofiles
      * 내 마이프로필 목록 조회
      *
-     * @param memberId 멤버 식별자
+     * @param accessToken 멤버 식별자
      * @return
      */
     @GetMapping()
-    public ApiResponse<ProfileResponse.GetProfileListDTO> getMyProfiles(@RequestHeader("member-id") Long memberId) {
+    public ApiResponse<ProfileResponse.GetProfileListDTO> getMyProfiles(@RequestHeader("token") String accessToken) {
+        TokenDTO.tokenClaimsDTO tokenClaimsDTO = tokenProvider.getTokenInfoFromToken(accessToken);
 
-        List<Profile> profileList = profileService.getMyProfiles(memberId);
+        List<Profile> profileList = profileService.getMyProfiles(tokenClaimsDTO);
 
-        log.info("마이프로필 조회: member={}", memberId);
+        log.info("마이프로필 조회: member={}", tokenClaimsDTO.getEmail());
 
         return ApiResponse.onSuccess(ProfileConverter.toGetProfileListDTO(profileList));
     }

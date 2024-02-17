@@ -41,11 +41,11 @@ public class ProfileServiceImpl implements ProfileService{
 
     /**
      * 내 마이프로필 목록 조회
-     * @param memberId 멤버 식별자
+     * @param tokenClaimsDTO 멤버 식별자
      * @return 마이프로필 목록
      */
-    public List<Profile> getMyProfiles(Long memberId){
-        Member member = memberService.findMember(memberId);
+    public List<Profile> getMyProfiles(TokenDTO.tokenClaimsDTO tokenClaimsDTO){
+        Member member = memberService.findMember(tokenClaimsDTO);
 
         return profileRepository.findAllByMemberOrderByIsDefaultDesc(member);
     }
