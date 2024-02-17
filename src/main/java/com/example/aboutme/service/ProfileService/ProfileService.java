@@ -1,5 +1,6 @@
 package com.example.aboutme.service.ProfileService;
 
+import com.example.aboutme.Login.jwt.TokenDTO;
 import com.example.aboutme.app.dto.ProfileRequest;
 import com.example.aboutme.domain.Profile;
 import com.example.aboutme.domain.ProfileFeature;
@@ -26,11 +27,11 @@ public interface ProfileService {
 
     /**
      * 마이프로필 생성
-     * @param memberId 멤버 식별자
+     * @param tokenClaimsDTO 멤버 식별자
      * @param request
      * @return
      */
-    Profile createMyProfile(Long memberId, ProfileRequest.CreateProfileDTO request);
+    Profile createMyProfile(TokenDTO.tokenClaimsDTO tokenClaimsDTO, ProfileRequest.CreateProfileDTO request);
 
     Profile updateIsDefault(String email, Long profileId);
 

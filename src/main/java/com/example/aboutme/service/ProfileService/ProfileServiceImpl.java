@@ -1,5 +1,6 @@
 package com.example.aboutme.service.ProfileService;
 
+import com.example.aboutme.Login.jwt.TokenDTO;
 import com.example.aboutme.apiPayload.code.status.ErrorStatus;
 import com.example.aboutme.apiPayload.exception.GeneralException;
 import com.example.aboutme.app.dto.ProfileRequest;
@@ -67,13 +68,13 @@ public class ProfileServiceImpl implements ProfileService{
 
     /**
      * 마이프로필 생성
-     * @param memberId 멤버 식별자
+     * @param tokenClaimsDTO
      * @param request
      * @return
      */
     @Transactional
-    public Profile createMyProfile(Long memberId, ProfileRequest.CreateProfileDTO request){
-        Member member = memberService.findMember(memberId);
+    public Profile createMyProfile(TokenDTO.tokenClaimsDTO tokenClaimsDTO, ProfileRequest.CreateProfileDTO request){
+        Member member = memberService.findMember(tokenClaimsDTO);
 
         // 최대 생성 개수 초과하는지 확인
         int MAX_PROFILE_SIZE = 3;

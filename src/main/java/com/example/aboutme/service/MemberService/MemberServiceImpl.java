@@ -1,5 +1,6 @@
 package com.example.aboutme.service.MemberService;
 
+import com.example.aboutme.Login.jwt.TokenDTO;
 import com.example.aboutme.apiPayload.code.status.ErrorStatus;
 import com.example.aboutme.apiPayload.exception.GeneralException;
 import com.example.aboutme.app.dto.MyPageResponse;
@@ -27,11 +28,15 @@ public class MemberServiceImpl implements MemberService{
         );
     }
 
-    @Override
     public Member findMember(String email) {
         return memberRepository.findByEmail(email).orElseThrow(
                 () -> new GeneralException(ErrorStatus.MEMBER_NOT_FOUND)
         );
+    }
+
+    public Member findMember(TokenDTO.tokenClaimsDTO tokenClaimsDTO){
+        return memberRepository.findByEmailAndSocial(tokenClaimsDTO.getEmail(), tokenClaimsDTO.getSocial())
+                .orElseThrow(() -> new GeneralException(ErrorStatus.MEMBER_NOT_FOUND));
     }
 
     @Transactional

@@ -1,5 +1,6 @@
 package com.example.aboutme.app.controller;
 
+import com.example.aboutme.Login.jwt.TokenDTO;
 import com.example.aboutme.Login.jwt.TokenProvider;
 import com.example.aboutme.apiPayload.ApiResponse;
 import com.example.aboutme.apiPayload.code.status.ErrorStatus;
@@ -74,14 +75,15 @@ public class ProfileController {
      * [POST] /myprofiles
      * 마이프로필 생성
      *
-     * @param memberId 멤버 식별자
+     * @param accessToken
      * @param request
      * @return
      */
     @PostMapping()
-    public ApiResponse createMyProfile(@RequestHeader("member-id") Long memberId, @RequestBody @Valid ProfileRequest.CreateProfileDTO request) {
+    public ApiResponse createMyProfile(@RequestHeader("token") String accessToken, @RequestBody @Valid ProfileRequest.CreateProfileDTO request) {
+        TokenDTO.tokenClaimsDTO tokenClaimsDTO = tokenProvider.getTokenInfoFromToken(accessToken);
 
-        Profile newProfile = profileService.createMyProfile(memberId, request);
+        Profile newProfile = profileService.createMyProfile(tokenClaimsDTO, request);
 
         log.info("마이프로필 생성: {}", request.getName());
 

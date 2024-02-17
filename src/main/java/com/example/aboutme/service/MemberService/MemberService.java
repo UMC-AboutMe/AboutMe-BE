@@ -1,5 +1,6 @@
 package com.example.aboutme.service.MemberService;
 
+import com.example.aboutme.Login.jwt.TokenDTO;
 import com.example.aboutme.app.dto.MyPageResponse;
 import com.example.aboutme.domain.Member;
 import com.example.aboutme.repository.MemberRepository;
@@ -10,6 +11,8 @@ public interface MemberService {
 
     Member findMember(Long memberId);
     Member findMember(String email);
+
+    Member findMember(TokenDTO.tokenClaimsDTO tokenClaimsDTO);
     void deleteMember(Long memberId);
 
     void deleteMember(String email);
