@@ -32,9 +32,9 @@ public interface ProfileService {
      */
     Profile createMyProfile(Long memberId, ProfileRequest.CreateProfileDTO request);
 
-    Profile updateIsDefault(Long memberID, Long profileId);
+    Profile updateIsDefault(String email, Long profileId);
 
-    Profile updateIsDefaultToFalse(Long memberId, Long profileId);
+    Profile updateIsDefaultToFalse(String email, Long profileId);
     /**
      * 내 마이프로필 수정
      * @param memberId 멤버 식별자

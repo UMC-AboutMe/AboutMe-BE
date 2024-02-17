@@ -1,5 +1,6 @@
 package com.example.aboutme.app.controller;
 
+import com.example.aboutme.Login.jwt.TokenProvider;
 import com.example.aboutme.apiPayload.ApiResponse;
 import com.example.aboutme.apiPayload.code.status.ErrorStatus;
 import com.example.aboutme.apiPayload.exception.GeneralException;
@@ -33,6 +34,7 @@ public class ProfileController {
 
     private final ProfileService profileService;
     private final MemberProfileService memberProfileService;
+    private final TokenProvider tokenProvider;
 
     /**
      * [GET] /myprofiles
@@ -87,14 +89,16 @@ public class ProfileController {
     }
 
     @PatchMapping("/default/{profileId}")
-    public ApiResponse<ProfileResponse.UpdateDefaultProfileDTO> patchDefaultMyProfileToTrue(@RequestHeader("member-id") Long memberId, @PathVariable Long profileId) {
-        Profile updatedProfile = profileService.updateIsDefault(memberId, profileId);
+    public ApiResponse<ProfileResponse.UpdateDefaultProfileDTO> patchDefaultMyProfileToTrue(@RequestHeader("token") String token, @PathVariable Long profileId) {
+        String email = tokenProvider.getEmailFromToken(token);
+        Profile updatedProfile = profileService.updateIsDefault(email, profileId);
         return ApiResponse.onSuccess(ProfileConverter.toUpdateDefaultProfile(updatedProfile));
     }
 
     @PatchMapping("/defaultToFalse/{profileId}")
-    public ApiResponse<ProfileResponse.UpdateDefaultProfileDTO> patchDefaultMyProfileToFalse(@RequestHeader("member-id") Long memberId, @PathVariable Long profileId) {
-        Profile updatedProfile = profileService.updateIsDefaultToFalse(memberId,profileId);
+    public ApiResponse<ProfileResponse.UpdateDefaultProfileDTO> patchDefaultMyProfileToFalse(@RequestHeader("token") String token, @PathVariable Long profileId) {
+        String email = tokenProvider.getEmailFromToken(token);
+        Profile updatedProfile = profileService.updateIsDefaultToFalse(email,profileId);
         return ApiResponse.onSuccess(ProfileConverter.toUpdateDefaultProfile(updatedProfile));
     }
 

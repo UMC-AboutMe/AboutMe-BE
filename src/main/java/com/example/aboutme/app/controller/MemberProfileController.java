@@ -1,5 +1,6 @@
 package com.example.aboutme.app.controller;
 
+import com.example.aboutme.Login.jwt.TokenProvider;
 import com.example.aboutme.apiPayload.ApiResponse;
 
 import com.example.aboutme.app.dto.MemberProfileRequest;
@@ -28,16 +29,19 @@ import java.util.List;
 public class MemberProfileController {
 
     private final MemberProfileService memberProfileService;
+    private final TokenProvider tokenProvider;
 
     @GetMapping()
-    public ApiResponse<MemberProfileResponse.SearchMemberProfileListDTO> getMyProfilesStorage(@RequestHeader("member-id") Long memberId) {
-        List<MemberProfile> memberProfileList = memberProfileService.getMyProfilesStorage(memberId);
+    public ApiResponse<MemberProfileResponse.SearchMemberProfileListDTO> getMyProfilesStorage(@RequestHeader("token") String token) {
+        String email = tokenProvider.getEmailFromToken(token);
+        List<MemberProfile> memberProfileList = memberProfileService.getMyProfilesStorage(token);
         return ApiResponse.onSuccess(MemberProfileConverter.toSearchMemberProfileListDTO(memberProfileList));
     }
 
     @DeleteMapping("/{profileId}")
-    public ApiResponse<MemberProfileResponse.DeleteMemberProfileMsgDTO> deleteMemberProfile(@RequestHeader("member-id") Long memberId, @PathVariable Long profileId) {
-        MemberProfile memberProfile = memberProfileService.deleteMemberProfile(memberId, profileId);
+    public ApiResponse<MemberProfileResponse.DeleteMemberProfileMsgDTO> deleteMemberProfile(@RequestHeader("token") String token, @PathVariable Long profileId) {
+        String email = tokenProvider.getEmailFromToken(token);
+        MemberProfile memberProfile = memberProfileService.deleteMemberProfile(email, profileId);
         return ApiResponse.onSuccess(MemberProfileConverter.toDeleteMemberProfileMsgDTO(memberProfile.getId(),"success"));
     }
 
