@@ -52,11 +52,11 @@ public class MemberServiceImpl implements MemberService{
 
     /**
      * 마이페이지 조회
-     * @param memberId 멤버 식별자
+     * @param tokenClaimsDTO 멤버 식별자
      * @return 마이프로필 정보
      */
-    public MyPageResponse.GetMyPageDTO getMyPage(Long memberId){
-        Member member = findMember(memberId);
+    public MyPageResponse.GetMyPageDTO getMyPage(TokenDTO.tokenClaimsDTO tokenClaimsDTO){
+        Member member = findMember(tokenClaimsDTO);
 
         String profileName = profileFeatureRepository.findProfileFeature(member, PageRequest.of(0,1)).get(0);
         String spaceName = member.getSpace() != null ? member.getSpace().getNickname() : null;
