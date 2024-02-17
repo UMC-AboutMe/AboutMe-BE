@@ -116,7 +116,7 @@ public class TokenProvider implements InitializingBean {
                 .parseClaimsJws(token)
                 .getBody();
 
-        if (claims.get("iss", String.class) == "GOOGLE"){
+        if (claims.get("iss", String.class).equals("GOOGLE")){
             return TokenDTO.tokenClaimsDTO.builder()
                     .email(claims.get("sub", String.class))
                     .social(Social.GOOGLE)

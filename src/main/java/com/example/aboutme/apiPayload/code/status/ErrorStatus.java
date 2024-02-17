@@ -60,7 +60,9 @@ public enum ErrorStatus implements BaseErrorCode {
     UNKNOWN_SOCIALTYPE(HttpStatus.NOT_FOUND, "SOCIAL400", "해당 소셜 타입이 존재하지 않습니다."),
 
     // 알람 에러
-    ALARM_ALREADY_EXISTING(HttpStatus.BAD_REQUEST, "ALARM400", "해당 알람이 이미 존재합니다.");
+    ALARM_ALREADY_EXISTING(HttpStatus.BAD_REQUEST, "ALARM400", "해당 알람이 이미 존재합니다."),
+    ALARM_NOT_MINE(HttpStatus.BAD_REQUEST, "ALARM401", "본인 알림이 아닙니다."),
+    ALARM_NOT_FOUND(HttpStatus.BAD_REQUEST, "ALARM402", "해당 알림이 존재하지 않습니다.");
 
 
     private final HttpStatus httpStatus;
