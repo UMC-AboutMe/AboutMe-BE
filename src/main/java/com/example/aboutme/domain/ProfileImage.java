@@ -46,4 +46,26 @@ public class ProfileImage extends BaseEntity {
         this.space = space;
         this.imageUrl = null;
     }
+
+    /**
+     * @return if type is USER_IMAGE return profileImageURL, else return null
+     */
+    public String getImageUrl(){
+        if(this.type == ProfileImageType.USER_IMAGE){
+            return this.imageUrl;
+        }
+
+        return null;
+    }
+
+    /**
+     * @return if type is CHARACTER return characterType, else return null
+     */
+    public Integer getCharacterType(){
+        if(this.type == ProfileImageType.CHARACTER && this.space != null){
+            return space.getCharacterType();
+        }
+
+        return null;
+    }
 }
