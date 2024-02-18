@@ -2,8 +2,13 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-    show-sql: true
     generate-ddl: true
+    properties:
+      hibernate:
+        show_sql: true # sql문 보기
+        format_sql: true # sql문 예쁘게 보기
+
+
 
   security:
     jwt:
@@ -32,9 +37,9 @@ spring:
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://aboutmedb.cpk6suecg1c5.ap-northeast-2.rds.amazonaws.com/aboutme
-    username: root
-    password: rootroot123
+    url: ${aws.db.url}
+    username: ${aws.db.username}
+    password: ${aws.db.password}
 
   servlet:
     multipart:
