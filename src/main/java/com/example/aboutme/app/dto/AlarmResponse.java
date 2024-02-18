@@ -38,9 +38,10 @@ public class AlarmResponse {
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class JoinResultDTO {
+    public static class ShareSpaceResultDTO {
         private String content;
         private boolean isRead;
         private String subscriberNickname;
+        private String sharedSpaceNickname;
     }
 }

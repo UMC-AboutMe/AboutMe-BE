@@ -19,6 +19,8 @@ public class Alarm extends BaseEntity {
 
     private boolean isRead;
 
+    private String sharedSpaceNickname;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
