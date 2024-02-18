@@ -5,6 +5,7 @@ import com.example.aboutme.validation.annotation.CharacterTypeBoundary;
 import com.example.aboutme.validation.annotation.ExistMember;
 import com.example.aboutme.validation.annotation.ExistMood;
 import com.example.aboutme.validation.annotation.RoomTypeBoundary;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 
 public class AlarmRequest {

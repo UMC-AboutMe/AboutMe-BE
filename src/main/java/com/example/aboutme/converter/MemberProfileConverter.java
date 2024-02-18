@@ -46,16 +46,6 @@ public class MemberProfileConverter {
                 .favorite(false)
                 .member(member)
                 .profile(profile)
-                .approved(true)
-                .build();
-    }
-
-    public static MemberProfile toMemberProfileNotApproved(Member member, Profile profile){
-        return MemberProfile.builder()
-                .favorite(false)
-                .member(member)
-                .profile(profile)
-                .approved(false)
                 .build();
     }
 
@@ -83,6 +73,7 @@ public class MemberProfileConverter {
                                     .image(ProfileConverter.toProfileImageDTO(memberProfile.getProfile().getProfileImage()))
                                     .build();
                         })
+                        .sorted((profile1, profile2) -> Boolean.compare(profile2.getFavorite(), profile1.getFavorite())) // favorite 값에 따라 정렬
                         .collect(Collectors.toList());
 
         return new MemberProfileResponse.SearchMemberProfileListDTO(memberProfileListDto);

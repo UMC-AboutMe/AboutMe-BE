@@ -16,6 +16,7 @@ public class MemberSpaceConverter {
                         .roomType(memberSpace.getSpace().getRoomType())
                         .favorite(memberSpace.isFavorite())
                         .build())
+                .sorted((space1, space2) -> Boolean.compare(space2.getFavorite(), space1.getFavorite())) // favorite 값에 따라 정렬
                 .toList();
 
         return new MemberSpaceResponse.GetListDto(memberSpaceListDto);

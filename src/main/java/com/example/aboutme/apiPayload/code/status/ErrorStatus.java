@@ -36,6 +36,7 @@ public enum ErrorStatus implements BaseErrorCode {
     PROFILE_NOT_MATCH_MEMBER_AT_GET(HttpStatus.BAD_REQUEST, "PROFILE406", "해당 프로필을 조회할 수 없습니다"),
     PROFILE_NOT_MATCH_MEMBER_AT_UPDATE(HttpStatus.BAD_REQUEST, "PROFILE407", "해당 프로필을 수정할 수 없습니다"),
     PROFILE_NOT_MINE(HttpStatus.BAD_REQUEST, "PROFILE408", "공유하려는 프로필이 본인 것이 아닙니다."),
+    PROFILE_ALREADY_SHARED(HttpStatus.BAD_REQUEST, "PROFILE409", "이미 저장된 프로필입니다."),
 
     // 마이프로필 이미지 에러
     PROFILE_IMAGE_CANNOT_CHANGE_TO_CHARACTER(HttpStatus.BAD_REQUEST, "IMAGE400", "마이스페이스에서 캐릭터를 설정해야 합니다"),
@@ -56,7 +57,12 @@ public enum ErrorStatus implements BaseErrorCode {
     FILE_NOT_FOUND(HttpStatus.NOT_FOUND, "FILE400", "해당 파일이 존재하지 않습니다."),
 
     // 소셜타입 에러
-    UNKNOWN_SOCIALTYPE(HttpStatus.NOT_FOUND, "SOCIAL400", "해당 소셜 타입이 존재하지 않습니다.");
+    UNKNOWN_SOCIALTYPE(HttpStatus.NOT_FOUND, "SOCIAL400", "해당 소셜 타입이 존재하지 않습니다."),
+
+    // 알람 에러
+    ALARM_ALREADY_EXISTING(HttpStatus.BAD_REQUEST, "ALARM400", "해당 알람이 이미 존재합니다."),
+    ALARM_NOT_MINE(HttpStatus.BAD_REQUEST, "ALARM401", "본인 알림이 아닙니다."),
+    ALARM_NOT_FOUND(HttpStatus.BAD_REQUEST, "ALARM402", "해당 알림이 존재하지 않습니다.");
 
 
     private final HttpStatus httpStatus;

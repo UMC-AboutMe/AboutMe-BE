@@ -1,5 +1,6 @@
 package com.example.aboutme.app.controller;
 
+import com.example.aboutme.Login.jwt.TokenProvider;
 import com.example.aboutme.apiPayload.ApiResponse;
 import com.example.aboutme.app.dto.*;
 import com.example.aboutme.converter.AlarmConverter;
@@ -8,6 +9,7 @@ import com.example.aboutme.domain.Alarm;
 import com.example.aboutme.domain.Member;
 import com.example.aboutme.domain.Space;
 import com.example.aboutme.service.AlarmService.AlarmService;
+import com.example.aboutme.service.MemberService.MemberService;
 import com.example.aboutme.service.SpaceService.SpaceService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,41 +27,56 @@ import java.text.ParseException;
 public class SpaceController {
     private final SpaceService spaceService;
     private final AlarmService alarmService;
+    private final TokenProvider tokenProvider;
+    private final MemberService memberService;
 
     @PostMapping(value = "/", produces = "application/json;charset=UTF-8")
-    public ApiResponse<SpaceResponse.JoinResultDTO> join (@RequestHeader("member-id") Long memberId, @RequestBody @Valid SpaceRequest.JoinDTO request) {
-        Space newSpace = spaceService.JoinSpace(memberId, request);
+    public ApiResponse<SpaceResponse.JoinResultDTO> join (@RequestHeader("token") String token, @RequestBody @Valid SpaceRequest.JoinDTO request) {
+        String email = tokenProvider.getEmailFromToken(token);
+        Member member = memberService.findMember(email);
+        Space newSpace = spaceService.JoinSpace(member.getId(), request);
         return ApiResponse.onSuccess(SpaceConverter.toJoinResultDTO(newSpace));
     }
 
     @GetMapping(value = "/", produces = "application/json;charset=UTF-8")
-    public ApiResponse<SpaceResponse.ReadResultDTO> read(@RequestHeader("member-id") Long memberId) {
-        Space newSpace = spaceService.readSpace(memberId);
+    public ApiResponse<SpaceResponse.ReadResultDTO> read(@RequestHeader("token") String token) {
+        String email = tokenProvider.getEmailFromToken(token);
+        Member member = memberService.findMember(email);
+        Space newSpace = spaceService.readSpace(member.getId());
         return ApiResponse.onSuccess(SpaceConverter.toReadResultDTO(newSpace));
     }
 
     @DeleteMapping(value = "/", produces = "application/json;charset=UTF-8")
-    public ApiResponse delete(@RequestHeader("member-id") Long memberId) {
-        spaceService.deleteSpace(memberId);
+    public ApiResponse delete(@RequestHeader("token") String token) {
+        String email = tokenProvider.getEmailFromToken(token);
+        Member member = memberService.findMember(email);
+        spaceService.deleteSpace(member.getId());
         return ApiResponse.onSuccess(null);
     }
 
     @PatchMapping(value = "/", produces = "application/json;charset=UTF-8")
-    public ApiResponse<SpaceResponse.UpdateResultDTO> update(@RequestHeader("member-id") Long memberId, @RequestBody @Valid SpaceRequest.UpdateDTO request) {
-        Space updateSpace = spaceService.updateResult(memberId, request);
+    public ApiResponse<SpaceResponse.UpdateResultDTO> update(@RequestHeader("token") String token, @RequestBody @Valid SpaceRequest.UpdateDTO request) {
+        String email = tokenProvider.getEmailFromToken(token);
+        Member member = memberService.findMember(email);
+        Space updateSpace = spaceService.updateResult(member.getId(), request);
         return ApiResponse.onSuccess(SpaceConverter.toUpdateResultDTO(updateSpace));
     }
 
     @PostMapping(value = "/plans", produces = "application/json;charset=UTF-8")
-    public ApiResponse<SpaceResponse.ReadResultDTO> join (@RequestHeader("member-id") Long memberId, @RequestBody @Valid PlanRequest.CreatePlanDTO request) throws ParseException {
-        Space newSpace = spaceService.createPlan(memberId, request);
+    public ApiResponse<SpaceResponse.ReadResultDTO> join (@RequestHeader("token") String token, @RequestBody @Valid PlanRequest.CreatePlanDTO request) throws ParseException {
+        String email = tokenProvider.getEmailFromToken(token);
+        Member member = memberService.findMember(email);
+        Space newSpace = spaceService.createPlan(member.getId(), request);
         return ApiResponse.onSuccess(SpaceConverter.toReadResultDTO(newSpace));
     }
 
     @PostMapping(value = "/images", produces = "application/json;charset=UTF-8")
-    public ApiResponse<SpaceResponse.ReadResultDTO> uploadImage (@RequestHeader("member-id") Long memberId,
+    public ApiResponse<SpaceResponse.ReadResultDTO> uploadImage (@RequestHeader("token") String token,
                                                                  @RequestPart(value = "file", required = false) @NotEmpty MultipartFile multipartFile) {
-        Space newSpace = spaceService.uploadImage(memberId, multipartFile);
+
+        String email = tokenProvider.getEmailFromToken(token);
+        Member member = memberService.findMember(email);
+        Space newSpace = spaceService.uploadImage(member.getId(), multipartFile);
         return ApiResponse.onSuccess(SpaceConverter.toReadResultDTO(newSpace));
     }
 
@@ -70,9 +87,10 @@ public class SpaceController {
     }
 
     @PostMapping(value = "/shares", produces = "application/json;charset=UTF-8")
-    public ApiResponse<AlarmResponse.ShareSpaceResultDTO> share (@RequestHeader("member-id") Long memberId, @RequestBody @Valid AlarmRequest.CreateDTO request) {
-        Alarm newAlarm = alarmService.shareSpace(memberId, request);
-        Space space = spaceService.readSpace(memberId);
-        return ApiResponse.onSuccess(AlarmConverter.toShareSpaceResultDTO(newAlarm, space.getNickname()));
+    public ApiResponse<AlarmResponse.JoinResultDTO> share (@RequestHeader("token") String token, @RequestBody @Valid AlarmRequest.CreateDTO request) {
+        String email = tokenProvider.getEmailFromToken(token);
+        Member member = memberService.findMember(email);
+        Alarm newAlarm = alarmService.shareSpace(member.getId(), request);
+        return ApiResponse.onSuccess(AlarmConverter.toJoinResultDTO(newAlarm));
     }
 }

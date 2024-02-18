@@ -30,7 +30,7 @@ public class MsgResponse {
     @NoArgsConstructor
     @Builder
     public static class unregisterMsgDTO {
-        private Long memberId;
+        private String email;
         private String msg;
     }
 }

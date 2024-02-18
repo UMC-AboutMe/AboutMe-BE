@@ -1,9 +1,7 @@
 package com.example.aboutme.Login.jwt;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.example.aboutme.domain.constant.Social;
+import lombok.*;
 
 @Data
 @Builder
@@ -15,6 +13,15 @@ public class TokenDTO {
 
     public TokenDTO(String token) {
         this.token = token;
+    }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class tokenClaimsDTO {
+        private String email;
+        private Social social;
     }
 
 }

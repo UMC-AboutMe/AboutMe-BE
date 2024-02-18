@@ -16,9 +16,9 @@ public class LoginConverter {
         return MsgResponse.validMsgDTO.builder().msg(msg).build();
     }
 
-    public static MsgResponse.unregisterMsgDTO toUnregisterMsgDTO(Long memberId, String msg){
+    public static MsgResponse.unregisterMsgDTO toUnregisterMsgDTO(String email, String msg){
         return MsgResponse.unregisterMsgDTO.builder()
-                .memberId(memberId)
+                .email(email)
                 .msg(msg).build();
     }
 }

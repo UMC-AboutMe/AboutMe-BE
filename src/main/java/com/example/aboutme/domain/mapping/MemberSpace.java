@@ -2,6 +2,7 @@ package com.example.aboutme.domain.mapping;
 
 import com.example.aboutme.domain.Member;
 import com.example.aboutme.domain.Space;
+import com.example.aboutme.domain.common.BaseEntity;
 import lombok.*;
 
 import javax.persistence.*;
@@ -11,7 +12,7 @@ import javax.persistence.*;
 @Getter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class MemberSpace {
+public class MemberSpace extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
