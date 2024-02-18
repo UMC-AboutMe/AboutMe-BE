@@ -24,6 +24,8 @@ public class AlarmResponse {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class GetAlarmDTO {
+        @JsonProperty("alarm_id")
+        private Long alarmId;
         @JsonProperty("content")
         private String content;
         @JsonProperty("profile_serial_number")

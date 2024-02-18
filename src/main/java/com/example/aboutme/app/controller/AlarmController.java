@@ -44,4 +44,23 @@ public class AlarmController {
 
         return ApiResponse.onSuccess(AlarmConverter.toGetAlarmListDTO(alarmList));
     }
+
+    /**
+     * [DELETE] /alarms
+     * 알람 데이터 삭제
+     * @param token 토큰
+     * @param alarmId 알림 식별자
+     * @return
+     */
+    @DeleteMapping("/{alarmId}")
+    public ApiResponse<Void> deleteProfileAlarm(@RequestHeader("token") String token, @PathVariable Long alarmId){
+
+        String email = tokenProvider.getTokenInfoFromToken(token).getEmail();
+        Social social = tokenProvider.getTokenInfoFromToken(token).getSocial();
+        Member member = memberService.findMember(email, social);
+
+        alarmService.deleteAlarm(member, alarmId);
+
+        return ApiResponse.onSuccess(null);
+    }
 }

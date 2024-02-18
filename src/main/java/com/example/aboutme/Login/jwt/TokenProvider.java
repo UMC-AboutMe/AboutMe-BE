@@ -35,15 +35,15 @@ public class TokenProvider implements InitializingBean {
     private String secret;
     private static final long ACCESS_TOKEN_EXPIRE_TIME = 10000000 * 1000 * 60 * 3000;
     private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 7;
-//    private final Key key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret));
+    //    private final Key key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret));
     private Key key;
     private static final String AUTHORITIES_KEY = "auth";
     long now = (new Date()).getTime();
     Date accessTokenExpireTime = new Date(now + ACCESS_TOKEN_EXPIRE_TIME);
     Date refreshTokenExpireTime = new Date(now + REFRESH_TOKEN_EXPIRE_TIME);
 
-    public String createToken(String email, String social){
-        String newToken= Jwts.builder().
+    public String createToken(String email, String social) {
+        String newToken = Jwts.builder().
                 setSubject(email).
                 setIssuer(social).
                 signWith(key, SignatureAlgorithm.HS512).compact();
@@ -51,20 +51,20 @@ public class TokenProvider implements InitializingBean {
 //        return JwtDTO.builder()
 //                .accessToken(newToken)
 //                .expireIn(ACCESS_TOKEN_EXPIRE_TIME/1000).build();
-        return  newToken;
+        return newToken;
     }
 
-    public boolean validateToken(String userToken){
+    public boolean validateToken(String userToken) {
         try {
             System.out.println(userToken);
             Jwts.parser().setSigningKey(key).parseClaimsJws(userToken);
             System.out.println("Success valid");
             return true;
-        } catch (SecurityException| MalformedJwtException e) {
+        } catch (SecurityException | MalformedJwtException e) {
             return false;
-        }catch (UnsupportedJwtException e){
+        } catch (UnsupportedJwtException e) {
             return false;
-        }catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             return false;
         }
     }
@@ -113,14 +113,14 @@ public class TokenProvider implements InitializingBean {
         return claims.get("iss", String.class);
     }
 
-    public TokenDTO.tokenClaimsDTO getTokenInfoFromToken(String token){
+    public TokenDTO.tokenClaimsDTO getTokenInfoFromToken(String token) {
         Claims claims = Jwts.parserBuilder()
                 .setSigningKey(key)
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
 
-        switch (Social.valueOf(claims.getIssuer())){
+        switch (Social.valueOf(claims.getIssuer())) {
             case KAKAO -> {
                 return TokenDTO.tokenClaimsDTO.builder()
                         .email(claims.getSubject())

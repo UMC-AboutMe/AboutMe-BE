@@ -38,6 +38,7 @@ public class AlarmConverter {
                     Space space = alarm.getSpace();
                     Long spaceId = space != null ? space.getId() : null;
                     return AlarmResponse.GetAlarmDTO.builder()
+                            .alarmId(alarm.getId())
                             .content(alarm.getContent())
                             .profileSerialNumber(profileSerialNumber)
                             .spaceId(spaceId)
