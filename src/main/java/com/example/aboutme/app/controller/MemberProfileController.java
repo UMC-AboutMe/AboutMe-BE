@@ -38,7 +38,7 @@ public class MemberProfileController {
     @GetMapping()
     public ApiResponse<MemberProfileResponse.SearchMemberProfileListDTO> getMyProfilesStorage(@RequestHeader("token") String token) {
         String email = tokenProvider.getEmailFromToken(token);
-        List<MemberProfile> memberProfileList = memberProfileService.getMyProfilesStorage(token);
+        List<MemberProfile> memberProfileList = memberProfileService.getMyProfilesStorage(email);
         return ApiResponse.onSuccess(MemberProfileConverter.toSearchMemberProfileListDTO(memberProfileList));
     }
 
