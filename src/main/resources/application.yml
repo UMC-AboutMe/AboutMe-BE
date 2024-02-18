@@ -12,21 +12,21 @@ spring:
 
   security:
     jwt:
-      secret: a0484ca954f0b57df32c48691a9570cc01f6117ac8f270b89c33ab84cd53fd15e095d443dd06ea25f3860b4f70762ec53941a46826cbe112c5c7e3ea6cb65d05
+      secret: ${jwt.secret}
     oauth2:
       client:
         registration:
           kakao:
-            client-id: 9d761984fa81b79a5db21b541388959d
-            client-secret: L8Zlm5iTBbEfIHTKJm2mrYME1CJcxE25
+            client-id: ${kakao.client}
+            client-secret: ${kakao.client.secret}
             redirect-uri: http://localhost:8080/kakao/callback
             client-authentication-method: POST
             authorization-grant-type: authorization_code
             scope: account_email
             client-name: kakao
           google:
-            client-id: 194009379165-fk2ggap181l0kg9o9hcn8v2b49s4rhio.apps.googleusercontent.com
-            client-secret: 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
+            client-id: ${google.client}
+            client-secret: ${google.client.secret}
             redirect-uri: http://localhost:8080/google/callback
         provider:
           kakao:
@@ -56,8 +56,8 @@ cloud:
     stack:
       auto: false
     credentials:
-      accessKey: AKIA2UC26N6X2PHDW3LN
-      secretKey: 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
+      accessKey: ${aws.s3.accesskey}
+      secretKey: ${aws.s3.secretkey}
 
 logging:
   level:
