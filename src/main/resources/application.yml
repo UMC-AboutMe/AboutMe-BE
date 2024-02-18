@@ -50,7 +50,7 @@ spring:
 cloud:
   aws:
     s3:
-      bucket: aboutme-bucket
+      bucket: aboutme-s3
     region:
       static: ap-northeast-2
     stack:
