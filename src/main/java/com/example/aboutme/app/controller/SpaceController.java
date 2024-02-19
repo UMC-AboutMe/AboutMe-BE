@@ -87,10 +87,11 @@ public class SpaceController {
     }
 
     @PostMapping(value = "/shares", produces = "application/json;charset=UTF-8")
-    public ApiResponse<AlarmResponse.JoinResultDTO> share (@RequestHeader("token") String token, @RequestBody @Valid AlarmRequest.CreateDTO request) {
+    public ApiResponse<AlarmResponse.ShareSpaceResultDTO> share (@RequestHeader("token") String token, @RequestBody @Valid AlarmRequest.CreateDTO request) {
         String email = tokenProvider.getEmailFromToken(token);
         Member member = memberService.findMember(email);
         Alarm newAlarm = alarmService.shareSpace(member.getId(), request);
-        return ApiResponse.onSuccess(AlarmConverter.toJoinResultDTO(newAlarm));
+        Space space = spaceService.findSpace(member);
+        return ApiResponse.onSuccess(AlarmConverter.toShareSpaceResultDTO(newAlarm, space.getNickname()));
     }
 }

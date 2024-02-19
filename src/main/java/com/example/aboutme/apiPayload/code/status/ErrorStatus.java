@@ -25,6 +25,7 @@ public enum ErrorStatus implements BaseErrorCode {
     CANNOT_SHARE_OWN_SPACE(HttpStatus.BAD_REQUEST, "SPACE404", "본인 스페이스는 아지트에 추가할 수 없습니다."),
     SPACE_MAXIMUN_IMAGE_COUNT(HttpStatus.BAD_REQUEST, "SPACE404", "이미지는 최대 세 개까지만 업로드할 수 있습니다."),
     SPACE_ALREADY_EXIST(HttpStatus.BAD_REQUEST, "SPACE404", "이미 스페이스가 존재합니다."),
+    SPACE_NICKNAME_ALREADY_EXIST(HttpStatus.BAD_REQUEST, "SPACE404", "스페이스 닉네임이 이미 존재합니다."),
 
     // 마이프로필 에러
     PROFILE_SIZE_OVERFLOW(HttpStatus.BAD_REQUEST, "PROFILE400", "이 이상 마이프로필을 생성할 수 없습니다"),

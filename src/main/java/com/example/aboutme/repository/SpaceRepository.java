@@ -12,6 +12,7 @@ import java.util.Optional;
 public interface SpaceRepository extends JpaRepository<Space, Long> {
     Space findByMember_Id(Long memberId);
     boolean existsByMember(Member member);
+    boolean existsByNickname(String nickname);
     Optional<Space> findByMember(Member member);
 
     Optional<Space> findByNickname(String keyword);
