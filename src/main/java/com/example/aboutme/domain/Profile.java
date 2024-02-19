@@ -34,6 +34,12 @@ public class Profile extends BaseEntity {
     @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL)
     private List<MemberProfile> memberProfileList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL)
+    private List<Alarm> alarmList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "space", cascade = CascadeType.ALL)
+    private List<Alarm> spaceList = new ArrayList<>();
+
     public void setMember(Member member){
         this.member = member;
         member.getProfileList().add(this);
