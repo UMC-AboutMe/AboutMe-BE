@@ -3,7 +3,6 @@
 <img src="https://img.shields.io/badge/Spring-6DB33F?style=flat&logo=Spring&logoColor=white" />
 <img src="https://img.shields.io/badge/AWS-232F3E?style=flat&logo=AmazonAWS&logoColor=white" />
 </div>
-
 <div align="center">
 <img alt="GitHub issues" src="https://img.shields.io/github/issues/UMC-AboutMe/AboutMe-BE?">
 <img alt="GitHub pull requests" src="https://img.shields.io/github/issues-pr/UMC-AboutMe/AboutMe-BE?&label=PRs">
